@@ -7,7 +7,7 @@
                                                       # 读文件：带行号输出 + **读取凭据**（路径 / 行数 / 字节 / sha1）
 
 约定：路径一律相对**包根**（本文件所在 `library/` 的上一级；**参数与 cwd 无关**，脚本路径按你的 cwd 写全即可）；`..` / 绝对路径一律拒绝 ✗；**只读** ✗ 不写。
-示例：python library/asset.py read library/assets/bvix9o/高频场景指引/子公司（店铺）整月销售目标拆解.txt
+示例：python library/asset.py read library/assets/bvix9o/高频场景指引/app.md
 
 分层：本工具只做「已知路径 → 内容」；**路由（选哪个资产）在 `library/engine.py` / `ROUTES.md`**，两者不重叠。
 """

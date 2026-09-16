@@ -8,9 +8,9 @@
 
 - **原样落盘、不改名**：优化包以子目录形式整体放入 `vendor/optimizers/`，目录名即包名，
   内部文档、脚本、payload 模板一律原样保留，框架零解析、零转述。
-- **不实现登录**：优化 skill 不内置登录/鉴权，凭证统一由父 skill 自有登录组件
-  （`scripts/login_bi.py` 登录本体，自带 CLI）提供或用户给定（见
-  `vendor/SUBSKILL_ROUTING.md` §6 第 6 条）。
+- **默认不实现登录**：优化 skill 不内置登录/鉴权（自带登录方式（如有）＝**子级候选 · 备用层**——见
+  `vendor/SUBSKILL_ROUTING.md` §6 第 6 条），凭证统一由父 skill 自有登录组件
+  （`scripts/login_bi.py` 登录本体，自带 CLI）提供或用户给定。
 - **结构自定**：包内可含 `app.md` / `references/` / `scripts/` / `payloads/` 等，
   具体形态由该板块的优化文档决定（参考 Pms 同款 `optimizers/Pms_促销毛利v1.08` 的
   `agents/ references/ scripts/ app.md` 布局）。

@@ -258,18 +258,11 @@ def main() -> int:
                     if _bad:
                         _problems.append("★ 默认层 行 read 标签不符：%s" % "、".join(_bad))
             _sc = ROOT / "library" / "assets" / "bvix9o" / "高频场景指引"
-            _ix = _sc / "app.md"
-            if _sc.is_dir() and _ix.is_file():
-                _ixt = _ix.read_text(encoding="utf-8")
-                _miss = [p.name for p in sorted(_sc.iterdir())
-                         if p.is_file() and p.suffix in (".txt", ".md")
-                         and p.name != "app.md" and p.name not in _ixt]
-                if _miss:
-                    _problems.append("能力库索引缺场景文件行（命中后无法直读定位）：%s" % "、".join(_miss))
-                _refs = set(__import__("re").findall(r"`([^`/\\]+[.](?:txt|md))`", _ixt))
-                _gone = [r for r in sorted(_refs) if "/" not in r and not (_sc / r).is_file()]
-                if _gone:
-                    _problems.append("能力库索引指向不存在的文件：%s" % "、".join(_gone))
+            if _sc.is_dir():                       # 目录级索引（卡=索引）：只保「导航在位」，不查文件登记（改名零联动 ✓）
+                _scenes = [p for p in _sc.iterdir()
+                           if p.is_file() and p.suffix in (".txt", ".md") and p.name != "app.md"]
+                if _scenes and not (_sc / "app.md").is_file():
+                    _problems.append("场景目录缺目录导航 app.md（AI 进入后无引导）")
         checks.append(check("default_asset", not _problems,
                             "；".join(_problems) if _problems else
                             ("默认资产 = %s：★ 行与判据 0.5 一致" % _did if _did

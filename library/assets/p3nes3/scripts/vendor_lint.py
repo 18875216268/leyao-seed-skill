@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """vendor 接入体检（防重复登录）：扫描 vendor/ 下每个子包，检出会引发「重复登录」的残留。
 
-背景：本 skill 是**唯一登录口**；子包一律不登录、不读取父凭证仓库——凭证由 Agent 取用后
-经 `--token` / `PMS_TOKEN` / `--state-file` 直接传入（见 vendor/SUBSKILL_ROUTING.md §3 第 6 条与 §4 接入验收）。
+背景：本 skill 是**唯一登录口**；子包默认不发起登录（自带方式（如有）＝子级候选 · 备用层，见
+vendor/SUBSKILL_ROUTING.md §3 第 6 条）、不读取父凭证仓库——凭证由 Agent 取用后
+经 `--token` / `PMS_TOKEN` / `--state-file` 直接传入（见同文档 §4 接入验收）。
 
 检查规则（命中即报，退出码 1）：
   L1 登录实现嫌疑：login/scan/qr 函数或类定义、二维码/鉴权域依赖、登录相关文件名
