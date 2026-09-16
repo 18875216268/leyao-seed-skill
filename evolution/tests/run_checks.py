@@ -271,6 +271,23 @@ def main() -> int:
         checks.append(check("default_asset", False, str(exc)))
 
     try:
+        # 场景登录前置守卫（防"绕过登录问用户"复发）：凡场景文件点名登录型资产（p3nes3 / i7c4z1），
+        # 必附「登录前置」指针句——机器可核对的位置闸门（与维护.md 的场景产出约定同规）。
+        _sc2 = ROOT / "library" / "assets" / "bvix9o" / "高频场景指引"
+        _bad = []
+        if _sc2.is_dir():
+            for p in sorted(_sc2.iterdir()):
+                if p.is_file() and p.suffix in (".txt", ".md") and p.name != "app.md":
+                    t = p.read_text(encoding="utf-8")
+                    if ("p3nes3" in t or "i7c4z1" in t) and "登录前置" not in t:
+                        _bad.append(p.name)
+        checks.append(check("scenario_login_gate", not _bad,
+                            "缺「登录前置」指针句: %s" % _bad if _bad
+                            else "点名登录型资产的场景均含「登录前置」指针句"))
+    except Exception as exc:
+        checks.append(check("scenario_login_gate", False, str(exc)))
+
+    try:
         # 基础卡片守卫（名称 @ 开头 = 路由树地基）：**行为级**回归（纯内存、零写入）——
         # 自身拒绝删除 · 子树含基础卡片的祖先拒绝整体删除 · 普通卡可删；判定兼容全角 ＠
         guard = _engine()
