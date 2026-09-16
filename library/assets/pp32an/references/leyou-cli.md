@@ -3,6 +3,7 @@
 > 客户端：`scripts/sources/leyou/leyou_cloud.py`（原生集成，原样复用）；**登录态只落用户数据区** `leyou_token.json`
 > （客户端经全局参数 `--token-file` 指定；包内零写入）。
 > **本 skill 只查不弹窗**：`status` 预检（scan=False 语义）→ 失效即返回 `LOGIN_REQUIRED` + 手动指引。
+> **位置 / 执行口径**：本文件所有 `scripts/…` 命令均相对**包根**（资产根 `library/assets/pp32an/`）——**在资产根执行**；异 cwd 时脚本路径写全即可（**参数与 cwd 无关** ✓）。
 
 ## 常用子命令
 
@@ -19,7 +20,7 @@ python scripts/sources/leyou/leyou_cloud.py collect <关键词>   # 全库采集
 
 ## 登录（人工，一次性）
 
-凭证失效时**由人**在云智库目录执行其登录流程（扫码）；成功后凭证写入 `leyou_token.json`，之后本 skill 常态复用、无感。
+凭证失效时**由人**执行登录流程（扫码）——**位置**：`library/assets/pp32an/scripts/sources/leyou/`（相对包根）——**在资产根 `library/assets/pp32an/` 执行**（异 cwd 脚本路径写全即可 ✓）；成功后凭证写入 `leyou_token.json`，之后本 skill 常态复用、无感。
 > 本 skill 不实现登录、不代扫、不保存额外凭证；如需多人共享登录态，见文末「可选：多凭证自动登录桥」。
 > ⚠️ `leyou_token.json` 与数据区 `config.local.json` 都是**真实运行凭证**：切勿入包/入仓；发布或提交前确认包内不存在。
 

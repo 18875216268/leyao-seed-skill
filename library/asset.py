@@ -19,6 +19,7 @@ import json
 import sys
 from pathlib import Path
 
+sys.stdout.reconfigure(encoding="utf-8")   # 与 engine.py 同规：任何控制台 / 管道下中文路径不乱码
 ROOT = Path(__file__).resolve().parents[1]
 
 

@@ -209,11 +209,11 @@ class DirectTransport:
                 raise BiError("REDIRECT_NOT_ALLOWED", "官方接口返回了未允许的重定向。")
             if not permit_redirect_response:
                 if bi:
-                    raise BiError("AUTH_EXPIRED", "BI 登录已过期，请重新扫码登录。")
+                    raise BiError("AUTH_EXPIRED", "BI 凭证已过期：请向调用方索取新凭证后重试。")
                 raise BiError("REDIRECT_NOT_ALLOWED", "官方接口返回了未允许的重定向。")
 
         if response.status_code == 401:
-            raise BiError("AUTH_EXPIRED", "BI 登录已过期，请重新扫码登录。")
+            raise BiError("AUTH_EXPIRED", "BI 凭证已过期：请向调用方索取新凭证后重试。")
         if response.status_code == 403:
             raise BiError("AUTH_FORBIDDEN", "当前 BI 账号无权执行该请求。")
         if response.status_code == 429:

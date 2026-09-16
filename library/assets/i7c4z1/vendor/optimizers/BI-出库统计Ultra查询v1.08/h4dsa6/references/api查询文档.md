@@ -143,4 +143,4 @@ curl -s -X POST "https://bi.leyopharm.com/api/card/<cardId>/data" \
 2. 凭证文件：`BI_CREDENTIAL_FILE` 指向的 JSON，或 `resources/credential.local.json`：`{"token":"…","tokenSig":"…","exp":1789…}`；
 3. 宿主父 skill 回退（可选）：向上存在 `scripts/login_bi.py` 时自动取其登录仓；不存在则跳过。
 
-三级全空时脚本返回 `AUTH_REQUIRED`。凭证获取：宿主父 skill 登录器扫码（若有），或用户从已登录会话直接提供。
+三级全空时脚本返回 `AUTH_REQUIRED`。凭证获取：向调用方索取（**框架内** → 按主框架〈登录流程〉处置），或用户从已登录会话直接提供。

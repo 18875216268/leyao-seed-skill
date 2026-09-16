@@ -74,6 +74,30 @@ def _source_ready(source_abs: str):
     return True, ""
 
 
+def _adopt_entry_docs(root: Path) -> int:
+    """收纳规范：内容中凡发现 `SKILL.md`（**任意层级**）→ 更名为 `app.md`。
+
+    - 只动**副本**（`_copy_into` 只复制）——复制源永不改动 ✓；
+    - 目的：防止槽内包被宿主**扫为独立技能**——全包仅暴露主框架一个技能面，
+      agent 统一走主框架取路径 ✓；
+    - 同目录已有 `app.md` → 跳过（防误覆盖，留待人工）✗；
+    - 返回实际更名数量（失败不影响复制/保存结果，引擎软建议兜底提示）。
+    """
+    n = 0
+    for skill in sorted(root.rglob("SKILL.md")):
+        if not skill.is_file():
+            continue
+        entry = skill.with_name("app.md")
+        if entry.exists():
+            continue
+        try:
+            skill.rename(entry)
+        except OSError:
+            continue
+        n += 1
+    return n
+
+
 def _copy_into(source_abs: str, mount: str):
     """把来源文件夹的内容复制到挂载目录（不移动原件）。"""
     if not source_abs or not mount:
@@ -85,6 +109,7 @@ def _copy_into(source_abs: str, mount: str):
         target = safe_target(mount)
         target.mkdir(parents=True, exist_ok=True)
         shutil.copytree(src, target, dirs_exist_ok=True)
+        _adopt_entry_docs(target)   # 收纳规范：凡 SKILL.md → app.md（任意层级；只动副本、源不动）
     except Exception as e:  # noqa: BLE001
         return False, f"复制资产失败: {e}"
     return True, ""
@@ -343,7 +368,9 @@ def add_node(id_, type_, title, mount, description=None, source=None):
                 return False, msg
         else:
             try:                                          # 占位：卡片槽位先就绪（无源可复制时）
-                safe_target(m).mkdir(parents=True, exist_ok=True)
+                t = safe_target(m)
+                t.mkdir(parents=True, exist_ok=True)
+                _adopt_entry_docs(t)                      # 孤儿「挂载为卡片」同规：凡 SKILL.md → app.md ✓
             except ValueError:
                 return False, f"挂载路径越界: {m}"
         return engine.node_add(data, parent, node)
@@ -440,6 +467,10 @@ def update_node(id_, title, mount, description=None, type_=None, source=None):
             ok, msg = _copy_into(new_source, new_mount)
             if not ok:
                 return False, msg
+        try:                                                  # 保存同规（幂等）：凡 SKILL.md → app.md
+            _adopt_entry_docs(safe_target(new_mount))
+        except ValueError:
+            pass
         return True, ""
 
     return engine.commit(mutate)

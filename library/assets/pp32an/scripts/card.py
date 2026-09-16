@@ -57,7 +57,7 @@ def _pool_endpoint() -> str:
 
 
 def _node_ids_with_mount(routes_path) -> set[str]:
-    """读 routes.json 取「有 mount 的节点 id」集合（供 `check --nodes` 离线核验基础卡指针；不可读 → 空集）。"""
+    """读「路由节点文件」取「有 mount 的节点 id」集合（路径由调用方传入；供 `check --nodes` 离线核验基础卡指针；不可读 → 空集）。"""
     data = _load_dict(routes_path)
     out = set()
 
@@ -166,7 +166,7 @@ def cmd_check(args) -> int:
     """唯一验收（无论谁蒸馏）：格式 / ≤25字 / 条数 ≤80 / 总量（显示文本+固定开销）≤1500 / 两类指针 / 无凭据；通过则更新 meta。
 
     `--verify N`（可选）：**抽样回池**验 `pool#` 指针存在（池不可达 → 仅 warn ✓ fail-soft）。
-    `--nodes <routes.json>`（可选）：**离线核验 `node#` 基础卡指针**（节点必须存在且有 mount；文件不可读 → 仅 warn ✓）。
+    `--nodes <路由节点文件>`（可选）：**离线核验 `node#` 基础卡指针**（节点必须存在且有 mount；文件不可读 → 仅 warn ✓）。
     """
     if not CARD_JSON.is_file():
         common.emit({"ok": False, "error": "NO_CARD", "path": str(CARD_JSON),
@@ -214,7 +214,7 @@ def cmd_check(args) -> int:
     nodes_path = str(getattr(args, "nodes", "") or "")
     nodes_note = ""
     if (not nodes_path) and any(str(it.get("pointer") or "").startswith("node#") for it in items):
-        nodes_note = "node# 基础卡指针未核验（未提供 --nodes <routes.json>）"
+        nodes_note = "node# 基础卡指针未核验（未提供 --nodes <路由节点文件>）"
     if nodes_path:                              # 基础卡指针离线核验（可选；fail-soft：读不到仅标注）
         nids = _node_ids_with_mount(nodes_path)
         if not nids:
@@ -275,7 +275,7 @@ def cmd_render(_args) -> int:
     meta = data.get("meta") or {}
     lines = ["# 业务速查卡（常驻 · 只读）", "",
              "> 用途：**识别与定位**；知识定义以运营知识库（池 authority）为准，指针 `pool#<id>` → 需要细节时回池检索；"
-             "`node#<id>` = 路由地基卡片 → 见 ROUTES.md 对应节点。",
+             "`node#<id>` = 路由地基卡片 → 见路由表对应节点。",
              "> 生成：`scripts/card.py` ｜ 规范：`references/card.md` ｜ 池快照：%s ｜ 生成时间：%s"
              % (meta.get("pool_version") or "?", meta.get("generated_at") or "?"), ""]
     items = data.get("items") or []
@@ -364,7 +364,7 @@ def main(argv=None) -> int:
     f.add_argument("--limit", type=int, default=50, help="单类正文条数（保守硬上限 50）")
     c = sub.add_parser("check", help="校验卡（唯一验收）")
     c.add_argument("--verify", type=int, default=0, help="抽样回池验 pointer 存在（默认 0=跳过；失败仅 warn）")
-    c.add_argument("--nodes", default="", help="routes.json 路径：离线核验 node# 基础卡指针（缺省跳过，fail-soft）")
+    c.add_argument("--nodes", default="", help="路由节点文件路径（由调用方传入）：离线核验 node# 基础卡指针（缺省跳过，fail-soft）")
     sub.add_parser("render", help="card.json → card.md")
     s = sub.add_parser("status", help="快照诊断（missing/fresh/stale/unchecked；不触发刷新）")
     s.add_argument("--ttl-days", type=int, default=0, help="覆盖 TTL（默认取 meta.ttl_days 或 %d 天）" % DEFAULT_TTL_DAYS)

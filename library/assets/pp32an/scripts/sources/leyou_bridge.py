@@ -72,8 +72,9 @@ def status(timeout: float = 10.0, cli: str | None = None) -> dict:
         return {"ok": True, "detail": text[:200]}
     return {"ok": False, "reason": "LOGIN_REQUIRED",
             "detail": ("未登录（logged_in=false）" if logged is False else text[:160]) or "退出码 %d" % rc,
-            "next": "请人工扫码登录一次（本 skill 不代扫、不弹窗）："
-                    "`python scripts/sources/leyou/leyou_firebase_login.py auto`；"
+            "next": "请人工扫码登录一次（本 skill 不代扫、不弹窗）：在资产根 `library/assets/pp32an/` 执行 "
+                    "`python scripts/sources/leyou/leyou_firebase_login.py auto`；脚本位置 "
+                    "`library/assets/pp32an/scripts/sources/leyou/leyou_firebase_login.py`（相对包根；异 cwd 写全路径即可 ✓）；"
                     "登录态只落用户数据区（%s）" % LEYOU_TOKEN_F}
 
 

@@ -62,7 +62,7 @@ python scripts/hub.py contribute --all-candidates [--dry-run]   # 沉淀上传�
 
 ## 5. 边界与红线（如实）
 
-- **不弹窗、不扫码**：云智库未登录 → 明确返回 `LOGIN_REQUIRED` + 手动登录指引（绝不代扫）；
+- **不弹窗、不扫码**：云智库未登录 → 明确返回 `LOGIN_REQUIRED` + 手动登录指引（绝不代扫）——**登录辅助脚本位置**：`library/assets/pp32an/scripts/sources/leyou/leyou_firebase_login.py`（相对包根）——**由人工在资产根 `library/assets/pp32an/` 执行** `python scripts/sources/leyou/leyou_firebase_login.py auto`（异 cwd 脚本路径写全即可，**参数与 cwd 无关** ✓）；登录态只落用户数据区 ✓；
 - **无命中不编造**：`ok:false` + 建议（换说法 / `--expand` / 换 need-type / 请维护者补池）；
 - **单一权威源**：口径只认 `authority`；多源冲突**显式并列**（`conflict` 字段），不静默择一；
 - **运行数据一律落用户数据区（不写包内、不写 skill 同级）**：优先 `LEYAO_KB_HOME`；被框架挂载时自动归口 `<包父级>/.leyao-data/data/assets/<卡片id>/`（`LEYAO_SEED_HOME` 可覆盖）；独立部署/任意机器统一落 `~/.leyao-kb/`；缓存可随时清理（派生层）；

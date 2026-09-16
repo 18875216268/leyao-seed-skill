@@ -351,6 +351,8 @@ def hints(data: dict, root: Path) -> list[str]:
 
     ③ 描述六段某段超过软上限（`DESC_FIELD_MAX`，建议精简）。
 
+    ④ 资产树内发现 `SKILL.md`（应为 `app.md`——防宿主扫为独立技能；管理台保存/挂载时自动更名）。
+
     只提示不判定：卡片可以放任意内容——需要"被 AI 按文档调用"的资产才建议补；
 
     纯资料 / 数据 / 工具型资产可忽略（处理器命中后无入口文档时退回自带判据自做）。
@@ -379,6 +381,12 @@ def hints(data: dict, root: Path) -> list[str]:
     if len(tops) > INLINE_KIDS_MAX:
         out.append(f"顶层节点 {len(tops)} 个（> {INLINE_KIDS_MAX}）→ 建议建容器节点分组："
                    "分组后自动分片出局部图，总图保持一屏可读")
+    stray = sorted(p for p in ASSETS.rglob("SKILL.md") if p.is_file())
+    if stray:
+        shown = "、".join(p.relative_to(ASSETS).as_posix() for p in stray[:6])
+        tail = ("…等 %d 个" % len(stray)) if len(stray) > 6 else ""
+        out.append("发现 %d 个 SKILL.md（应为 app.md，防宿主扫为独立技能）：%s%s → "
+                   "管理台保存 / 挂载卡片时自动更名，或手工更名 ✓" % (len(stray), shown, tail))
     return out
 
 def used_segments(data: dict) -> set:
@@ -465,7 +473,7 @@ def render(data: dict) -> str:
                                      for x in d["layers"] if isinstance(x, dict)))
     lines += [
         "> 读者：agent 与审阅者；**维护**请用管理台（`library/admin/`，★ 默认资产/默认层经 `engine.py default`；管理台暂不含）或 `routes.json`（唯一事实源，本图由 `engine.py` 生成）。",
-        "> 读取：拿到 `→ 挂载` 路径后 → `python library/asset.py read <相对路径>`（只读 · 相对包根 · 附读取凭据 · 零搜索依赖；另有子命令 `resolve` / `list`）。",
+        "> 读取：拿到 `→ 挂载` 路径后 → `python library/asset.py read <相对路径>`（只读 · 相对包根 · 附读取凭据 · 零搜索依赖；另有子命令 `resolve` / `list`；**在包根执行**——异 cwd 脚本路径写全即可，**参数与 cwd 无关** ✓）。",
         "> 路由：按节点**描述**匹配 → 命中进其 `→ 挂载` 目录读 `app.md` 调用；无命中按自带判据亲做。"
         "描述形态：六段齐备=判据链全能力；`（自由描述·降级匹配）`=关键词级；`（无描述·不可路由）`（模板见 `processor/shapes.md` 第 7 节）。",
         f"> 级联：`（N 个子节点 → 局部图 library/routes/<id>.md）` → 读局部图继续匹配（可再分片 → 任意级联），叶节点执行"
