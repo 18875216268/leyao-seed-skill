@@ -24,16 +24,16 @@ python scripts/pms_login.py --status        # 有效 → 复用 ✓；无效 →
 
 **变量 2 · 凭证落点（唯一仓库）**
 %LOCALAPPDATA%\pms-operations-query\accounts\<accountNo>.json
-· 取用：**一律经登录器工具**（出口命令 `stored_token()`（§1.1）/ `--status` 输出）✓；**禁止 AI 自行获取**（自读 / 自解 / 自拼凭证 ✗）；**令牌明文不得回显** ✗
+· 取用：**有登录器时一律经其工具**（出口命令 `stored_token()`（§1.1）/ `--status` 输出）✓；**禁止 AI 自行获取**（自读 / 自解 / 自拼凭证 ✗）；**令牌明文不得回显** ✗
 · 产出（一处齐备 ✓）：token + 身份 + 公司口径（providers / provider_id）+ 发货仓清单
 
 **变量 3 · 登录器（存在独立登录器 → 必须调用）**
 python scripts/pms_login.py            # 默认：扫码弹窗（登录成功 → 自动落库 ✓）
 python scripts/pms_login.py --reuse    # 有效复用、失效才弹（常规首选 ✓；扫码成功同样自动落库 ✓）
-python scripts/pms_login.py --no-ui    # 无界面：不弹窗 → 由用户提供凭证（备用路径见 §1.1）
+python scripts/pms_login.py --no-ui    # 无界面：不弹窗（**按登录指引自行获取；获取不到 → 询问用户**——备用路径见 §1.1）
 · **位置（本节全部命令）**：`library/assets/p3nes3/scripts/pms_login.py`（相对包根）——**在资产根 `library/assets/p3nes3/` 执行**；异 cwd 脚本路径写全即可（**参数与 cwd 无关** ✓）
 · **登录动作全部由登录器本体完成**（弹窗 / 二维码 / 换证 / 落库）✓；agent **只管等待用户完成登录** → 成功后**经其工具直接取用凭证** ✓；**禁止 AI 自行获取凭证** ✗
-· **主取数壳 `pms_call.py` 在凭证缺失 / 失效时自动强制调起本登录器**（同一本体；无界面 `--no-ui` 关闭 ✓）——agent 无需介入；**辅助工具 / 其它情形发现失效 → agent 主动调起本登录器重登**（或按说明引导用户提供新凭证 ✓）
+· **主取数壳 `pms_call.py` 在凭证缺失 / 失效时自动强制调起本登录器**（同一本体；无界面 `--no-ui` 关闭 ✓）——agent 无需介入；**辅助工具 / 其它情形发现失效 → agent 主动调起本登录器重登**（**登录器不可用 → 按对应资产或其子资产登录指引自行获取；获取不到 → 询问用户** ✓）
 
 **变量 4 · 业务域适用表（本资产唯一权威 = 框架「作用<业务域>」的取值）**
 
@@ -91,7 +91,7 @@ Pms skill（父：总指引 + 裁决 + 路由）
   - CLI：`python scripts/pms_login.py`（默认=**总是重扫** ✗；请优先 `--status` 只验证 / `--reuse` 有效即复用 ✓）/ `--status`（只验证，绝不弹窗）/ `--reuse`（有效则复用，失效才弹窗）/ `--no-ui`（服务器/守护进程）/ `--no-remote`（跳过远端校验）；**扫码成功均自动落库 + 补齐公司/仓口径** ✓；退出码 0 成功 / 1 业务错误 / 2 未分类错误
   - Python API：`relogin` / `verify_credential` / `get_credential` / `is_authenticated`
 - **凭证仓库**：按账号一文件，`%LOCALAPPDATA%\pms-operations-query\accounts\<accountNo>.json`（明文 JSON、原子写、权限 600；`PMS_OPERATIONS_HOME` 可覆盖；**非 Windows** 走 `XDG_DATA_HOME`/`~/.local/share`）。同一账号再扫码 → 更新，换人扫码 → 新增，互不覆盖。
-- **取用出口（供 Agent 传参用 · 一律经登录器工具 ✓）**：`stored_token()`（本地检查、绝不弹窗；供 agent 取用后传子 skill）——
+- **取用出口（供 Agent 传参用 · 有登录器时一律经其工具 ✓）**：`stored_token()`（本地检查、绝不弹窗；供 agent 取用后传子 skill）——
   `python -c "import sys; sys.path.insert(0,'scripts'); import pms_common; print(pms_common.stored_token())"`；
   Agent 取到后直接传给子 skill（`--token`，或 `PMS_TOKEN` 注入一次复用于多次调用）。
 - **边界**：凭证仓库**只由本 skill 与其 Agent 经登录器工具取用**（**禁止 AI 自行获取**——自读 / 自解凭证文件 ✗）；子 skill 不读取本仓库、不含凭证获取逻辑（子包保持完全独立）。凭证过期时在本 skill 重新登录一次即可。

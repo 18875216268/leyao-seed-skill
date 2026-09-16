@@ -25,16 +25,16 @@ python scripts/login_bi.py --status      # 有效 → 复用 ✓；无效 → �
 
 **变量 2 · 凭证落点（唯一仓库）+ 取用窗口**
 %LOCALAPPDATA%\bi-operations-query\accounts\<loginId>.json
-· 取用：**一律经登录器工具**（`--status --show-token` / 登录器 Python API）✓；子包窗口注入 `BI_UID_TOKEN` + `BI_UID_TOKEN_SIG`（可选 `BI_UID_EXP`）/ `BI_CREDENTIAL_FILE` ✓；**禁止 AI 自行获取**（自读 / 自解 / 自拼凭证 ✗）；**令牌明文不得回显** ✗
+· 取用：**有登录器时一律经其工具**（`--status --show-token` / 登录器 Python API）✓；子包窗口注入 `BI_UID_TOKEN` + `BI_UID_TOKEN_SIG`（可选 `BI_UID_EXP`）/ `BI_CREDENTIAL_FILE` ✓；**禁止 AI 自行获取**（自读 / 自解 / 自拼凭证 ✗）；**令牌明文不得回显** ✗
 · 产出（一处齐备 ✓）：uIdToken + uIdToken.sig（+ cookies / headers）+ 身份（uId·loginId·姓名·邮箱·角色）
 
 **变量 3 · 登录器（存在独立登录器 → 必须调用）**
 python scripts/login_bi.py            # 默认：扫码弹窗（总是重扫；登录成功 → 自动落库 ✓）
 python scripts/login_bi.py --reuse    # 有效复用、失效才弹（常规首选 ✓）
-python scripts/login_bi.py --no-ui    # 无界面：不弹窗 → 由用户提供凭证（或按降级规则走备用通道）
+python scripts/login_bi.py --no-ui    # 无界面：不弹窗（**按登录指引自行获取**〔含降级规则〕**；获取不到 → 询问用户**）
 · **位置（本节全部命令）**：`library/assets/i7c4z1/scripts/login_bi.py`（相对包根）——**在资产根 `library/assets/i7c4z1/` 执行**；异 cwd 脚本路径写全即可（**参数与 cwd 无关** ✓）
 · **登录动作全部由登录器本体完成**（弹窗 / 二维码 / 换证 / 落库）✓；agent **只管等待用户完成登录** → 成功后**经其工具直接取用凭证** ✓；**禁止 AI 自行获取凭证** ✗
-· **主取数壳 `bi_call.py` 在凭证缺失 / 过期时自动强制调起本登录器**（弹出的即其扫码窗；无界面 `--no-ui` 关闭 ✓）——agent 无需介入；**辅助工具（`bi_index` / `bi_export` / 优化板）＝本地只读检查、绝不弹窗**（报错指路「请先登录」）→ **发现失效 → agent 主动调起本登录器重登**（或按说明引导用户提供新凭证 ✓）
+· **主取数壳 `bi_call.py` 在凭证缺失 / 过期时自动强制调起本登录器**（弹出的即其扫码窗；无界面 `--no-ui` 关闭 ✓）——agent 无需介入；**辅助工具（`bi_index` / `bi_export` / 优化板）＝本地只读检查、绝不弹窗**（报错指路「请先登录」）→ **发现失效 → agent 主动调起本登录器重登**（**登录器不可用 → 按对应资产或其子资产登录指引自行获取；获取不到 → 询问用户** ✓）
 
 **变量 4 · 业务域适用表（本资产唯一权威 = 框架「作用<业务域>」的取值）**
 
@@ -85,7 +85,7 @@ Bi skill = 纯登录框架 + 裁决 + 路由引导；vendor/ 结构（通道 / �
   - CLI：`python scripts/login_bi.py`（默认=**总是重扫** ✗；请优先 `--status` 只验证 / `--reuse` 有效即复用 ✓）/ `--status`（只验证，绝不弹窗；默认只输出元信息，**不含令牌明文**，`--show-token` 才输出完整凭证）/ `--reuse`（有效则复用，失效才弹窗）/ `--no-ui`（服务器/守护进程）/ `--no-remote`（跳过远端校验）；退出码 0 成功 / 1 业务错误 / 2 未分类错误
   - Python API：`relogin` / `verify_credential` / `get_credential` / `is_authenticated`
 - **凭证仓库**：按账号一文件，落在登录器仓库（明文 JSON、原子写）。同一账号再扫码 → 更新，换人扫码 → 新增，互不覆盖。
-- 登录产出完整凭证（`token` / 可直接使用的 `headers` / `user`），登录成功即按扫码人身份入库；**取用一律经登录器工具**（`--status --show-token` / Python API）✓——**禁止 AI 自行获取**（自读 / 自解凭证 ✗）。
+- 登录产出完整凭证（`token` / 可直接使用的 `headers` / `user`），登录成功即按扫码人身份入库；**有登录器时取用一律经其工具**（`--status --show-token` / Python API）✓——**禁止 AI 自行获取**（自读 / 自解凭证 ✗）。
 - **调用链 token 来源**：① 凭证仓库最近登录账号（本地检查、**绝不弹窗**）；② 子包窗口直接注入 `BI_UID_TOKEN`+`BI_UID_TOKEN_SIG`（可选 `BI_UID_EXP`）或 `BI_CREDENTIAL_FILE`。**本资产没有 `--token` 参数、也不读 `BI_TOKEN`** ✗（旧文误述，已纠正）。
 - PyQt5 为可选依赖：只有弹扫码窗才需要；**主取数壳 `bi_call.py` 在凭证缺失 / 过期时自动强制调起登录器本体**（弹窗即其扫码窗 ✓；无界面 / 自动化环境请显式 `--no-ui`）✓。
 

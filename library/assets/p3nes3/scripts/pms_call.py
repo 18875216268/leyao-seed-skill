@@ -7,7 +7,7 @@
 
 token 来源优先级：--token > 环境变量 PMS_TOKEN > 自有登录组件
 （**凭证缺失 / 失效时自动调起登录器本体**——登录动作全部由登录器完成，本脚本只负责取用；
-`--no-ui` 时仅本地检查并报错指路（agent 调登录器 / 引导用户提供新凭证））。
+`--no-ui` 时仅本地检查并报错指路（agent 调登录器；不可用时按登录指引自行获取；获取不到 → 询问用户））。
 
 请求构造（二选一）：
 - 完整 URL：--url <https://.../api/...>
@@ -127,7 +127,7 @@ def resolve_token(args: argparse.Namespace) -> str:
     """token 解析：--token > PMS_TOKEN > 自有登录组件（缺 / 失效时自动调起登录器本体）。
 
     与 BI `bi_call.py` 同构：登录动作（弹窗 / 二维码 / 换证 / 落库）全部由登录器完成，
-    本脚本只负责取用；`--no-ui` 时不弹窗、报错指路（agent 调登录器 / 引导用户提供新凭证）。
+    本脚本只负责取用；`--no-ui` 时不弹窗、报错指路（agent 调登录器；不可用时按登录指引自行获取；获取不到 → 询问用户）。
     """
     explicit = args.token or os.getenv("PMS_TOKEN")
     if explicit:
