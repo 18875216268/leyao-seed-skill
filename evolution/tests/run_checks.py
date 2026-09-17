@@ -259,7 +259,7 @@ def main() -> int:
                         _problems.append("★ 默认层 行 read 标签不符：%s" % "、".join(_bad))
             _sc = ROOT / "library" / "assets" / "bvix9o" / "高频场景指引"
             if _sc.is_dir():                       # 目录级索引（卡=索引）：只保「导航在位」，不查文件登记（改名零联动 ✓）
-                _scenes = [p for p in _sc.iterdir()
+                _scenes = [p for p in _sc.rglob("*")
                            if p.is_file() and p.suffix in (".txt", ".md") and p.name != "app.md"]
                 if _scenes and not (_sc / "app.md").is_file():
                     _problems.append("场景目录缺目录导航 app.md（AI 进入后无引导）")
@@ -271,16 +271,16 @@ def main() -> int:
         checks.append(check("default_asset", False, str(exc)))
 
     try:
-        # 场景登录前置守卫（防"绕过登录问用户"复发）：凡场景文件点名登录型资产（p3nes3 / i7c4z1），
+        # 场景登录前置守卫（防"绕过登录问用户"复发）：凡场景文件（含子目录）点名登录型资产，
         # 必附「登录前置」指针句——机器可核对的位置闸门（与维护.md 的场景产出约定同规）。
         _sc2 = ROOT / "library" / "assets" / "bvix9o" / "高频场景指引"
         _bad = []
         if _sc2.is_dir():
-            for p in sorted(_sc2.iterdir()):
+            for p in sorted(_sc2.rglob("*")):
                 if p.is_file() and p.suffix in (".txt", ".md") and p.name != "app.md":
                     t = p.read_text(encoding="utf-8")
-                    if ("p3nes3" in t or "i7c4z1" in t) and "登录前置" not in t:
-                        _bad.append(p.name)
+                    if any(k in t for k in ("p3nes3", "i7c4z1", "乐药查询")) and "登录前置" not in t:
+                        _bad.append(str(p.relative_to(_sc2)))
         checks.append(check("scenario_login_gate", not _bad,
                             "缺「登录前置」指针句: %s" % _bad if _bad
                             else "点名登录型资产的场景均含「登录前置」指针句"))
