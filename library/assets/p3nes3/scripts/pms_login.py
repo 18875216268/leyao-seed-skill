@@ -5,6 +5,28 @@
 一个文件 = 一个既能独立运行、也能被任何应用 import 的登录组件。
 模块只做一件事：企微扫码 → 拿到「完整 PMS 账户信息」与「完整请求凭证」。
 
+════════════════ 给 AI · Agent 的调用契约（唯一登录入口 · 先读这段） ════════════════
+需要 PMS 凭证时，按以下步骤调用本脚本；不得另行实现登录流程。
+
+① 先验证（只读、绝不弹窗）：
+     python pms_login.py --status --no-remote
+     退出码 0 = 已有可用凭证 → 直接使用（stdout 即完整凭证 JSON，含 token）。
+② 需要登录（命令调起 GUI，用户友好）：
+     python pms_login.py --launch
+     立即返回（不阻塞），弹窗出现在用户桌面；请提示用户"请扫描窗口中的二维码"。
+     重复调用幂等：已有窗口在进行中不会重复弹窗（--force 可强制新开）。
+③ 等待完成（可重复调用）：
+     python pms_login.py --wait-login --timeout 55
+     · 等什么：凭证 token / updatedAt 发生变化（＝一次新的登录已完成）；
+     · 等多久：单次最多 timeout 秒；超时输出 state=waiting_timeout，可再次调用；
+     · 等不到：窗口已关闭 / 不可见 → --force 重新 --launch，或请用户手动双击本脚本；
+     · 成功时 stdout 即完整凭证（含 token），无需再取。
+取凭证：--wait-login 成功输出 / --status 输出（同一份凭证仓库，见第五节）。
+禁止：自行实现登录流程 · 自取二维码 · 自拼鉴权请求 · 绕过本脚本解析凭证。
+提示：不要用"文件时间戳"判断登录完成（--status 成功时也会刷新）；
+     以本脚本 --wait-login / --status 的结果为准。
+═══════════════════════════════════════════════════════════════════════════════
+
 登录所需的全部连接配置（PMS 地址、鉴权服务地址、企微应用参数、固定请求头）
 已硬编码为文件内的模块常量（PMS_BASE / AUTH_BASE / WECOM_BASE / OAUTH / PMS_HEADERS），
 **不读取任何外部配置文件，不含任何固定账号信息**，可直接整体拷走、独立运行。
@@ -13,6 +35,8 @@
     python pms_login.py                 # 默认：弹出扫码窗，重新登录获取新凭证
     python pms_login.py --status        # 只验证已有凭证是否有效（绝不弹窗）
     python pms_login.py --reuse         # 有效则复用，失效才弹窗
+    python pms_login.py --launch        # 供 Agent：命令调起 GUI（独立进程，立即返回；重复调用幂等）
+    python pms_login.py --wait-login    # 供 Agent：等待一次新登录完成（不弹窗，可重复调用）
     python pms_login.py --no-ui         # 无界面模式（服务器 / 守护进程）
     python pms_login.py --no-remote     # 跳过远端 index 校验
 
@@ -121,9 +145,11 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
 import time
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, Iterator
@@ -522,6 +548,9 @@ __all__ = [
     "update_account",
     "delete_account",
     "set_account_category",
+    # Agent 支持（命令调起 GUI / 等待登录完成）
+    "launch_gui",
+    "wait_for_login",
     "DEFAULT_CATEGORY",
     "PmsError",
     "STAGE_LOADING",
@@ -1669,6 +1698,268 @@ def set_account_category(account: str, category: str) -> dict[str, Any]:
 
 
 # --------------------------------------------------------------------------- #
+# 功能三：Agent 支持（命令调起 GUI / 等待登录完成）
+#
+# 用途：让 AI Agent 把「命令调起 GUI → 等用户扫码 → 取凭证」整链跑完：
+#   --launch      以独立进程启动扫码弹窗，立即返回（不阻塞 Agent）；重复调用幂等
+#   --wait-login  等待「一次新的登录」完成（纯本地轮询、不弹窗）；可重复调用
+# 人类路径完全不变：无参数直接运行 = 原来的扫码弹窗（见第四节、第五节）。
+# --------------------------------------------------------------------------- #
+_RUNTIME_DIRNAME = "runtime"
+_SESSION_FILENAME = "gui_session.json"
+_SESSION_TTL_SECONDS = 900.0  # 启动会话最长认领 15 分钟（与二维码总有效窗口相当）
+_LAUNCH_ENV_VAR = "PMS_LOGIN_LAUNCH_ID"  # 传给 GUI 子进程的会话标识（仅用于退出清理）
+
+
+def _runtime_dir() -> Path:
+    """运行态目录（在用户区，与凭证仓库同级；不落在任何包内）。"""
+    return _data_home() / _RUNTIME_DIRNAME
+
+
+def _session_path() -> Path:
+    return _runtime_dir() / _SESSION_FILENAME
+
+
+def _read_launch_session() -> dict[str, Any] | None:
+    """读取「进行中的 GUI 启动会话」；不存在或已过期返回 None。"""
+    path = _session_path()
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(data, dict):
+        return None
+    started = float(data.get("startedAt") or 0)
+    if started <= 0 or (time.time() - started) > _SESSION_TTL_SECONDS:
+        return None
+    return data
+
+
+def _write_launch_session(session_id: str, pid: int) -> float:
+    """写入启动会话标记；返回写入的时间戳（供调用方原样返回，保持前后一致）。"""
+    started_at = time.time()
+    _atomic_write_json(
+        _session_path(),
+        {"id": str(session_id), "pid": int(pid), "startedAt": started_at},
+    )
+    return started_at
+
+
+def _clear_launch_session(*, only_id: str | None = None) -> None:
+    """删除启动会话标记；给 only_id 时只删该会话（避免误删更新的会话）。"""
+    path = _session_path()
+    if not path.is_file():
+        return
+    if only_id:
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            data = {}
+        if str((data or {}).get("id") or "") != str(only_id):
+            return
+    try:
+        path.unlink()
+    except OSError:
+        pass
+
+
+def _cleanup_launch_session() -> None:
+    """GUI 子进程退出时清理自己持有的会话标记（由 __main__ 的 finally 调用）。"""
+    session_id = str(os.environ.get(_LAUNCH_ENV_VAR) or "").strip()
+    if session_id:
+        _clear_launch_session(only_id=session_id)
+
+
+def _snapshot_latest() -> dict[str, Any] | None:
+    """纯读快照：最近一次入库凭证的 (account, token, updatedAt)。
+
+    只读文件、不发网络、**不写库**——供 --wait-login 轮询判定「是否发生了新登录」。
+    """
+    store = account_store()
+    account = store.latest_account()
+    if account is None:
+        return None
+    try:
+        entry = json.loads(store.path_for(account).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(entry, dict):
+        return None
+    credential = entry.get("credential")
+    if not isinstance(credential, dict):
+        return None
+    return {
+        "account": str(entry.get("account") or account),
+        "token": str(credential.get("token") or ""),
+        "updatedAt": float(entry.get("updatedAt") or 0),
+    }
+
+
+def launch_gui(*, force: bool = False) -> dict[str, Any]:
+    """以独立进程启动扫码弹窗（不阻塞当前进程），供 Agent 命令调起。
+
+    行为：
+      · 已有进行中的启动会话（15 分钟窗口内且凭证未更新）→ 不重复弹窗，返回 alreadyRunning；
+      · 凭证在会话开始后已更新 → 上一轮已完成，允许启动新窗口；
+      · 启动后做 1 秒探测：进程立即退出（如缺少 PyQt5）→ 抛 LAUNCH_FAILED。
+
+    参数：
+        force  True → 忽略进行中的会话，强制启动新窗口
+
+    返回：{"ok", "launched", "alreadyRunning", "pid", "sessionId", "startedAt", "hint"}
+
+    抛出：PmsError —— LAUNCH_FAILED（无法启动 / 启动后立即退出）
+    """
+    if not force:
+        session = _read_launch_session()
+        if session:
+            snapshot = _snapshot_latest()
+            finished = bool(
+                snapshot and snapshot["updatedAt"] >= float(session.get("startedAt") or 0)
+            )
+            if not finished:
+                return {
+                    "ok": True,
+                    "launched": False,
+                    "alreadyRunning": True,
+                    "pid": int(session.get("pid") or 0),
+                    "sessionId": str(session.get("id") or ""),
+                    "startedAt": float(session.get("startedAt") or 0),
+                    "hint": "登录窗口已在进行中：请让用户扫码，然后运行 --wait-login 等待完成。",
+                }
+            _clear_launch_session()
+
+    session_id = uuid.uuid4().hex[:8]
+    if getattr(sys, "frozen", False):
+        command = [sys.executable]  # PyInstaller 打包后的 exe 自身
+    else:
+        command = [sys.executable, str(Path(__file__).resolve())]
+
+    env = os.environ.copy()
+    env[_LAUNCH_ENV_VAR] = session_id
+    kwargs: dict[str, Any] = {
+        "cwd": str(Path(__file__).resolve().parent),
+        "env": env,
+        "stdin": subprocess.DEVNULL,
+        "stdout": subprocess.DEVNULL,
+        "stderr": subprocess.DEVNULL,
+    }
+    if os.name == "nt":
+        # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP：独立进程，不随调用方退出
+        kwargs["creationflags"] = getattr(subprocess, "DETACHED_PROCESS", 0x00000008) | getattr(
+            subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200
+        )
+    else:
+        kwargs["start_new_session"] = True
+
+    try:
+        process = subprocess.Popen(command, **kwargs)
+    except OSError as exc:
+        raise PmsError("LAUNCH_FAILED", f"无法启动登录窗口：{exc}") from exc
+
+    started_at = _write_launch_session(session_id, process.pid)
+    time.sleep(1.0)  # 探测：窗口进程是否启动即退出（缺少 PyQt5 / 初始化失败）
+    if process.poll() is not None:
+        _clear_launch_session(only_id=session_id)
+        raise PmsError(
+            "LAUNCH_FAILED",
+            "登录窗口进程启动后立即退出：请检查 PyQt5 是否已安装（或改用 --no-ui 获取指引）。",
+            details={"exitCode": int(process.returncode or 0)},
+        )
+
+    return {
+        "ok": True,
+        "launched": True,
+        "alreadyRunning": False,
+        "pid": int(process.pid),
+        "sessionId": session_id,
+        "startedAt": started_at,
+        "hint": "登录窗口已在用户桌面弹出：请提示用户扫码；扫完后凭证自动落库，"
+        "运行 --wait-login 等待并取用。",
+    }
+
+
+def wait_for_login(
+    *,
+    timeout: float = 60.0,
+    interval: float = 1.5,
+    grace: float = 0.0,
+    no_remote: bool = False,
+) -> dict[str, Any]:
+    """等待「一次新的登录」完成（纯本地轮询、绝不弹窗），返回完整凭证。
+
+    判定「完成」的信号（任一命中）：
+      ① 凭证 token 发生变化（重扫 / 换人）——主判据；
+      ② 凭证 updatedAt 变新（同一账号重新登录会刷新时间戳）；
+      ③ 启动会话存在，且凭证 updatedAt >= 会话开始时间（本次 --launch 后完成的登录）；
+      ④ grace（默认 0＝关闭）> 0 时：wait 启动前 grace 秒内刚完成的登录视为本次结果
+         （覆盖「用户手快、扫完才轮到 wait」且无启动会话的时序）。
+
+    参数：
+        timeout    总等待上限（秒）；建议 ≤ Agent 单次工具调用超时
+        interval   轮询间隔（秒）；纯本地读取，不发网络请求
+        grace      完成容差（秒，默认 0＝关闭）；>0 时把「启动前 grace 秒内完成的
+                   登录」也视为本次结果——仅在你明确需要该语义时开启
+        no_remote  命中后跳过远端校验（默认会做一次远端校验，与 --status 行为一致）
+
+    返回：
+        成功 → 完整凭证（authenticated=True，额外带 "waited": True）
+        超时 → {"ok": False, "state": "waiting_timeout", "nextAction": ...}（可重复调用）
+    """
+    deadline = time.monotonic() + max(1.0, float(timeout))
+    started = time.time()
+    baseline = _snapshot_latest()
+    session = _read_launch_session()
+    last_error: PmsError | None = None
+
+    def _hit() -> bool:
+        current = _snapshot_latest()
+        if current is None:
+            return False
+        if baseline is None:
+            return True  # 从「无凭证」变为「有凭证」
+        if current["token"] and current["token"] != baseline["token"]:
+            return True  # token 变化
+        if current["updatedAt"] > baseline["updatedAt"]:
+            return True  # 同账号重登，时间戳刷新
+        if session and current["updatedAt"] >= float(session.get("startedAt") or 0):
+            return True  # 本次 --launch 之后完成的登录
+        if grace > 0 and baseline is not None:
+            age = started - baseline["updatedAt"]
+            if 0 <= age <= float(grace):
+                return True  # 启动前 grace 秒内完成的登录（默认关闭）
+        return False
+
+    while time.monotonic() < deadline:
+        if _hit():
+            result = verify_credential(validate_remote=not no_remote)
+            if result.get("authenticated"):
+                result["waited"] = True
+                return result
+            error = result.get("error") or {}
+            last_error = PmsError(
+                str(error.get("code") or "CREDENTIALS_INVALID"),
+                str(error.get("message") or "凭证暂不可用，继续等待。"),
+            )
+        time.sleep(max(0.2, float(interval)))
+
+    return {
+        "ok": False,
+        "authenticated": False,
+        "state": "waiting_timeout",
+        "elapsed": round(time.time() - started, 1),
+        "guiSessionActive": bool(_read_launch_session()),
+        "error": (
+            last_error or PmsError("WAITING_TIMEOUT", "等待登录超时；登录窗口可能仍在等待扫码。")
+        ).to_dict(),
+        "nextAction": "窗口仍在等待扫码 → 可再次运行 --wait-login；"
+        "窗口已关闭或不可见 → 用 --force 重新 --launch，或请用户手动双击本脚本。",
+    }
+
+
+# --------------------------------------------------------------------------- #
 # PyQt5 界面（惰性加载：没装 PyQt5 也能 import 本模块并使用无界面功能）
 # --------------------------------------------------------------------------- #
 _ACTIVE_THREADS: set = set()
@@ -2160,7 +2451,15 @@ def run_login_dialog(
 # --------------------------------------------------------------------------- #
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="PMS 登录 · 企微扫码登录（默认弹出扫码窗重新登录；也可只验证已有凭证）"
+        description="PMS 登录 · 企微扫码登录（默认弹出扫码窗重新登录；也可只验证已有凭证）",
+        epilog=(
+            "给 AI · Agent 的调用契约（唯一登录入口）：\n"
+            "  1) 先验证：--status --no-remote（退出码 0 = 已有可用凭证，直接使用）\n"
+            "  2) 需登录：--launch（命令调起 GUI、立即返回；请提示用户扫码）\n"
+            "  3) 等待：  --wait-login --timeout 55（可重复调用；成功后 stdout 即完整凭证）\n"
+            "  禁止自行实现登录流程 / 自取二维码 / 自拼鉴权 / 绕过本脚本解析凭证。\n"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         "--status",
@@ -2174,6 +2473,33 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--no-ui", action="store_true", help="无界面模式，不弹窗")
     parser.add_argument("--no-remote", action="store_true", help="跳过远端 index 校验")
+    parser.add_argument(
+        "--launch",
+        action="store_true",
+        help="供 Agent：以独立进程启动扫码窗（命令调起 GUI，不阻塞、立即返回；重复调用幂等）",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="配合 --launch：忽略进行中的会话，强制启动新窗口",
+    )
+    parser.add_argument(
+        "--wait-login",
+        action="store_true",
+        help="供 Agent：等待一次新的登录完成（不弹窗、纯本地轮询；可重复调用）",
+    )
+    parser.add_argument(
+        "--timeout", type=float, default=60.0, help="--wait-login 等待上限（秒，默认 60）"
+    )
+    parser.add_argument(
+        "--interval", type=float, default=1.5, help="--wait-login 轮询间隔（秒，默认 1.5）"
+    )
+    parser.add_argument(
+        "--grace",
+        type=float,
+        default=0.0,
+        help="--wait-login 完成容差（秒，默认 0=关闭；>0 时把开始前 N 秒内完成的登录也视为本次结果）",
+    )
     args = parser.parse_args(argv)
 
     configure_stdio()
@@ -2187,6 +2513,36 @@ def main(argv: list[str] | None = None) -> int:
             )
             emit(result)
             return 0 if result["authenticated"] else 1
+
+        if args.launch:
+            result = launch_gui(force=bool(args.force))
+            print(
+                "[pms-login] "
+                + (
+                    "登录窗口已启动，请让用户扫码。"
+                    if result.get("launched")
+                    else "已有登录窗口在进行中，未重复弹窗。"
+                ),
+                file=sys.stderr,
+            )
+            emit(result)
+            return 0 if result.get("ok") else 1
+
+        if args.wait_login:
+            result = wait_for_login(
+                timeout=args.timeout,
+                interval=args.interval,
+                grace=args.grace,
+                no_remote=bool(args.no_remote),
+            )
+            if result.get("authenticated"):
+                account = str((result.get("user") or {}).get("accountNo") or "")
+                print(f"[pms-login] 已等到新的登录（账户 {account}）", file=sys.stderr)
+                emit(result)
+                return 0
+            print("[pms-login] 等待登录超时（窗口可能仍在等待扫码，可再次运行）。", file=sys.stderr)
+            emit(result)
+            return 1
 
         # 默认：无论本地是否已有凭证，都弹窗重新扫码获取新凭证。
         credential = get_credential(
@@ -2216,4 +2572,8 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    finally:
+        # 仅当本进程是 --launch 拉起的 GUI 会话时：退出即清理会话标记
+        _cleanup_launch_session()
