@@ -6,8 +6,8 @@
 | --- | --- | --- |
 | 0 | 成功（或口径校验找到 authority） | 正常 |
 | 2 | 参数/用法错（含 `feedback` 未知 query_id） | 按提示修正 |
-| 3 | 未命中（含"未找到权威口径"） | 看 `suggestions`：换说法 / `--expand` / 换 `--need-type` / 请维护者补池 |
-| 4 | 依赖/凭证缺失（云智库未登录、客户端缺失等） | 未登录 → 按提示人工扫码一次；客户端缺失 → 检查 `scripts/sources/leyou/` |
+| 3 | 未命中（含"未找到权威口径"） | 看 `suggestions`：换说法 / `--expand` / `--deep` / 换 `--need-type` / `--only` 指定库 / 请维护者补池 / **向用户确认** |
+| 4 | 依赖/凭证缺失（云智库未登录、客户端缺失等） | 未登录 → 调起独立登录器 `login_leyou_cloud.py --reuse`（资产根执行；用户完成扫码）；客户端缺失 → 检查 `scripts/sources/leyou/` |
 | 5 | 网络失败（全部源不可达） | 稍后重试；`doctor` 看连通性 |
 
 ## 常见情形
@@ -15,7 +15,9 @@
 | 现象 | 处理 |
 | --- | --- |
 | `path` 里 `pool` ok=false | `doctor` 验证连通；确认 `registry.endpoint` 可访问 |
-| `path` 里 `leyou` reason=LOGIN_REQUIRED | 人工在云智库目录扫码登录一次（本 skill 绝不代扫） |
+| 直连池 **403 Forbidden** | 缺 `User-Agent` 请求头（裸请求被边缘层拒）；带上 UA 重试（skill 内 `pool.py` 已自带） |
+| `path` 里 pool 报错（URLError / 超时） | **已自动指数退避重试**（0.5s→1.0s→2.0s；`registry.retry`+1 次）；仍失败才算真不可达 → 如实报错 + "可稍后重试"（瞬时抖动会被重试吸收） |
+| `path` 里 `leyou` reason=LOGIN_REQUIRED | 调起独立登录器 `login_leyou_cloud.py --reuse`（资产根执行；本 skill 只转发提示、绝不代扫） |
 | 结果像是"旧口径" | `ask --no-cache`（跳过缓存）并核对 `version/freshness`；如确已过期 → `reflect` 会提示复核 |
 | 语义缓存误命中 | 调低 `registry.semantic_threshold`（更严）或 `--no-cache` |
 | `contribute` 被拒 `GATE_REJECTED` | 看 `detail`：未达 semantic（adopt≥3）/ 有否决（fail>0）/ 内容过短；`--dry-run` 先看 payload |

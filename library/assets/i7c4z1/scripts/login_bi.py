@@ -17,7 +17,7 @@
      退出码 0 = 已有可用凭证 → 直接使用。
 ③ 需要登录（唯一点：原生扫码窗）——即直接调起登录器原生弹窗：
      python login_bi.py --reuse                      # 独立登录器完整功能.真正全自动.用户体验优先首选！
-                                                     # 确保依赖能够支持，环境有问题自动修复环境；
+                                                     # 依赖（tkinter 标准库）异常先 --check 并按提示修复；
 ④ 取凭证：--status --show-token（或门面 API：relogin / verify_credential /
      get_credential / is_authenticated）；正常输出默认不含令牌明文。
 用户已指定或提供凭证 / 登录方式 → 按其走（不受上列限制）。
@@ -126,16 +126,14 @@ from __future__ import annotations
 import argparse
 import base64
 import datetime as dt
-import hashlib
 import json
 import os
 import re
 import sys
 import tempfile
 import time
-import uuid
 from pathlib import Path
-from typing import Any, Callable, Iterator
+from typing import Any, Callable
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -517,10 +515,7 @@ STATUS_CONFIRM = "请确认登录！"
 STATUS_LOGGING_IN = "登录中......"
 STATUS_RETRY = "请点击重试！"
 
-# 二维码就绪时的倒计时文案模板，{0} 为剩余时间（mm:ss）
-STATUS_SCAN_COUNTDOWN = "请企微扫码（{0}）......"
-
-# 界面配色（十六进制，避免与 Qt 产生耦合）
+# 界面字体（tkinter 窗口用）
 _FONT_FAMILY = "Microsoft YaHei UI"
 # 这些错误说明「本地凭证不可用」，才允许弹窗重新登录。
 # 网络、限流、权限、参数类错误一律不触发登录界面。
@@ -621,15 +616,6 @@ def _slim_user(user_info: dict[str, Any]) -> dict[str, Any]:
     return slim
 
 
-def _identity_of(user_info: dict[str, Any]) -> str:
-    """取账号标识：优先 loginId（可读、与 BI 账号一致），退化到 uId / id。"""
-    for key in ("loginId", "uId", "id"):
-        value = str(user_info.get(key) or "").strip()
-        if value:
-            return value
-    raise BiError("ACCOUNT_INVALID", "用户信息中没有可用的账号标识。")
-
-
 def _check_credential(
     credentials: dict[str, Any] | None,
     *,
@@ -715,12 +701,13 @@ def build_credential(
 
 
 # --------------------------------------------------------------------------- #
-# 登录流程内核（弹窗内部组件：不依赖 Qt，但不对外暴露）
+# 登录流程内核（弹窗内部组件：不含界面依赖，但不对外暴露）
 # --------------------------------------------------------------------------- #
 class LoginFlow:
-    """企微扫码登录的完整流程，通过回调把阶段抛给上层（UI 或 CLI）。
+    """企微扫码登录的完整流程，通过回调把阶段抛给本文件的 tkinter 弹窗。
 
-    本类不依赖 Qt（界面框架由上层提供），但**不是对外的无界面登录方式**：
+    本类不含界面依赖；窗口由本文件 `run_login_dialog` 用 tkinter 原生创建——
+    但**不是对外的无界面登录方式**：
     本登录器只提供原生弹窗登录，外部请用门面（relogin / get_credential）。
 
     ⚠ 内部组件：仅供本文件的图形弹窗使用；
@@ -1225,7 +1212,7 @@ def run_login_dialog(
                                  cx + r * 0.48, cy - r * 0.34,
                                  width=lw, fill="#FFFFFF", capstyle=tk.ROUND, state="hidden")
 
-    tip = tk.Label(root, text="正在获取二维码……", font=("Microsoft YaHei UI", 10),
+    tip = tk.Label(root, text="正在获取二维码……", font=(_FONT_FAMILY, 10),
                    wraplength=300, justify="center")
     tip.pack(padx=12, pady=(0, 12))
 
@@ -1251,7 +1238,7 @@ def run_login_dialog(
             scanned["v"] = False
             deadline["v"] = time.time() + QR_TTL_SECONDS
             tip.configure(text="请使用企业微信扫码", fg="#333333",
-                          font=("Microsoft YaHei UI", 10))
+                          font=(_FONT_FAMILY, 10))
         except Exception as exc:                    # 渲染失败如实显示，不静默
             tip.configure(text=f"二维码渲染失败：{exc}", fg="#C0392B")
 
@@ -1264,7 +1251,7 @@ def run_login_dialog(
         canvas.itemconfig(tick_l2, state="normal")
         scanned["v"] = True
         tip.configure(text="扫码成功！请确认~", fg="#00A651",
-                      font=("Microsoft YaHei UI", 10, "bold"))
+                      font=(_FONT_FAMILY, 10, "bold"))
 
     def worker() -> None:
         try:

@@ -35,7 +35,7 @@ def _get(url: str, timeout: float) -> dict:
 def search(terms: list, need_type: str, *, endpoint: str, limit: int = 20,
            timeout: float = 6.0, retry: int = 1, tier: str | None = None,
            use_category: bool = False, kind: str | None = None,
-           top_up: int = 3) -> dict:
+           top_up: int = 3, max_terms: int = 3, deadline: float = 0.0) -> dict:
     """按 terms 依次检索并**补足式合并**：累计 ≥ top_up 条、或词尽才停（最多 3 个词）。
 
     terms 来自 query_norm.search_terms（核心词 → 回退词 → 别名 → 原文兜底）；
@@ -44,12 +44,22 @@ def search(terms: list, need_type: str, *, endpoint: str, limit: int = 20,
     - **原"首词命中即停"会让回退词（如"单三"）永远轮不到**——"省外单三"只召回
       1 条"提到该词"的条目，定义条目召回不到（2026-09-19）；改为补足式后一次召回两类。
     快路径：首词已 ≥ top_up 条时不追加词（时延与旧版一致）。
+    重试纪律（2026-09-19）：
+    - 每词最多 retry+1 次尝试、指数退避 0.5s→2s（抖动 ≠ 不可达，数秒级抖动应扛住）；
+    - `deadline`（perf_counter 绝对时点，0=不限）：到点即停、返回已得结果——防止
+      "3 词 × 3 次 × 6s 慢挂"把预算拖到 60s+（**重试窗口必须与总预算挂钩**）；
+    - **链路故障降级**：首词网络全败 → 后续词只试 1 次（故障在链路、与词无关）。
     """
     t0 = time.perf_counter()
     tried, last_err, seen = [], "", set()
     items: list = []
     url = ""
-    for term in (terms or [])[:3]:
+    attempts_used = 0           # 网络请求总尝试次数（供"已尝试 N 次"审计文案）
+    net_failed = 0              # 连续网络失败词数（≥1 → 后续词降级为单次尝试）
+    for term in (terms or [])[:max(1, int(max_terms))]:
+        if deadline and time.perf_counter() >= deadline:
+            last_err = last_err or "预算耗尽（重试窗口已收口）"
+            break
         strong_hit = False          # 该词是否有"标题命中"（强相关）
         params = {"q": term, "limit": str(limit)}
         if tier:
@@ -59,7 +69,11 @@ def search(terms: list, need_type: str, *, endpoint: str, limit: int = 20,
         if use_category and need_type in CATEGORY_MAP:
             params["category"] = CATEGORY_MAP[need_type]
         url = "%s?%s" % (endpoint.rstrip("/"), urllib.parse.urlencode(params))
-        for attempt in range(retry + 1):
+        attempts = 1 if net_failed else (retry + 1)
+        ok_term = False
+        for attempt in range(attempts):
+            if deadline and time.perf_counter() >= deadline:
+                break
             try:
                 data = _get(url, timeout)
                 raw_items = [it for it in (data.get("items") or []) if it.get("status", "active") == "active"]
@@ -73,18 +87,23 @@ def search(terms: list, need_type: str, *, endpoint: str, limit: int = 20,
                     if key:
                         seen.add(key)
                     items.append(_to_possibility(it, matched_term=term))
+                ok_term = True
                 break                       # 该词查询完成 → 检查是否够数
             except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError) as exc:
                 last_err = "%s: %s" % (type(exc).__name__, str(exc)[:120])
-                if attempt < retry:
-                    time.sleep(0.5)
+                attempts_used += 1
+                if attempt < attempts - 1:
+                    # 指数退避（0.5s → 1.0s → 2.0s，封顶 2s）：**抖动 ≠ 不可达**——
+                    # 数秒级抖动应继续重试同一个库（实测 2026-09-19：固定 0.5s 两次尝试扛不住 TLS 抖动）
+                    time.sleep(min(0.5 * (2 ** attempt), 2.0))
+        net_failed = 0 if ok_term else net_failed + 1
         # 补足判定：**数量够 且 本词有标题命中（强相关）** 才停；
         # 只有"数量够但都只在正文提到"时继续下一个词（实测：组合词整词命中多为弱相关，
         # 必须继续试拆开后的词，2026-09-19）。
         if len(items) >= max(1, int(top_up)) and strong_hit:
             break
     return {"ok": bool(tried), "items": items, "ms": int((time.perf_counter() - t0) * 1000),
-            "url": url, "error": last_err, "tried": tried}
+            "url": url, "error": last_err, "tried": tried, "attempts": attempts_used}
 
 
 def hot_list(endpoint: str, *, limit: int = 50, category: str | None = None,
@@ -242,13 +261,23 @@ def record_adopt(endpoint: str, pool_id: str, *, token: str, timeout: float = 5.
     return _post(endpoint, "/adopt", {"id": pool_id}, token=token, timeout=timeout)
 
 
-def probe(endpoint: str, timeout: float = 6.0) -> dict:
-    """doctor 用：最小请求探活（q 为空 → 默认热度列表）。"""
+def probe(endpoint: str, timeout: float = 6.0, retry: int = 1) -> dict:
+    """doctor 用：瞬时探活（最小请求 q 空 → 默认热度列表）。
+
+    首次即报（快）；失败时隔 0.5s **减半超时二探**（抖动 ≠ 不可达，瞬时探测也不误报），
+    `attempts` 如实上报（2026-09-19）。
+    """
     t0 = time.perf_counter()
-    try:
-        data = _get("%s?limit=1" % endpoint.rstrip("/"), timeout)
-        return {"ok": bool(data.get("ok")), "ms": int((time.perf_counter() - t0) * 1000),
-                "count": data.get("count")}
-    except Exception as exc:  # noqa: BLE001
-        return {"ok": False, "ms": int((time.perf_counter() - t0) * 1000),
-                "error": "%s: %s" % (type(exc).__name__, str(exc)[:120])}
+    last = ""
+    for attempt in range(max(0, int(retry)) + 1):
+        try:
+            to = timeout if attempt == 0 else min(timeout, 3.0)
+            data = _get("%s?limit=1" % endpoint.rstrip("/"), to)
+            return {"ok": bool(data.get("ok")), "ms": int((time.perf_counter() - t0) * 1000),
+                    "count": data.get("count"), "attempts": attempt + 1}
+        except Exception as exc:  # noqa: BLE001
+            last = "%s: %s" % (type(exc).__name__, str(exc)[:120])
+            if attempt < retry:
+                time.sleep(0.5)
+    return {"ok": False, "ms": int((time.perf_counter() - t0) * 1000),
+            "error": last, "attempts": max(0, int(retry)) + 1}

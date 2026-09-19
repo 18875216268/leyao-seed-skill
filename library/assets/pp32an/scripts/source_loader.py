@@ -16,8 +16,11 @@ from sources import leyou_bridge, pool  # noqa: E402
 
 
 def pool_search(problem: str, need_type: str, asset: dict, limit: int, tier: str | None,
-                terms: list | None = None, kind: str | None = None) -> dict:
-    """terms 由调用方传入（与相关性判定共用同一份检索词）；缺省时自行计算。"""
+                terms: list | None = None, kind: str | None = None,
+                max_terms: int = 3, deadline: float = 0.0) -> dict:
+    """terms 由调用方传入（与相关性判定共用同一份检索词）；缺省时自行计算。
+    deadline：perf_counter 绝对时点（0=不限）——池侧重试窗口与总预算挂钩（2026-09-19）。
+    """
     return pool.search(terms or query_norm.search_terms(problem), need_type,
                        endpoint=asset.get("endpoint", ""),
                        limit=limit,
@@ -25,7 +28,8 @@ def pool_search(problem: str, need_type: str, asset: dict, limit: int, tier: str
                        retry=int(asset.get("retry") or 0),
                        tier=tier,
                        use_category=bool(asset.get("use_category_filter", False)),
-                       kind=kind)
+                       kind=kind,
+                       max_terms=max_terms, deadline=deadline)
 
 
 def leyou_search(problem: str, asset: dict) -> dict:

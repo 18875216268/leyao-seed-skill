@@ -170,7 +170,8 @@ def main() -> int:
         help="PMS token；缺省按 PMS_TOKEN 环境变量、登录器凭证自动取用（缺 / 失效自动调起登录器本体）",
     )
     parser.add_argument("--relogin", action="store_true", help="强制重新企微扫码登录（经由登录器本体）")
-    parser.add_argument("--no-ui", action="store_true", help="凭证不可用时不弹登录窗口（确无桌面环境时使用）")
+    parser.add_argument("--no-ui", action="store_true",
+                        help="凭证不可用时不弹登录窗口（仅本地检查、报错指路；默认自动调起扫码窗）")
     parser.add_argument("--no-remote", action="store_true", help="跳过登录凭证远端校验")
     parser.add_argument("--provider-id", help="Convenience: inject providerId if absent in payload")
     parser.add_argument("--output", type=Path, help="Write response JSON to this file")

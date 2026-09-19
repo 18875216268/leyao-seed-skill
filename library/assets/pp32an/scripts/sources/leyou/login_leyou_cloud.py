@@ -286,7 +286,7 @@ class LoginFlow:
     注：本类不是"无界面登录方式"——本登录器只提供原生弹窗登录，
     外部取凭证请用门面（relogin / get_credential），禁止组装本类。
 
-    阶段常量（自定义界面可直接复用）：
+    阶段常量（仅供本文件内置窗口使用；禁止外部自建界面）：
       STAGE_LOADING / STAGE_QR_READY / STAGE_SCANNED / STAGE_AUTHENTICATING / STAGE_FAILED
     文案常量：STATUS_LOADING / STATUS_SCAN / STATUS_CONFIRM / STATUS_LOGGING_IN / STATUS_RETRY
     """

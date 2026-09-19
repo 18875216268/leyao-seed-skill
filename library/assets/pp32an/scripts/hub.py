@@ -91,7 +91,9 @@ def cmd_doctor(args) -> int:
     out["checks"]["semantic_threshold"] = reg.semantic_threshold(data)
     if getattr(args, "warm", False) and pa:
         r = source_loader.pool_search("缺货率", "term", pa, 1, None)
-        out["checks"]["warm"] = {"ok": bool(r.get("items")), "ms": r.get("ms")}
+        out["checks"]["warm"] = {"ok": bool(r.get("items")), "ms": r.get("ms"),
+                                 "attempts": r.get("attempts"),
+                                 "error": (r.get("error") or "")[:120] or None}
     emit(out)
     return 0 if out["ok"] else 5
 
@@ -99,7 +101,8 @@ def cmd_doctor(args) -> int:
 def cmd_ask(args) -> int:
     ensure_home()
     result = resolve.ask(args.problem, need_type=args.need_type, expand=args.expand,
-                         no_cache=args.no_cache, limit=args.limit, full=args.full, tier=args.tier)
+                         no_cache=args.no_cache, limit=args.limit, full=args.full, tier=args.tier,
+                         only=args.only, deep=args.deep)
     emit(result)
     if result.get("ok"):
         best = result.get("best") or {}
@@ -119,7 +122,10 @@ def cmd_check(args) -> int:
 
 def cmd_search(args) -> int:
     ensure_home()
-    result = resolve.ask(args.q, need_type="search", limit=args.limit, expand=False, kind=args.kind)
+    # 关键词搜索 = 广撒网（expand=True：跳过"整词严格相关"门槛、两库都取）——与 ask 的问答语义区分：
+    # 实测"毛利"直连池 25 条，而 ask 的严格过滤只剩 1 条（2026-09-19）
+    result = resolve.ask(args.q, need_type="search", limit=args.limit, expand=True,
+                         no_cache=args.no_cache, kind=args.kind)
     emit(result)
     return _exit_code(result)
 
@@ -171,7 +177,7 @@ def main() -> int:
     p_doc = sub.add_parser("doctor", help="自检：注册表 / 公共池连通 / 云智库登录态 / 预算")
     p_doc.add_argument("--warm", action="store_true", help="附带一次真实查询（预热并验证端到端）")
 
-    p_ask = sub.add_parser("ask", help="问知识（早停：公共池命中即返回；查不到才走云智库）")
+    p_ask = sub.add_parser("ask", help="问知识（公共池优先；结果足够即早停，不足继续兜底云智库）")
     p_ask.add_argument("--problem", required=True, help="问题原文（如：成本优势率怎么算）")
     p_ask.add_argument("--need-type", choices=NEED_TYPES, help="诉求类型；不传则自动推断")
     p_ask.add_argument("--expand", action="store_true", help="不早停：两库都取（多可能性）")
@@ -179,13 +185,16 @@ def main() -> int:
     p_ask.add_argument("--limit", type=int, default=20, help="返回条数（默认 20；对齐 top-20 结论）")
     p_ask.add_argument("--full", action="store_true", help="返回全文（默认摘要 ≤300 字）")
     p_ask.add_argument("--tier", choices=["inject", "session"], help="仅看公共池某 tier")
+    p_ask.add_argument("--only", choices=["pool", "leyou"], help="限定单源查询（默认按优先链两库）")
+    p_ask.add_argument("--deep", action="store_true", help="深度模式：2-gram 深词多候选（更全、更慢）")
 
     p_chk = sub.add_parser("check", help="口径校验（只认 authority；未命中即未通过）")
     p_chk.add_argument("--problem", required=True)
 
-    p_s = sub.add_parser("search", help="关键词搜索")
+    p_s = sub.add_parser("search", help="关键词搜索（广撒网：不限整词严格相关、两库都取）")
     p_s.add_argument("--q", required=True)
     p_s.add_argument("--limit", type=int, default=20)
+    p_s.add_argument("--no-cache", action="store_true", help="跳过缓存（与 ask 对齐）")
     p_s.add_argument("--kind", choices=["fact", "procedure"],
                      help="程序环：kind=procedure 独立检索（对齐池侧语义）")
 

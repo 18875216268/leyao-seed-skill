@@ -20,9 +20,9 @@ python scripts/sources/leyou/leyou_cloud.py detail <slug>     # 详情
 python scripts/sources/leyou/leyou_cloud.py collect <关键词>   # 全库采集（批量）
 ```
 
-## 登录（人工，一次性）
+## 登录（调起独立登录器；用户仅需扫码）
 
-凭证失效时**由人**执行登录（扫码）：**直接调用独立登录器（黑盒使用、一条命令）——禁止读源码后自写 / 自组装登录流程** ✗；**用户已指定或提供凭证 / 登录方式 → 按其走** ✓。
+凭证失效时**调起独立登录器**（黑盒、一条命令；窗口直达用户桌面，用户完成扫码即可）：**禁止读源码后自写 / 自组装登录流程** ✗；**用户已指定或提供凭证 / 登录方式 → 按其走** ✓。
 **独立登录器**（推荐）：`scripts/sources/leyou/login_leyou_cloud.py`
 （单文件自包含；完整手册见同目录 `login_leyou_cloud.md`）——**在资产根 `library/assets/pp32an/` 执行**：
 

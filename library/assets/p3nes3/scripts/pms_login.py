@@ -17,7 +17,7 @@
      退出码 0 = 已有可用凭证 → 直接使用（stdout 即完整凭证 JSON，含 token）。
 ③ 需要登录（唯一点：原生扫码窗）——即直接调起登录器原生弹窗：
      python pms_login.py --reuse                      # 独立登录器完整功能.真正全自动.用户体验优先首选！
-                                                      # 确保依赖能够支持，环境有问题自动修复环境；
+                                                      # 依赖（tkinter 标准库）异常先 --check 并按提示修复；
 ④ 取凭证：--status 输出（同一份凭证仓库，见第五节）。
 用户已指定或提供凭证 / 登录方式 → 按其走（不受上列限制）。
 
@@ -124,17 +124,15 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import re
 import sys
 import tempfile
 import time
-import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Callable, Iterator
+from typing import Any, Callable
 from urllib.parse import quote, urljoin, urlparse
 
 import requests
@@ -548,10 +546,7 @@ STATUS_CONFIRM = "请确认登录！"
 STATUS_LOGGING_IN = "登录中......"
 STATUS_RETRY = "请点击重试！"
 
-# 二维码就绪时的倒计时文案模板，{0} 为剩余时间（mm:ss）
-STATUS_SCAN_COUNTDOWN = "请企微扫码（{0}）......"
-
-# 界面配色（十六进制，避免与 Qt 产生耦合）
+# 界面字体（tkinter 窗口用）
 _FONT_FAMILY = "Microsoft YaHei UI"
 
 # 这些错误说明「本地凭证不可用」，才允许弹窗重新登录。
@@ -611,15 +606,6 @@ def _safe_user(data: dict[str, Any]) -> dict[str, Any]:
             continue
         slim[key] = value
     return slim
-
-
-def _identity_of(user_info: dict[str, Any]) -> str:
-    """取账号标识：优先 accountNo（可读、与 PMS 账号一致），退化到 userName / userId。"""
-    for key in ("accountNo", "userName", "userId"):
-        value = str(user_info.get(key) or "").strip()
-        if value:
-            return value
-    raise PmsError("ACCOUNT_INVALID", "用户信息中没有可用的账号标识。")
 
 
 def _validate_token_remote(transport: Transport, token: str) -> None:
@@ -802,7 +788,7 @@ def build_credential(
 
 
 # --------------------------------------------------------------------------- #
-# 登录流程内核（弹窗内部组件：不依赖 Qt，但不对外暴露）
+# 登录流程内核（弹窗内部组件：不含界面依赖，但不对外暴露）
 # --------------------------------------------------------------------------- #
 QR_LOGIN_PATH = "/wwlogin/sso/login"
 QR_IMAGE_PATH = "/wwlogin/sso/qrcode"
@@ -816,9 +802,10 @@ WAREHOUSES_PATH = "/datacenter_pms/web/search/providerWarehouseOption/pv9210"
 
 
 class LoginFlow:
-    """企微扫码登录的完整流程，通过回调把阶段抛给上层（UI 或 CLI）。
+    """企微扫码登录的完整流程，通过回调把阶段抛给本文件的 tkinter 弹窗。
 
-    本类不依赖 Qt（界面框架由上层提供），但**不是对外的无界面登录方式**：
+    本类不含界面依赖；窗口由本文件 `run_login_dialog` 用 tkinter 原生创建——
+    但**不是对外的无界面登录方式**：
     本登录器只提供原生弹窗登录，外部请用门面（relogin / get_credential）。
 
     ⚠ 内部组件：仅供本文件的图形弹窗使用；
@@ -1242,8 +1229,9 @@ def get_credential(
             "本地没有可用凭证（非交互模式，绝不弹窗）。"
             "需要新登录时请运行：python pms_login.py --reuse（原生扫码窗）。",
         )
-    # 新扫码成功即补全登录信息并落库（与 relogin() / login_and_store 同源 ✓）
-    return _store_scanned_credential(run_login_dialog(parent=parent))
+    # 重新扫码必须走 login_and_store：取扫码人身份并落 credential.json（与 BI 同源 ✓）。
+    # 直接调用 run_login_dialog 只会拿到内存凭证，不会落盘（--status 会一直失败）。
+    return login_and_store(parent=parent)
 
 
 def relogin(*, parent: Any = None) -> dict[str, Any]:

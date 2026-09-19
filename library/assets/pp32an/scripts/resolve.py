@@ -2,11 +2,11 @@
 """优先链调度（本 skill 的核心）：精确缓存 → 语义缓存 → 本地记忆 → 公共池 → 云智库 → 拒答。
 
 约定（设计 v2）：
-- **早停**：任一层命中即返回（默认不查后续源）——"公共池优先、查不到才走云智库"即由此保证；
+- **早停（仅在结果足够时）**：达到质量门槛（非"不足"态）才跳过后续源——"公共池优先、不足才走云智库"即由此保证；不足态不早停、继续兜底；
 - `--expand`：不早停，公共池与云智库都取（多可能性/交叉验证）；
 - 预算：总预算来自 registry.budget_seconds，逐层超时来自各资产 timeout_s；到点即停并如实记录；
 - 每次 ask 写 ask-log（query_id 锚点）→ 供 feedback/reflect 闭环；
-- 命中后把结果写入缓存与本地记忆（越用越快、越用越准）。
+- 命中后把结果写入缓存与本地记忆（越用越快、越用越准）；**不足态不写**（防低质答案被固化）。
 """
 from __future__ import annotations
 
@@ -109,13 +109,15 @@ def _finalize(out: dict, t0: float, limit: int, full: bool, query_id: str,
 
 def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
         no_cache: bool = False, limit: int = 20, full: bool = False,
-        tier: str | None = None, kind: str | None = None) -> dict:
+        tier: str | None = None, kind: str | None = None,
+        only: str | None = None, deep: bool = False) -> dict:
+    """only="pool"|"leyou" 限定单源查询；deep=True 启用深词（2-gram）多候选检索。"""
     t0 = time.perf_counter()
     data = reg.load()
     budget = reg.budget_seconds(data)
     norm_info = query_norm.normalize(problem)
     norm, solved_by = norm_info["norm"], None
-    terms = query_norm.search_terms(problem)     # 服务器检索词（核心词 + 组合词拆分回退 + 别名）
+    terms = query_norm.search_terms(problem, deep=deep)   # 检索词（核心 + 拆分回退 + 别名；deep 加 2-gram）
     gate = [query_norm.core_term(problem) or problem]   # 本地相关性门槛/排序只用**核心词**（防别名跑题命中）
     if not need_type:
         inf = infer_mod.infer(problem)
@@ -160,15 +162,20 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
     for mid in used_mids:
         memory.touch(mid)
 
-    # ---------- L2 公共池（第一优先源） ----------
-    pool_items, pool_err = [], ""
+    # ---------- L2 公共池（共享池 + 注入池一次全取；口径只走注入池） ----------
+    pool_items, pool_err, pool_attempts = [], "", 0
     pool_asset = next((a for a in reg.by_need(need_type, data) if a.get("kind") == "pool"), None)
-    if pool_asset and left() > 1:
+    if only == "leyou":
+        path.append({"layer": "pool", "ok": False, "skipped": True, "why": "--only leyou 指定单源"})
+    elif pool_asset and left() > 1:
         t = time.perf_counter()
         # 口径（caliber）只查注入库（tier=inject）——对齐池侧语义：口径必须权威
         tier_eff = tier or ("inject" if need_type == "caliber" else None)
+        # 池的重试窗口与总预算挂钩（2026-09-19）：默认给池 60% 预算、留 40% 给兜底；
+        # --only pool 时（无兜底）用全预算。
         r = source_loader.pool_search(problem, need_type, pool_asset, min(limit * 2, 40),
-                                      tier_eff, terms, kind)
+                                      tier_eff, terms, kind, max_terms=(6 if deep else 3),
+                                      deadline=t0 + budget * (1.0 if only == "pool" else 0.6))
         raw_items = r.get("items") or []
         # 相关性门槛：低相关命中视为"空"（否则会阻止云智库兜底）；--expand 时保留全收集。
         # 回退词命中的条目：用其命中词自证相关（实测 2026-09-19："单三"定义条目对整词
@@ -184,9 +191,11 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
 
         pool_items = ([it for it in raw_items if _keep(it)] if not expand else raw_items)
         pool_err = r.get("error") or ""
+        pool_attempts = int(r.get("attempts") or 0)
         path.append({"layer": "pool", "ok": bool(pool_items), "ms": r.get("ms"),
                      "raw": len(raw_items), "kept": len(pool_items),
-                     "tried": r.get("tried"), "error": pool_err or None})
+                     "tried": r.get("tried"), "attempts": pool_attempts,
+                     "error": pool_err or None})
 
     # ---------- 合并：早停判定（含"不足态"质量门槛） ----------
     merged = rank.fuse(gate, mem_items, pool_items)
@@ -198,11 +207,18 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
     else:
         # ---------- L3 云智库（兜底） ----------
         ley_asset = next((a for a in reg.by_need(need_type, data) if a.get("kind") == "cli"), None)
-        if ley_asset and left() > 1:
+        if only == "pool":
+            path.append({"layer": "leyou", "ok": False, "skipped": True, "why": "--only pool 指定单源"})
+        elif ley_asset and left() > 1:
             t = time.perf_counter()
             r = source_loader.leyou_search(problem, ley_asset)
-            ley_items = r.get("items") or []
+            raw_ley = r.get("items") or []
+            # 相关性过滤（与池同思路）：云智库对任意词都会返回结果，**rel=0 的必须丢弃**——
+            # 否则乱词查询永远"有结果"，挡住"如实拒答"（实测 2026-09-19：乱词 5 条垃圾全部来自
+            # 云智库且 rel=0.0；而合法命中如"返利政策" rel≈0.03-0.04 → 用"大于 0"可零误杀地区分）。
+            ley_items = [it for it in raw_ley if rank.relevance_of(gate, it) > 0]
             path.append({"layer": "leyou", "ok": bool(ley_items), "ms": r.get("ms"),
+                         "raw": len(raw_ley), "kept": len(ley_items),
                          "reason": r.get("reason"), "error": (r.get("error") or "")[:160] or None})
             if r.get("reason") == "LOGIN_REQUIRED":
                 suggestions.append(r.get("next") or "云智库未登录：请人工完成扫码登录后重试")
@@ -222,9 +238,9 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
         if _insufficient(merged):
             alts = [t for t in terms[1:] if t and t != problem]
             suggestions.append(
-                "命中较弱（较相关的仅 1 条），可能不是你要的；"
-                + ("可试拆开查：" + "、".join("『%s』" % a for a in alts[:2]) + "；" if alts else "")
-                + "或 --expand 同时问两库"
+                "命中较弱（较相关的仅 1 条），可能不是你要的；建议继续换词再查："
+                + ("拆开查 " + "、".join("『%s』" % a for a in alts[:2]) + "，或 " if alts else "")
+                + "--deep（深词多候选）/ --expand（同时问两库）"
             )
         # 首次出现的有效答案进本地记忆（越用越准：后续可被 adopt 晋升）；
         # "不足"态不写记忆（同缓存原则：防低质/不完整答案被固化，2026-09-19）
@@ -246,13 +262,16 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
                           "time_hint": norm_info["time_hint"], "items": merged},
                          t0, limit, full, query_id, path, early, suggestions)
 
-    # ---------- L4 拒答 ----------
+    # ---------- L4 拒答（继续深入的路都在建议里；**最后一步 = 询问用户**） ----------
     alts = [t for t in terms[1:] if t and t != problem]
     if alts:
-        suggestions.append("试试拆开/更常用的词：" + "、".join("『%s』" % a for a in alts[:2]))
-    suggestions += ["或 --expand（同时问两库）", "换 --need-type（如 policy / term / caliber）"]
+        suggestions.append("继续换词再查——试试拆开/更常用的词：" + "、".join("『%s』" % a for a in alts[:2]))
+    suggestions += ["换词工具：--deep（深词多候选）｜--expand（同时问两库）",
+                    "换 --need-type（term / caliber / policy / course / search）",
+                    "以上均无命中：**向用户确认**说法/背景（或请维护者补池）"]
     if pool_err:
-        suggestions.append("公共池报错：%s（可稍后重试）" % pool_err[:80])
+        suggestions.append("公共池报错（已尝试 %d 次）：%s（可稍后重试）"
+                           % (pool_attempts or 1, pool_err[:80]))
     feedback.log_ask(query_id, norm, need_type, False, [], used_mids)
     return {"ok": False, "plugin": "leyao-knowledge", "protocol": "1.0",
             "problem": problem, "need_type": need_type, "need_type_why": nt_why,

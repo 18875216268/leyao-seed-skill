@@ -2,7 +2,7 @@
 
 > 模块文件：`login_leyou_cloud.py`（**单文件自包含；依赖 `requests`，弹窗用标准库 tkinter，零额外依赖**）
 > 一句话：**给它一个 token 文件路径（或默认用户区），它还你一份可直接发请求的完整凭证。**
-> 既能 `python login_leyou_cloud.py` 独立运行，也能被任何 Python 程序 `import login_leyou_cloud` 直接调用——与 `login_bi.py` / `login_pms.py` 同构。
+> 既能 `python login_leyou_cloud.py` 独立运行，也能被任何 Python 程序 `import login_leyou_cloud` 直接调用——与 `login_bi.py` / `pms_login.py` 同构。
 
 ```
 leyou/
@@ -21,7 +21,7 @@ leyou/
 2. [环境要求](#2-环境要求)
 3. [方式一：命令行直接运行](#3-方式一命令行直接运行)
 4. [方式二：Python 调用（推荐）](#4-方式二python-调用推荐)
-5. [方式三：无界面内核 LoginFlow](#5-方式三无界面内核-loginflow)
+5. [内部组件 LoginFlow（不对外）](#5-内部组件-loginflow不对外)
 6. [凭证（唯一落盘形态）](#6-凭证唯一落盘形态)
 7. [返回值：完整凭证字段表](#7-返回值完整凭证字段表)
 8. [错误处理](#8-错误处理)
@@ -43,7 +43,7 @@ leyou/
 | **仅弹窗登录** | 登录只有原生二维码窗口一种形态（**无出码 / 无界面模式**） |
 | **凭证持久化** | 自动以明文 JSON 存盘，下次仍可用（文件受用户目录写权限保护） |
 | **弹窗零依赖** | tkinter 为标准库；二维码与绿色大√由 Canvas 原生绘制，**不需要 PIL / PyQt5** |
-| **自动清理** | 二维码文件（临时/落盘）在流程结束后自动删除，不留运行产物 |
+| **零落盘** | 二维码全程内存渲染（不写任何文件），流程结束即释放，不留运行产物 |
 
 ---
 
@@ -107,7 +107,7 @@ python login_leyou_cloud.py --status --compact   # 只验证 + 单行 JSON（机
 from login_leyou_cloud import (
     relogin,             # 弹窗扫码重登，返回全新凭证（并按 token-file 落盘）
     verify_credential,   # 验证凭证（绝不弹窗）
-    get_credential,      # 组合：强制重登 / 复用 / 无界面
+    get_credential,      # 组合：强制重登 / 复用（非交互调用只复用）
     is_authenticated,    # 快捷：现在能不能用
     build_credential,    # 手工打包凭证
     LeyouLoginError,     # 统一错误
@@ -149,8 +149,7 @@ is_authenticated(validate_remote=True, session=None, token_file=None) -> bool
 ### 4.3 `relogin()` —— 弹窗扫码，拿全新凭证
 
 ```python
-relogin(*, token_file=None, qr_out=None, max_wait=300,
-        popup=True, quiet=False, on_stage=None, on_qr=None, on_status=None) -> dict
+relogin(*, token_file=None, max_wait=300, quiet=False) -> dict
 ```
 
 - **返回**：完整凭证（`source="qr"`，`reused=False`）；
@@ -162,17 +161,17 @@ relogin(*, token_file=None, qr_out=None, max_wait=300,
 
 ```python
 get_credential(*, force_relogin=True, validate_remote=True, interactive=True,
-               token_file=None, qr_out=None, max_wait=300, popup=True, quiet=True) -> dict
+               token_file=None, max_wait=300, quiet=True) -> dict
 ```
 
 | 参数组合 | 效果 |
 |---|---|
 | `force_relogin=True`（默认） | 总是弹窗扫码（等价 `relogin()`） |
 | `force_relogin=False` | 先验证：有效复用；失效且 `interactive=True` 才弹窗 |
-| `force_relogin=False, interactive=False` | 无界面：只复用，不可用直接抛 `AUTH_REQUIRED` |
+| `force_relogin=False, interactive=False` | 非交互调用：只复用，不可用直接抛 `AUTH_REQUIRED` |
 
 > **弹窗策略**：只有「凭证本身不可用」（missing / expired / invalid）才允许弹窗；网络、限流类错误一律直接抛出，不会莫名其妙弹窗。
-> `interactive=False` 与 `force_relogin=True` **互斥**：无界面模式不支持扫码重登（抛 `AUTH_REQUIRED`）；无界面下要拿凭证请用 `force_relogin=False`（只复用）。
+> `interactive=False` 与 `force_relogin=True` **互斥**：非交互调用不支持扫码重登（抛 `AUTH_REQUIRED`）；非交互下要拿凭证请用 `force_relogin=False`（只复用）。
 
 ### 4.5 拿到凭证之后怎么发请求
 
@@ -290,7 +289,7 @@ except LeyouLoginError as exc:
 | `qr_ready` | 二维码 | `请使用企微扫码【剩余 Ns】……`（实时倒计时） |
 | `scanned` | 二维码 + 黑色蒙版 + 绿色勾 | `扫码成功！请确认~` |
 | 登录成功 | 保持绿勾，约 0.9s 后窗口自动关闭 | —— |
-| 超时 | 窗口自动关闭（关闭前短暂提示） | `二维码已过期，请重新登录` |
+| 二维码失效 | 窗口内自动重载新码（≤3 次） | `二维码已失效，正在重新加载……` |
 | 取消 | 窗口立即关闭 | —— |
 
 - 结果：成功 → 返回凭证；超时 → 抛 `QR_EXPIRED`；点右上角关闭 → 抛 `LOGIN_CANCELLED`；重新执行登录即可。
@@ -393,12 +392,12 @@ if not get_credential(force_relogin=False, interactive=False).get("authenticated
 
 ## 13. 注意事项 / 常见坑
 
-1. **弹窗零依赖是刻意的**：tkinter 为标准库，Linux 若无 `python3-tk` 会导入失败——先 `--check` 并按其 `fix` 提示安装 tkinter 后重试（**本登录器不提供出码 / 无界面模式**）。PIL 缺失只影响图标渲染（自动降级），不影响登录。
+1. **弹窗零依赖是刻意的**：tkinter 为标准库，Linux 若无 `python3-tk` 会导入失败——先 `--check` 并按其 `fix` 提示安装 tkinter 后重试（**本登录器不提供出码 / 无界面模式**）。
 2. **`validate_remote=True` 依赖网络**：会真的请求一次云智库 `get-list`。网络抖动或限流时，即使本地凭证其实有效，也可能返回 `reason="not_validated"`——**不会弹窗**，重试即可；或 `--no-remote` 只做本地检查。
 3. **明文凭证请勿外传**：凭证为明文 JSON，复制即用；换电脑、换用户后可直接搬运，但不要同步到网盘 / 提交到 Git / 放进整机备份。
 4. **`relogin()` 会阻塞**：弹窗内部 `mainloop()` 等待用户操作；轮询在后台线程，窗口不会卡死。若在 AI / 服务里调用，请放在工作线程（本登录器不提供无界面模式）。
 5. **只有「凭证本身不可用」才会弹窗**：网络、限流错误一律直接抛 `LeyouLoginError`，不会莫名其妙弹出登录窗——这是刻意的安全设计。
-6. **二维码有效期**：默认 300 秒（`--wait` 可调），过期返回 `QR_EXPIRED`；二维码以**弹窗**展示（内部临时图片，流程结束后自动清理）。
+6. **二维码有效期**：默认 300 秒（`--wait` 可调）——失效时窗口内自动重载新码（≤3 次），仍失败才抛 `QR_EXPIRED`；二维码以**弹窗**展示（全程内存渲染，不落盘）。
 7. **`expires_at` 是本地 30 天参考值**：服务端不下发过期时间；判断"现在算不算登录"请用 `verify_credential()`（远端为准）或业务客户端的 `status`。
 8. **与业务客户端的关系**：`leyou_cloud.py` 的 `status` / `login` 子命令已转发本登录器（行为、输出、凭证文件不变）。
 9. **包内零写入**：默认凭证路径即数据区（资产内运行时与桥接同一落点）；`leyou_bridge.py` 另经 `--token-file` 显式指向数据区——不要把凭证提交进包。

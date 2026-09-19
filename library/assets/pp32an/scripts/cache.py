@@ -6,7 +6,7 @@
 - 语义：相似度 ≥ registry.semantic_threshold（GPT Semantic Cache 的 0.8 思路；
   无 embedding 时用字符/词典级相似降级，阈值需按真实语料校准——诚实边界）；
 - TTL 分级：口径/制度/术语/课程 24h、搜索 1h（registry.ttl_seconds）；
-- 缓存是**派生层**：可重建、可清理（`clear`），不承载唯一知识。
+- 缓存是**派生层**：可重建、可清理（删 `cache.jsonl` 即可，见 `references/operations.md`），不承载唯一知识。
 """
 from __future__ import annotations
 
@@ -86,10 +86,3 @@ def invalidate(norm: str, need_type: str, threshold: float = 0.85) -> dict:
 def stats() -> dict:
     rows = read_jsonl(CACHE_F)
     return {"entries": len(rows), "file": str(CACHE_F)}
-
-
-def clear() -> int:
-    n = len(read_jsonl(CACHE_F))
-    if CACHE_F.is_file():
-        CACHE_F.unlink()
-    return n

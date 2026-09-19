@@ -65,7 +65,8 @@ def main() -> int:
     parser.add_argument("--payload-file", type=Path, help="JSON 请求体文件；内容不改")
     parser.add_argument("--output", type=Path, help="将响应封装写入 JSON 文件")
     parser.add_argument("--relogin", action="store_true", help="强制重新企微扫码登录")
-    parser.add_argument("--no-ui", action="store_true", help="凭证不可用时不弹登录窗口")
+    parser.add_argument("--no-ui", action="store_true",
+                        help="凭证不可用时不弹登录窗口（仅本地检查、报错指路；默认自动调起扫码窗）")
     parser.add_argument("--no-remote", action="store_true", help="跳过登录凭证远端校验")
     parser.add_argument("--insecure", action="store_true", help="关闭 TLS 校验，仅限受控环境")
     parser.add_argument("--no-proxy", action="store_true", help="不使用系统代理")

@@ -98,7 +98,7 @@ def cold(mid: str) -> dict | None:
 
 def stats() -> dict:
     rows = read_jsonl(MEMORY_F)
-    latest = {r.get("id"): r for r in rows}          # 同 id 取最后
+    latest = _latest()                               # 复用唯一遍历实现（同 id 取最后）
     active = [r for r in latest.values() if r.get("status") == "active"]
     return {"entries": len(rows), "active": len(active),
             "semantic": sum(1 for r in active if r.get("tier") == "semantic"),

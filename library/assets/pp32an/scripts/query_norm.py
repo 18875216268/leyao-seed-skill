@@ -75,10 +75,10 @@ def fallback_terms(text: str) -> list:
     return out
 
 
-def search_terms(text: str) -> list:
+def search_terms(text: str, deep: bool = False) -> list:
     """产出**用于服务器检索**的词（按优先级）：
     ① 核心词（问句剥离后） ② 回退词（组合词拆开，如"省外单三"→"单三"＋"省外"）
-    ③ 别名扩展 ④ 原文兜底（最多 3 个）。
+    ③ 别名扩展 ④ 原文兜底；**deep=True** 再追加中文 2-gram 拆词（更全、更慢，供 --deep 显式使用）。
 
     回退词实测依据（2026-09-19）：组合词（省外＋单三）必须**拆开分别检索**，
     否则只召回"提到整词"的条目、定义条目召回不到；
@@ -95,6 +95,12 @@ def search_terms(text: str) -> list:
             terms.append(t)
     if raw not in terms:
         terms.append(raw)
+    if deep:                             # 2-gram 滑窗拆词（噪声由"补足式合并"自然淘汰）
+        for i in range(len(core) - 1):
+            g = core[i:i + 2]
+            if len(g) == 2 and g not in terms:
+                terms.append(g)
+        return terms[:6]
     return terms[:3]
 
 

@@ -29,7 +29,7 @@ AI 读契约文档后给出 URL/路径/请求体，本脚本只负责发送并�
 - 按路径：`python vendor/bi-cookie/scripts/bi_call.py --path /api/card/<cardId>/data --payload-file payload.json`
 - 按完整 URL：`... --url https://bi.leyopharm.com/api/validate-token`
 - `--host-key biHost`（默认，取自根 `sync_config.json` 的 `host_endpoints`）；`--method GET|POST`（默认有请求体用 POST）
-- `--output resp.json` 落盘原始响应；`--relogin` / `--no-ui` / `--no-remote` / `--insecure` / `--no-proxy`
+- `--output resp.json` 落盘原始响应；`--relogin`（强制重扫）/ `--no-ui`（仅本地检查、不调扫码窗）/ `--no-remote` / `--insecure` / `--no-proxy`
 - 请求体文件支持带 BOM 与不带 BOM 的 UTF-8 JSON；响应信封见契约文档 §1
 
 ### 卡片索引 `scripts/bi_index.py` —— 每卡可传参数的离线缓存

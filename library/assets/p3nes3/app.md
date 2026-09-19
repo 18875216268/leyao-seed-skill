@@ -51,7 +51,7 @@ python scripts/pms_login.py --check                 # 环境自检：依赖 tkin
 **指针（本节不重复 ✗）**
 · 回退链 A→桥接→C[`ak_`]→D（含「自实现」细节）→ `vendor/SUBSKILL_ROUTING.md`〈回退判据〉+〈桥接指引〉
 · 子包凭证传递（`--token`/`PMS_TOKEN`/`--provider-id`/`--state-file`；子包不读本仓库）→ §0 第 2 条
-· 无界面 / 401 重登 / 参数语义 → §1.1（细节以它为准）
+· 非交互调用 / 401 重登 / 参数语义 → §1.1（细节以它为准）
 
 **本资产特有红线**
 · **两套凭证不得交叉使用** ✗（A / B 各自只服务上表列明适用的域）
@@ -99,7 +99,7 @@ Pms skill（父：总指引 + 裁决 + 路由）
 - **边界**：凭证文件**只由本 skill 与其 Agent 经登录器工具取用**（**禁止 AI 自行获取**——自读 / 自解凭证文件 ✗）；子 skill 不读取本仓库、不含凭证获取逻辑（子包保持完全独立）。凭证过期时在本 skill 重新登录一次即可。
 - 登录产出完整凭证（`token` / 可直接使用的 `headers` / `user`：userId·userName·accountNo·角色 / **公司口径 `providers`·`provider_id`·`provider_name`** / **发货仓清单 `warehouses`**——登录时一并自动带出，取不到不影响登录），登录成功即按扫码人身份入库。
 - **一处取全**：`python scripts/pms_login.py --status`（远端校验 + **老凭证自动补齐公司 + 仓库口径**）→ 输出即 Agent 所需的**全部登录信息**（token / 身份 / 公司口径 / 发货仓清单）；`--status --no-remote` 可跳过远端校验。
-- **调用链 token 来源（取数壳 `pms_call.py` 的口径）**：`--token` > 环境变量 `PMS_TOKEN` > 凭证文件（本地检查，绝不弹窗）。
+- **调用链 token 来源（取数壳 `pms_call.py` 的口径）**：`--token` > 环境变量 `PMS_TOKEN` > 自有登录器取用（凭证缺失 / 失效**默认自动调起扫码窗**；`--no-ui` 时不弹窗、报错指路）。
 - **二维码窗口零额外依赖**：用 tkinter（Python 标准库），**无需安装任何东西**；环境异常先 `--check` 并按提示修复。登录产出 `user.accountNo / userId` 作为取数身份标识。
 - 多公司账号：登录不负责收集子公司列表；主接口需要的 `providerId` 由取数时从子 skill 文档中带 lookup 语义的接口消歧后传入（用 `pms_call.py --host-key ... --path ...` 按文档构造，具体 action 名/路径以当前集团包原样文档为准，不在此写死）。
 

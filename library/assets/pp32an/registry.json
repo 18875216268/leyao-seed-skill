@@ -13,7 +13,7 @@
       "endpoint": "https://lyzsk.cfdaili.top/api/pool",
       "covers_need": ["term", "caliber", "policy", "course", "search"],
       "timeout_s": 6,
-      "retry": 1,
+      "retry": 2,
       "use_category_filter": false,
       "write_timeout_s": 10,
       "report_adopt": true,
@@ -26,7 +26,7 @@
       "cli": "scripts/sources/leyou/leyou_cloud.py",
       "covers_need": ["policy", "course", "caliber", "term", "search"],
       "timeout_s": 12,
-      "note": "第二优先（兜底）：仅当前面全空时调用；未登录返回 LOGIN_REQUIRED，不弹窗、不扫码"
+      "note": "第二优先（兜底）：仅当前面不足 / 全空时调用（不足态不早停）；未登录返回 LOGIN_REQUIRED，不弹窗、不扫码"
     }
   ]
 }
