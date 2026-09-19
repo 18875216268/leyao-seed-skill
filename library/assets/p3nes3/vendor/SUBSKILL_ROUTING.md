@@ -53,7 +53,7 @@
    `--token` / 环境变量 `PMS_TOKEN` / 凭证文件 `--state-file`（默认
    `~/.promo_profit_monitor/credential.json`），优先级为 `--token` > `PMS_TOKEN` > 凭证文件。
    获取方式：父 skill 自有登录组件（`python scripts/pms_login.py`，企微扫码，凭证落在
-   `%LOCALAPPDATA%\pms-operations-query\accounts\<账号>.json`），或直接由用户提供 token。
+   `%LOCALAPPDATA%\pms-operations-query\credential.json`），或直接由用户提供 token。
    回退到集团基础 skill 走 `pms_call.py` 时，同样使用父 skill 自有登录。
    **凭证传递（Agent 主责 · 登录信息一处齐备）**：父 skill 登录一次即出具**全部登录信息**
    （token + 身份 + 公司口径 `provider_id` + 发货仓清单 `warehouses`，单公司账号自动确定；

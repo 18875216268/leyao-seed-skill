@@ -25,6 +25,33 @@ from common import CN, sha1
 
 MEMORY_RELEVANCE_FLOOR = 0.25      # 本地记忆入选下限（低于视为不相关，避免"什么都像"）
 ANSWER_TRUNC = 300                 # 默认返回摘要长度（--full 展开）
+INSUFFICIENT_RELEVANCE = 0.8       # "不足"门槛：仅 1 条命中且本地相关低于此值 → 不得早停/缓存
+
+
+def _insufficient(merged: list) -> bool:
+    """"不足"判定：结果是否**可信到可以早停 + 写缓存/记忆**（否则给换词提示）。
+
+    判据（实测校准 2026-09-19）：
+    1. 无任何"像样命中"（relevance < MEMORY_RELEVANCE_FLOOR）→ 不足；
+    2. 仅 1 条命中：该条必须够强（≥ INSUFFICIENT_RELEVANCE）→ 否则算"短词碰巧命中"→ 不足；
+    3. ≥2 条像样命中（互相印证）→ 非不足。
+
+    实测样本：
+    - "单3" → 仅 1 条 0.65（"条目单价"：两字符在长文里碰巧出现）→ 不足 ✓ 不固化、给提示；
+    - "缺货率是什么" → 1 条 1.0（标题直接命中）→ 非不足 ✓ 早停 + 缓存；
+    - "省外单三" → 补足召回多条有分 → 非不足 ✓。
+    注：relevance_of 对"正文命中"一律给 0.65，只看最高分会把噪声误判为强相关；
+    因此"唯一命中"必须达到 0.8 才算数，多条命中则互相印证即可。
+    """
+    if not merged:
+        return True
+    rels = [float((m.get("score_parts") or {}).get("relevance_raw", 0.0)) for m in merged]
+    hits = [r for r in rels if r >= MEMORY_RELEVANCE_FLOOR]
+    if not hits:
+        return True
+    if len(hits) == 1:
+        return hits[0] < INSUFFICIENT_RELEVANCE
+    return False
 
 
 def _query_id(norm: str) -> str:
@@ -88,7 +115,7 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
     budget = reg.budget_seconds(data)
     norm_info = query_norm.normalize(problem)
     norm, solved_by = norm_info["norm"], None
-    terms = query_norm.search_terms(problem)     # 服务器检索词（核心词 + 别名扩展）
+    terms = query_norm.search_terms(problem)     # 服务器检索词（核心词 + 组合词拆分回退 + 别名）
     gate = [query_norm.core_term(problem) or problem]   # 本地相关性门槛/排序只用**核心词**（防别名跑题命中）
     if not need_type:
         inf = infer_mod.infer(problem)
@@ -143,18 +170,28 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
         r = source_loader.pool_search(problem, need_type, pool_asset, min(limit * 2, 40),
                                       tier_eff, terms, kind)
         raw_items = r.get("items") or []
-        # 相关性门槛：低相关命中视为"空"（否则会阻止云智库兜底）；--expand 时保留全收集
-        pool_items = ([it for it in raw_items
-                       if rank.relevance_of(gate, it) >= rank.REMOTE_RELEVANCE_FLOOR]
-                      if not expand else raw_items)
+        # 相关性门槛：低相关命中视为"空"（否则会阻止云智库兜底）；--expand 时保留全收集。
+        # 回退词命中的条目：用其命中词自证相关（实测 2026-09-19："单三"定义条目对整词
+        # "省外单三"的相关仅约 0.08，会被整词门槛误拦——回退词是原词的核心残余，非跑题别名）。
+        fb_terms = set(query_norm.fallback_terms(gate[0] if gate else problem))
+
+        def _keep(it: dict) -> bool:
+            rel = rank.relevance_of(gate, it)
+            mt = str(it.get("matched_term") or "")
+            if mt and mt in fb_terms:
+                rel = max(rel, rank.relevance_of([mt], it))
+            return rel >= rank.REMOTE_RELEVANCE_FLOOR
+
+        pool_items = ([it for it in raw_items if _keep(it)] if not expand else raw_items)
         pool_err = r.get("error") or ""
         path.append({"layer": "pool", "ok": bool(pool_items), "ms": r.get("ms"),
                      "raw": len(raw_items), "kept": len(pool_items),
                      "tried": r.get("tried"), "error": pool_err or None})
 
-    # ---------- 合并：早停判定 ----------
+    # ---------- 合并：早停判定（含"不足态"质量门槛） ----------
     merged = rank.fuse(gate, mem_items, pool_items)
-    early = bool(merged) and not expand          # 只有"因命中而跳过后续源"才算早停
+    insufficient = _insufficient(merged)         # 仅 1 条且低相关 → 不算"已解决"，继续兜底
+    early = bool(merged) and not expand and not insufficient   # 只有"因命中而跳过后续源"才算早停
     if early:
         solved_by = "memory" if mem_items and merged[0].get("source") == "memory" else "pool"
         path.append({"layer": "leyou", "ok": False, "skipped": True, "why": "early_stop 已命中"})
@@ -175,13 +212,25 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
 
     if merged:
         best = merged[0]
-        cache.put(norm, need_type, {"answer": best.get("answer", ""), "best": best,
-                                    "source": best.get("source"), "trust": best.get("trust"),
-                                    "version": best.get("version"),
-                                    "evidence": best.get("evidence") or []})
-        # 首次出现的有效答案进本地记忆（越用越准：后续可被 adopt 晋升）
+        # 低质"不足"态不写精确缓存（实测：防不完整/误召回答案被 2ms 锚定复读，2026-09-19）
+        if not _insufficient(merged):
+            cache.put(norm, need_type, {"answer": best.get("answer", ""), "best": best,
+                                        "source": best.get("source"), "trust": best.get("trust"),
+                                        "version": best.get("version"),
+                                        "evidence": best.get("evidence") or []})
+        # 不足态提示：给出**具体候选词**（组合词拆开后的词 / 别名），引导继续（不轻易放弃）
+        if _insufficient(merged):
+            alts = [t for t in terms[1:] if t and t != problem]
+            suggestions.append(
+                "命中较弱（较相关的仅 1 条），可能不是你要的；"
+                + ("可试拆开查：" + "、".join("『%s』" % a for a in alts[:2]) + "；" if alts else "")
+                + "或 --expand 同时问两库"
+            )
+        # 首次出现的有效答案进本地记忆（越用越准：后续可被 adopt 晋升）；
+        # "不足"态不写记忆（同缓存原则：防低质/不完整答案被固化，2026-09-19）
         added_id = None
-        if not any(m.get("q") and m.get("q")[:40] == problem[:40] for m in memory.all_active()):
+        if (not _insufficient(merged)
+                and not any(m.get("q") and m.get("q")[:40] == problem[:40] for m in memory.all_active())):
             added = memory.add(problem, best.get("answer", ""), need_type,
                                source=best.get("source", ""), trust=best.get("trust", ""),
                                version=best.get("version"), freshness=best.get("freshness"),
@@ -198,7 +247,10 @@ def ask(problem: str, *, need_type: str | None = None, expand: bool = False,
                          t0, limit, full, query_id, path, early, suggestions)
 
     # ---------- L4 拒答 ----------
-    suggestions += ["换个说法或 --expand（同时问两库）", "换 --need-type（如 policy / term / caliber）"]
+    alts = [t for t in terms[1:] if t and t != problem]
+    if alts:
+        suggestions.append("试试拆开/更常用的词：" + "、".join("『%s』" % a for a in alts[:2]))
+    suggestions += ["或 --expand（同时问两库）", "换 --need-type（如 policy / term / caliber）"]
     if pool_err:
         suggestions.append("公共池报错：%s（可稍后重试）" % pool_err[:80])
     feedback.log_ask(query_id, norm, need_type, False, [], used_mids)

@@ -26,8 +26,18 @@ class TestDataArea(unittest.TestCase):
 
     def test_client_token_target(self):
         sys.path.insert(0, str(SKILL / "scripts" / "sources" / "leyou"))
-        import leyou_firebase_login as fb
-        self.assertEqual(fb.TOKEN_FILE, common.LEYOU_TOKEN_F)
+        import login_leyou_cloud as lg
+        self.assertEqual(str(lg.DEFAULT_TOKEN_FILE), str(common.LEYOU_TOKEN_F))
+
+    def test_login_default_token_file_aligned(self):
+        """独立登录器与业务客户端的默认凭证路径必须与数据区权威一致（防落点分离）。"""
+        sys.path.insert(0, str(SKILL / "scripts" / "sources" / "leyou"))
+        import login_leyou_cloud as lg
+        import leyou_cloud
+        self.assertEqual(lg.DEFAULT_TOKEN_FILE, str(common.LEYOU_TOKEN_F),
+                         "登录器默认路径须对齐数据区（common.LEYOU_TOKEN_F）")
+        self.assertEqual(leyou_cloud.DEFAULT_TOKEN_FILE, str(common.LEYOU_TOKEN_F),
+                         "业务客户端默认路径须同步对齐")
 
     def test_bridge_passes_token_file_before_subcmd(self):
         captured = {}

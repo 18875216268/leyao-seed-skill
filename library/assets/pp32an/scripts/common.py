@@ -82,8 +82,7 @@ def load_json(path: Path, default=None):
 def load_config() -> dict:
     """本地配置（用户数据区 `config.local.json`；**不入包/不入仓**）——缺失或不可解析返回 {}。
 
-    字段：`pool.write_token`（公共池写令牌）；`leyou_firebase.*`（云智库凭证库参数——
-    `database_url` / `fangwen_miyue` 必需，其余项目参数备查）。说明见 `references/leyou-cli.md`。
+    字段：`pool.write_token`（公共池写令牌）。说明见 `references/leyou-cli.md`。
     """
     data = load_json(CONFIG_F, {})
     return data if isinstance(data, dict) else {}

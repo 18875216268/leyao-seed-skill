@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -26,20 +27,12 @@ def _cli(cli: str | None = None) -> Path:
 
 
 def _run(cli: Path, args: list, timeout: float) -> tuple[int, str, str]:
-    # 登录态只落用户区：客户端默认路径在包内 ✗ → 统一以全局参数 --token-file 指定（须在子命令前）
+    # 登录态只落用户区：统一以全局参数 --token-file 指定（须在子命令前）
     try:
         p = subprocess.run([sys.executable, str(cli), "--token-file", str(LEYOU_TOKEN_F), *args],
                            capture_output=True, text=True,
                            encoding="utf-8", errors="replace", cwd=str(cli.parent), timeout=timeout,
                            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})   # 子进程零写包（不落 __pycache__）
-        # 客户端在准备登录时可能生成二维码占位图；本 skill 绝不扫码 → 清掉运行产物（**尽力而为**：
-        # 清理失败不得覆盖子进程结果 ✗——Windows 下文件被占用会抛 PermissionError，误判成"未登录"）
-        try:
-            qr = cli.parent / "qrcode.png"
-            if qr.exists():
-                qr.unlink()
-        except OSError:
-            pass
         return p.returncode, p.stdout or "", p.stderr or ""
     except subprocess.TimeoutExpired:
         return 124, "", "timeout after %.0fs" % timeout
@@ -72,9 +65,11 @@ def status(timeout: float = 10.0, cli: str | None = None) -> dict:
         return {"ok": True, "detail": text[:200]}
     return {"ok": False, "reason": "LOGIN_REQUIRED",
             "detail": ("未登录（logged_in=false）" if logged is False else text[:160]) or "退出码 %d" % rc,
-            "next": "请人工扫码登录一次（本 skill 不代扫、不弹窗）：在资产根 `library/assets/pp32an/` 执行 "
-                    "`python scripts/sources/leyou/leyou_firebase_login.py auto`；脚本位置 "
-                    "`library/assets/pp32an/scripts/sources/leyou/leyou_firebase_login.py`（相对包根；异 cwd 写全路径即可 ✓）；"
+            "next": "云智库未登录（兜底源）：请先完成一次扫码登录、登录后重试本查询——"
+                    "在资产根 `library/assets/pp32an/` 执行 "
+                    "`python scripts/sources/leyou/login_leyou_cloud.py --reuse`（弹窗登录）；"
+                    "环境问题先 `--check` 并按提示修复依赖后重试；"
+                    "（脚本与登录器同目录；相对包根，异 cwd 写全路径即可 ✓）；"
                     "登录态只落用户数据区（%s）" % LEYOU_TOKEN_F}
 
 
@@ -85,34 +80,46 @@ def search(problem: str, *, timeout: float = 12.0, limit: int = 5, cli: str | No
         return {"ok": False, "items": [], "ms": 0, "reason": st.get("reason"),
                 "error": st.get("detail"), "next": st.get("next")}
     t0 = time.perf_counter()
-    rc, out, err = _run(_cli(cli), ["search", problem], timeout)
+    # --no-auto-login：机制保证「绝不弹窗」——即使执行中 token 失效也不触发扫码
+    rc, out, err = _run(_cli(cli), ["--no-auto-login", "search", problem], timeout)
     ms = int((time.perf_counter() - t0) * 1000)
     text = (out or err).strip()
     if rc != 0:
+        # 退出码 3 = 需要登录（TOKEN_EXPIRED / LOGIN_REQUIRED 均属此类）
         return {"ok": False, "items": [], "ms": ms, "error": text[:200] or "退出码 %d" % rc,
-                "reason": "LOGIN_REQUIRED" if _looks_login_required(text) else "FAILED"}
+                "reason": "LOGIN_REQUIRED" if (rc == 3 or _looks_login_required(text)) else "FAILED"}
     items = _parse_items(text, limit)
     return {"ok": bool(items), "items": items, "ms": ms,
             "error": "" if items else "云智库无命中（原文前 120 字：%s）" % text[:120]}
 
 
 def _parse_items(text: str, limit: int) -> list:
-    """JSON 优先；否则按行/整段折成一条（诚实：evidence 标 cli，不臆造字段）。"""
+    """JSON 优先（识别 leyou_cloud CLI 的 `list` 结构 + 截段容错）；否则按行/整段折成一条（诚实：evidence 标 cli，不臆造字段）。"""
     items = []
+    data = None
     try:
         data = json.loads(text)
-        rows = data.get("data") or data.get("items") or data.get("results") or []
+    except json.JSONDecodeError:
+        # 容错：截取最外层 {...} 片段再试（CLI 输出若混入非 JSON 行时兜底；实测 2026-09-19：
+        # 结构化解析失败会让兜底结果退化成 title="{" 的整段文本）
+        m = re.search(r"\{.*\}", text or "", re.S)
+        if m:
+            try:
+                data = json.loads(m.group(0))
+            except json.JSONDecodeError:
+                data = None
+    if isinstance(data, dict):
+        rows = data.get("data") or data.get("items") or data.get("results") or data.get("list") or []
         for row in rows[:limit]:
             if isinstance(row, dict):
                 items.append({
-                    "answer": str(row.get("content") or row.get("summary") or row.get("title") or "")[:1200],
-                    "title": str(row.get("title") or ""),
+                    "answer": str(row.get("content") or row.get("summary")
+                                  or row.get("title") or row.get("name") or "")[:1200],
+                    "title": str(row.get("title") or row.get("name") or ""),
                     "source": "leyou", "trust": "reference", "confidence": 0.6,
                     "evidence": ["leyou#%s" % (row.get("slug") or row.get("id") or "?")],
                     "tags": [], "score": 0.0,
                 })
-    except json.JSONDecodeError:
-        pass
     if not items and text:
         items.append({
             "answer": text[:1200], "title": text.splitlines()[0][:80] if text else "",

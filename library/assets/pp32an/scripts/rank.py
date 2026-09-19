@@ -86,6 +86,12 @@ def fuse(terms: list, local_items: list, remote_items: list) -> list:
     for it in remote_items:
         item = dict(it)
         rel = relevance_of(terms, item)
+        # 拆分 / 回退词命中的条目：用**它自己的命中词**自证相关（与池门槛 resolve._keep 同口径）。
+        # 实测（2026-09-19）："省外单三"的定义条目（"术语：5万单三"）由"单三"命中，
+        # 若只用核心词算相关 → 约 0.08，会被误判"命中较弱"并阻止早停 / 缓存 ✗。
+        mt = str(it.get("matched_term") or "")
+        if mt:
+            rel = max(rel, relevance_of([mt], item))
         item["score"] = round(0.7 * rel + 0.3 * float(it.get("confidence") or 0), 4)
         item["score_parts"] = {"relevance_raw": round(rel, 4)}
         merged.append(item)

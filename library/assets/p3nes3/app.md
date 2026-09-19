@@ -1,7 +1,7 @@
 ---
 name: Pms_智能取数_login_v1.8.3
 description: "Use this skill when 用户要登录乐药 PMS、用自然语言查询或导出 PMS 业务数据——无需写 SQL。覆盖「企微扫码登录 → 按子 skill 路由读原样包取数 → 导出 Excel」全链路。触发词：PMS、乐药、取数、问数、智能问数、查询、分析、导出 Excel。"
-compatibility: "需要 Python 3.10+ 与 requests（scripts/requirements.txt）；扫码窗口可选依赖 PyQt5；需访问 pms.ysbang.cn、pms.leyopharm.com、auth.leyopharm.com、login.work.weixin.qq.com"
+compatibility: "需要 Python 3.10+ 与 requests（scripts/requirements.txt）；二维码窗口用 tkinter（标准库，零额外依赖）；需访问 pms.ysbang.cn、pms.leyopharm.com、auth.leyopharm.com、login.work.weixin.qq.com"
 metadata:
   mode: "llm"
   scope: "*"
@@ -22,18 +22,20 @@ metadata:
 **变量 1 · 验证动作（只读 · 绝不弹窗）**
 python scripts/pms_login.py --status        # 有效 → 复用 ✓；无效 → 变量 3
 
-**变量 2 · 凭证落点（唯一仓库）**
-%LOCALAPPDATA%\pms-operations-query\accounts\<accountNo>.json
+**变量 2 · 凭证落点（唯一文件）**
+%LOCALAPPDATA%\pms-operations-query\credential.json
 · 取用：**有登录器时一律经其工具**（出口命令 `stored_token()`（§1.1）/ `--status` 输出）✓；**禁止 AI 自行获取**（自读 / 自解 / 自拼凭证 ✗）；**令牌明文不得回显** ✗
 · 产出（一处齐备 ✓）：token + 身份 + 公司口径（providers / provider_id）+ 发货仓清单
 
-**变量 3 · 登录器（存在独立登录器 → 必须调用）**
-python scripts/pms_login.py            # 默认：扫码弹窗（登录成功 → 自动落库 ✓）
-python scripts/pms_login.py --reuse    # 有效复用、失效才弹（常规首选 ✓；扫码成功同样自动落库 ✓）
-python scripts/pms_login.py --no-ui    # 无界面：不弹窗（**按登录指引自行获取；获取不到 → 询问用户**——备用路径见 §1.1）
+**变量 3 · 登录器（存在独立登录器 → 必须调用；登录＝一条命令，黑盒使用）**
+python scripts/pms_login.py --reuse                  # 直接调起原生二维码窗口（用户体验优先）：有效复用、失效才弹窗
+python scripts/pms_login.py --check                 # 环境自检：依赖 tkinter（标准库）；缺失给出修复指引
 · **位置（本节全部命令）**：`library/assets/p3nes3/scripts/pms_login.py`（相对包根）——**在资产根 `library/assets/p3nes3/` 执行**；异 cwd 脚本路径写全即可（**参数与 cwd 无关** ✓）
-· **登录动作全部由登录器本体完成**（弹窗 / 二维码 / 换证 / 落库）✓；agent **只管等待用户完成登录** → 成功后**经其工具直接取用凭证** ✓；**禁止 AI 自行获取凭证** ✗
-· **主取数壳 `pms_call.py` 在凭证缺失 / 失效时自动强制调起本登录器**（同一本体；无界面 `--no-ui` 关闭 ✓）——agent 无需介入；**辅助工具 / 其它情形发现失效 → agent 主动调起本登录器重登**（**登录器不可用 → 按对应资产或其子资产登录指引自行获取；获取不到 → 询问用户** ✓）
+· **登录动作全部由登录器本体完成**（弹窗 / 二维码 / 换证 / 落库）✓；agent **只管等待用户完成登录** → 成功后**经其工具直接取用凭证** ✓
+· **唯一路径（硬默认）**：登录＝**调起原生扫码窗**（`--reuse`）——有桌面即可用，弹窗直达用户桌面；**不得**因"自己是 agent / 走命令执行"改用无界面 ✗；**本登录器不提供无界面 / 出码模式**；弹窗失败 → `--check` 修复环境（缺 tkinter 按提示修复 Python 安装）→ 重试 `--reuse` → 仍失败 → 询问用户
+· **禁止自写 / 自组装**：不得读登录器说明 / 源码后另写登录流程、自取二维码、自拼鉴权、**组装内部类（`LoginFlow` 等——非对外门面）** ✗；**禁止 AI 自行获取凭证**（自读 / 自解 ✗）；对外取凭证只经门面：CLI（`--status` / `stored_token()`）或 Python 四函数（`relogin / verify_credential / get_credential / is_authenticated`）✓
+· **用户已指定或提供凭证 / 登录方式 → 按其走**（不受上列限制 ✓）
+· **主取数壳 `pms_call.py` 在凭证缺失 / 失效时自动强制调起本登录器**（同一本体；环境异常先 `--check` 并按提示修复依赖 ✓）——agent 无需介入；**辅助工具 / 其它情形发现失效 → agent 主动调起本登录器重登**；**登录器不可用（判定：`--check` 修复环境后仍无法弹窗 / 无登录器可用）→ 换其它的合法登录方式（备用通道 / 子资产方式）→ 仍失败 → 询问用户**（用户提供 / 指定后按其走 ✓）
 
 **变量 4 · 业务域适用表（本资产唯一权威 = 框架「作用<业务域>」的取值）**
 
@@ -88,17 +90,17 @@ Pms skill（父：总指引 + 裁决 + 路由）
 - **自有登录组件优先**：企微扫码获取凭证，为本 skill 的主登录路径（见 §0 裁决原则 2）。单文件自包含、配置内置，主机与端点双白名单、禁止重定向、不走系统代理。
 - **备用路径（集团方式 · `ak_`）**：**适用范围与启用条件一律以顶部〈登录〉变量 4 为准**（集团域 ✓ 原生；本域 ★未验证 · 默认不用 ✗）；与自有组件**二选一、不并用** ✓；**已有有效凭证时不得再发起任何登录** ✗。操作细节完全遵照 `vendor/leyo-sys/` 随包文档——备用不等于转述，本框架不做任何假设。**集团包未同步（`vendor/leyo-sys` 不在位）时先跑 `python scripts/pms_sync.py`，否则按 `processor/control.md`〈卡壳处置〉** ✗；**该路径精确前置（`leyo-sys` 落盘 + `ak_`）见 `vendor/SUBSKILL_ROUTING.md`〈回退判据〉「C 跳前置」**
 - 用法：
-  - CLI：`python scripts/pms_login.py`（默认=**总是重扫** ✗；请优先 `--status` 只验证 / `--reuse` 有效即复用 ✓）/ `--status`（只验证，绝不弹窗）/ `--reuse`（有效则复用，失效才弹窗）/ `--no-ui`（服务器/守护进程）/ `--no-remote`（跳过远端校验）；**扫码成功均自动落库 + 补齐公司/仓口径** ✓；退出码 0 成功 / 1 业务错误 / 2 未分类错误
+  - CLI：`python scripts/pms_login.py`（默认=**总是重扫** ✗；请优先 `--status` 只验证 / `--reuse` 有效即复用 ✓）/ `--status`（只验证，绝不弹窗）/ `--reuse`（**默认首选：完整功能→原生窗**）/ `--check`（环境自检：依赖 tkinter；缺失给出修复指引）/ `--no-remote`（跳过远端校验）；**扫码成功均自动落库 + 补齐公司/仓口径** ✓；退出码 0 成功 / 1 业务错误 / 2 未分类错误
   - Python API：`relogin` / `verify_credential` / `get_credential` / `is_authenticated`
-- **凭证仓库**：按账号一文件，`%LOCALAPPDATA%\pms-operations-query\accounts\<accountNo>.json`（明文 JSON、原子写、权限 600；`PMS_OPERATIONS_HOME` 可覆盖；**非 Windows** 走 `XDG_DATA_HOME`/`~/.local/share`）。同一账号再扫码 → 更新，换人扫码 → 新增，互不覆盖。
+- **凭证文件**：单账户单文件 `%LOCALAPPDATA%\pms-operations-query\credential.json`（明文 JSON、原子写、权限 600；`PMS_OPERATIONS_HOME` 可覆盖；**非 Windows** 走 `XDG_DATA_HOME`/`~/.local/share`）。再次扫码 → 覆盖更新（**不再保留多账号**；旧 `accounts/` 凭证首次运行自动迁移）。
 - **取用出口（供 Agent 传参用 · 有登录器时一律经其工具 ✓）**：`stored_token()`（本地检查、绝不弹窗；供 agent 取用后传子 skill）——
   `python -c "import sys; sys.path.insert(0,'scripts'); import pms_common; print(pms_common.stored_token())"`；
   Agent 取到后直接传给子 skill（`--token`，或 `PMS_TOKEN` 注入一次复用于多次调用）。
-- **边界**：凭证仓库**只由本 skill 与其 Agent 经登录器工具取用**（**禁止 AI 自行获取**——自读 / 自解凭证文件 ✗）；子 skill 不读取本仓库、不含凭证获取逻辑（子包保持完全独立）。凭证过期时在本 skill 重新登录一次即可。
+- **边界**：凭证文件**只由本 skill 与其 Agent 经登录器工具取用**（**禁止 AI 自行获取**——自读 / 自解凭证文件 ✗）；子 skill 不读取本仓库、不含凭证获取逻辑（子包保持完全独立）。凭证过期时在本 skill 重新登录一次即可。
 - 登录产出完整凭证（`token` / 可直接使用的 `headers` / `user`：userId·userName·accountNo·角色 / **公司口径 `providers`·`provider_id`·`provider_name`** / **发货仓清单 `warehouses`**——登录时一并自动带出，取不到不影响登录），登录成功即按扫码人身份入库。
 - **一处取全**：`python scripts/pms_login.py --status`（远端校验 + **老凭证自动补齐公司 + 仓库口径**）→ 输出即 Agent 所需的**全部登录信息**（token / 身份 / 公司口径 / 发货仓清单）；`--status --no-remote` 可跳过远端校验。
-- **调用链 token 来源**：`--token` > 环境变量 `PMS_TOKEN` > 凭证仓库最近登录账号（本地检查，绝不弹窗）。
-- PyQt5 为可选依赖：只有弹扫码窗才需要；无界面环境用 `--no-ui`。登录产出 `user.accountNo / userId` 作为取数身份标识。
+- **调用链 token 来源（取数壳 `pms_call.py` 的口径）**：`--token` > 环境变量 `PMS_TOKEN` > 凭证文件（本地检查，绝不弹窗）。
+- **二维码窗口零额外依赖**：用 tkinter（Python 标准库），**无需安装任何东西**；环境异常先 `--check` 并按提示修复。登录产出 `user.accountNo / userId` 作为取数身份标识。
 - 多公司账号：登录不负责收集子公司列表；主接口需要的 `providerId` 由取数时从子 skill 文档中带 lookup 语义的接口消歧后传入（用 `pms_call.py --host-key ... --path ...` 按文档构造，具体 action 名/路径以当前集团包原样文档为准，不在此写死）。
 
 ### 1.2 同步器（pms_sync.py）

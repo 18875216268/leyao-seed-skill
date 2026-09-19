@@ -34,15 +34,23 @@ def _get(url: str, timeout: float) -> dict:
 
 def search(terms: list, need_type: str, *, endpoint: str, limit: int = 20,
            timeout: float = 6.0, retry: int = 1, tier: str | None = None,
-           use_category: bool = False, kind: str | None = None) -> dict:
-    """按 terms 依次检索（第一个有命中的即返回，最多 3 个词，预算内）。
+           use_category: bool = False, kind: str | None = None,
+           top_up: int = 3) -> dict:
+    """按 terms 依次检索并**补足式合并**：累计 ≥ top_up 条、或词尽才停（最多 3 个词）。
 
-    terms 来自 query_norm.search_terms（核心词 → 别名 → 原文兜底）；
-    实测依据：整句直发会空，剥离问句后命中（2026-09-12）。
+    terms 来自 query_norm.search_terms（核心词 → 回退词 → 别名 → 原文兜底）；
+    实测依据：
+    - 整句直发会空，剥离问句后命中（2026-09-12）；
+    - **原"首词命中即停"会让回退词（如"单三"）永远轮不到**——"省外单三"只召回
+      1 条"提到该词"的条目，定义条目召回不到（2026-09-19）；改为补足式后一次召回两类。
+    快路径：首词已 ≥ top_up 条时不追加词（时延与旧版一致）。
     """
     t0 = time.perf_counter()
-    tried, last_err = [], ""
+    tried, last_err, seen = [], "", set()
+    items: list = []
+    url = ""
     for term in (terms or [])[:3]:
+        strong_hit = False          # 该词是否有"标题命中"（强相关）
         params = {"q": term, "limit": str(limit)}
         if tier:
             params["tier"] = tier
@@ -54,18 +62,29 @@ def search(terms: list, need_type: str, *, endpoint: str, limit: int = 20,
         for attempt in range(retry + 1):
             try:
                 data = _get(url, timeout)
-                items = [it for it in (data.get("items") or []) if it.get("status", "active") == "active"]
-                tried.append({"q": term, "count": len(items)})
-                if items:
-                    return {"ok": True, "items": [_to_possibility(it) for it in items],
-                            "ms": int((time.perf_counter() - t0) * 1000), "url": url, "tried": tried}
-                break                       # 该词返回空 → 试下一个词（不是错误）
+                raw_items = [it for it in (data.get("items") or []) if it.get("status", "active") == "active"]
+                tried.append({"q": term, "count": len(raw_items)})
+                # 标题命中 = 强相关（整词只在正文出现 → 弱相关，应继续试下一个词）
+                strong_hit = any(str(it.get("title") or "").find(term) >= 0 for it in raw_items)
+                for it in raw_items:
+                    key = str(it.get("id") or "")
+                    if key and key in seen:
+                        continue            # 多词命中同一条 → 去重（防重复占位）
+                    if key:
+                        seen.add(key)
+                    items.append(_to_possibility(it, matched_term=term))
+                break                       # 该词查询完成 → 检查是否够数
             except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError) as exc:
                 last_err = "%s: %s" % (type(exc).__name__, str(exc)[:120])
                 if attempt < retry:
                     time.sleep(0.5)
-    return {"ok": bool(tried), "items": [], "ms": int((time.perf_counter() - t0) * 1000),
-            "error": last_err, "tried": tried}
+        # 补足判定：**数量够 且 本词有标题命中（强相关）** 才停；
+        # 只有"数量够但都只在正文提到"时继续下一个词（实测：组合词整词命中多为弱相关，
+        # 必须继续试拆开后的词，2026-09-19）。
+        if len(items) >= max(1, int(top_up)) and strong_hit:
+            break
+    return {"ok": bool(tried), "items": items, "ms": int((time.perf_counter() - t0) * 1000),
+            "url": url, "error": last_err, "tried": tried}
 
 
 def hot_list(endpoint: str, *, limit: int = 50, category: str | None = None,
@@ -152,7 +171,7 @@ def fetch_by_ids(endpoint: str, ids: list, *, timeout: float = 15.0) -> dict:
         return {"ok": False, "items": [], "error": "%s: %s" % (type(exc).__name__, str(exc)[:120]), "url": url}
 
 
-def _to_possibility(it: dict) -> dict:
+def _to_possibility(it: dict, matched_term: str = "") -> dict:
     return {
         "answer": str(it.get("content") or "").strip(),
         "title": str(it.get("title") or "").strip(),
@@ -168,6 +187,7 @@ def _to_possibility(it: dict) -> dict:
         "evidence": ["pool#%s" % it.get("id")],
         "tags": [t for t in (it.get("category"), it.get("distill_type")) if t],
         "score": float(it.get("quality_score") or 0.0),
+        "matched_term": matched_term,            # 实际命中词（回退词豁免相关性门槛的依据）
     }
 
 

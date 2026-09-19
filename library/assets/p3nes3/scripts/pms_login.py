@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""PMS 登录 · 企微扫码登录模块（单文件自包含；依赖 requests，PyQt5 可选）。
+"""PMS 登录 · 企微扫码登录模块（单文件自包含；依赖 requests；二维码窗口用 tkinter 标准库，零额外依赖）。
 
 一个文件 = 一个既能独立运行、也能被任何应用 import 的登录组件。
 模块只做一件事：企微扫码 → 拿到「完整 PMS 账户信息」与「完整请求凭证」。
 
 ════════════════ 给 AI · Agent 的调用契约（唯一登录入口 · 先读这段） ════════════════
-需要 PMS 凭证时，按以下步骤调用本脚本；不得另行实现登录流程。
+需要 PMS 凭证时：**直接调用本脚本（黑盒使用）；禁止读源码后自写 / 自组装登录流程** ✗。
 
-① 先验证（只读、绝不弹窗）：
+① 环境自检（首次使用 / 弹窗异常时）：
+     python pms_login.py --check
+     ——依赖：tkinter（Python 标准库，弹二维码窗口用）；缺失时按输出的 fix 命令修复。
+
+② 先验证（只读、绝不弹窗）：
      python pms_login.py --status --no-remote
      退出码 0 = 已有可用凭证 → 直接使用（stdout 即完整凭证 JSON，含 token）。
-② 需要登录（命令调起 GUI，用户友好）：
-     python pms_login.py --launch
-     立即返回（不阻塞），弹窗出现在用户桌面；请提示用户"请扫描窗口中的二维码"。
-     重复调用幂等：已有窗口在进行中不会重复弹窗（--force 可强制新开）。
-③ 等待完成（可重复调用）：
-     python pms_login.py --wait-login --timeout 55
-     · 等什么：凭证 token / updatedAt 发生变化（＝一次新的登录已完成）；
-     · 等多久：单次最多 timeout 秒；超时输出 state=waiting_timeout，可再次调用；
-     · 等不到：窗口已关闭 / 不可见 → --force 重新 --launch，或请用户手动双击本脚本；
-     · 成功时 stdout 即完整凭证（含 token），无需再取。
-取凭证：--wait-login 成功输出 / --status 输出（同一份凭证仓库，见第五节）。
-禁止：自行实现登录流程 · 自取二维码 · 自拼鉴权请求 · 绕过本脚本解析凭证。
+③ 需要登录（唯一点：原生扫码窗）——即直接调起登录器原生弹窗：
+     python pms_login.py --reuse                      # 独立登录器完整功能.真正全自动.用户体验优先首选！
+                                                      # 确保依赖能够支持，环境有问题自动修复环境；
+④ 取凭证：--status 输出（同一份凭证仓库，见第五节）。
+用户已指定或提供凭证 / 登录方式 → 按其走（不受上列限制）。
+
+禁止：自写登录流程 · 自取二维码 · 自拼鉴权请求 · 组装内部类（LoginFlow 等）·
+     绕过本脚本解析凭证。
 提示：不要用"文件时间戳"判断登录完成（--status 成功时也会刷新）；
-     以本脚本 --wait-login / --status 的结果为准。
+     以本脚本的结果为准。
 ═══════════════════════════════════════════════════════════════════════════════
 
 登录所需的全部连接配置（PMS 地址、鉴权服务地址、企微应用参数、固定请求头）
@@ -32,12 +32,11 @@
 **不读取任何外部配置文件，不含任何固定账号信息**，可直接整体拷走、独立运行。
 
 =========================== 一、直接运行 ===========================
-    python pms_login.py                 # 默认：弹出扫码窗，重新登录获取新凭证
+    python pms_login.py                 # 默认：弹出扫码窗，重新登录获取新凭证（需桌面）
     python pms_login.py --status        # 只验证已有凭证是否有效（绝不弹窗）
-    python pms_login.py --reuse         # 有效则复用，失效才弹窗
-    python pms_login.py --launch        # 供 Agent：命令调起 GUI（独立进程，立即返回；重复调用幂等）
-    python pms_login.py --wait-login    # 供 Agent：等待一次新登录完成（不弹窗，可重复调用）
-    python pms_login.py --no-ui         # 无界面模式（服务器 / 守护进程）
+    python pms_login.py --check         # 环境自检（依赖 tkinter；缺失给出修复指引）
+    python pms_login.py --reuse         # 直接调起原生扫码窗：有效复用、失效才弹窗（首选）
+                                        # 确保依赖能够支持，环境有问题自动修复环境；
     python pms_login.py --no-remote     # 跳过远端 index 校验
 
     成功时把「完整凭证 JSON」打印到 stdout，可直接被上游程序解析；扫码成功均自动落库（见第五节）。
@@ -87,54 +86,38 @@
                       "warehouseList": [{"warehouseId": 123, "warehouseName": "央拓重庆仓"}]}]
     }
 
-=========================== 四、UI 状态机（严格按需求） ===========================
-    loading        → 转圈动画              + "加载中......"
-    qr_ready       → 二维码                + "请企微扫码（mm:ss）......"（实时倒计时）
-    scanned        → 二维码 + 黑色蒙版 + 绿色勾 + "请确认登录！"
-    authenticating → 保持蒙版绿勾          + "登录中......"
-    failed         → 静止加载圈（不转）    + "请点击重试！"（点击容器回到"加载中"）
+=========================== 四、二维码窗口（tkinter 标准库） ===========================
+    窗口标题：PMS · 扫码登录；置顶显示；260px 二维码区。
+    ① 打开 → "正在获取二维码……" → 二维码 + "请使用企业微信扫码【剩余 Ns】"（实时倒计时）
+    ② 扫码 → 半透明蒙版 + 绿色大√ + "扫码成功！请确认~"
+    ③ 手机确认成功 → 保持绿√约 0.9s → 窗口自动关闭 → 凭证落盘
+    ④ 二维码失效 / 手机取消 / 超时 → 窗口内自动重载新码（≤3 次）+ "二维码已失效，正在重新加载"；
+       扫码后 90 秒未确认同样换码；超过 3 次 → 窗口关闭并抛 QR_EXPIRED
+    ⑤ 用户关闭窗口 → LOGIN_CANCELLED
 
-    扫码后取消 / 超时 / 一直不确认 → 自动回到 loading 重新加载二维码。
-    凭证获取失败（可恢复类）→ 同样回到 loading；不可恢复 → 显示"请点击重试！"。
+=========================== 五、凭证文件（唯一落盘形态：单账户） ===========================
+    所有登录入口（relogin / login_and_store / CLI / 二维码窗口）落盘到同一处：
+        %LOCALAPPDATA%\\pms-operations-query\\credential.json
+    **一个文件、一份凭证**；明文 JSON 直接落盘（无加解密开销）；原子写入。
 
-=========================== 五、凭证仓库（唯一落盘形态） ===========================
-    所有登录入口（relogin / login_and_store / CLI / GUI）落盘到同一处，
-    按账号一文件，单账号 / 多账号场景零区分。
-
-    存储：%LOCALAPPDATA%\\pms-operations-query\\accounts\\<accountNo>.json
-         **一个用户一个文件**；明文 JSON 直接落盘（无加解密开销）；原子写入。
-
-    身份识别：扫码后 token 里没有账号字段，但「换取 PMS Token 的响应」直接携带
-              userId / userName / accountNo / 角色 等账户信息，
-              模块据此自动以 accountNo 作为账号键。
-    规则：同一用户再次扫码 → 更新密钥；换个人扫码 → 新增一个账号。
-          每个用户一个文件，彼此隔离、互不覆盖。
+    登录即取全「登录信息」：token + 身份（userId / accountNo）+ 公司口径 + 发货仓清单。
+    迁移：旧版 accounts/<accountNo>.json 会在首次运行时自动取最近登录的那份迁移过来
+          （原目录保留不删）。
 
     from pms_login import (
-        login_and_store,       # 扫码登录 + 按真实身份入库（有则更新，无则新增）
-        fetch_user_info,       # 查某份凭证属于哪个用户
-        list_accounts,         # 列出所有账号摘要（含真实姓名，不含 token）
-        get_account,           # 取某个账号的完整凭证
-        get_all_accounts,      # 取所有账号的完整凭证
-        verify_account,        # 验证单个账号
-        verify_all_accounts,   # 批量验证所有账号
-        add_account,           # 新增账号凭证（已存在则拒绝）
-        update_account,        # 更新账号凭证 / 类别
-        delete_account,        # 删除账号凭证
-        set_account_category,  # 设置账号类别
+        login_and_store,       # 扫码登录 + 按真实身份落盘
+        load_credential,       # 读本地凭证（不存在返回 {}）
+        save_credential,       # 写本地凭证（原子写）
     )
 
-    cred = login_and_store()                        # 扫码，按扫码人身份自动入库
-    cred = login_and_store(category="财务")          # 顺便指定类别
-    cred = login_and_store("LY000123")               # 强制指定账号名（一般不传）
-
-    cred["user"]  # {"userId":..., "userName":"张三", "accountNo":"LY000123", ...}
+    cred = login_and_store()          # 扫码，按扫码人身份落盘
+    cred["user"]  # {"userId":..., "accountNo":"LY000123", "userName":"张三", ...}
 
 安全说明：
     · 网络侧：使用内置的主机白名单与端点白名单，不引入任何本地服务、
       代理或第三方端点。
-    · 存储侧：**全部明文存储，不做任何加解密**（统一落盘为
-      accounts/<accountNo>.json，按账号一文件，无其它形态），
+    · 存储侧：**全部明文存储，不做任何加解密**（统一落盘为 credential.json
+      单文件，无其它形态），
       依赖 %LOCALAPPDATA% 目录的用户级 ACL 保护，请勿外传或纳入整机备份。
 """
 
@@ -145,7 +128,6 @@ import hashlib
 import json
 import os
 import re
-import subprocess
 import sys
 import tempfile
 import time
@@ -487,7 +469,7 @@ class Transport:
 
 
 # --------------------------------------------------------------------------- #
-# 本地凭证存储（单账号 + 多账号仓库，全部明文 JSON）
+# 本地凭证存储（单文件，全部明文 JSON）
 # --------------------------------------------------------------------------- #
 def _data_home() -> Path:
     override = os.environ.get("PMS_OPERATIONS_HOME", "").strip()
@@ -503,7 +485,7 @@ def _data_home() -> Path:
 def _atomic_write_json(path: Path, data: dict[str, Any]) -> None:
     """原子 JSON 写入：临时文件 + fsync + `os.replace` 原子替换，权限 600。
 
-    单账号与多账号场景共用，保证磁盘上的文件永远是完整写入的。
+    保证磁盘上的文件永远是完整写入的（原子替换，不会写坏旧凭证）。
     """
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(
@@ -530,28 +512,14 @@ __all__ = [
     "verify_credential",
     "relogin",
     "is_authenticated",
-    "create_login_dialog",
     "run_login_dialog",
     "LoginFlow",
     "build_credential",
-    # 凭证仓库（唯一落盘形态）
-    "AccountStore",
-    "account_store",
+    # 凭证文件（唯一落盘形态：单账户）
     "login_and_store",
     "fetch_user_info",
-    "list_accounts",
-    "get_account",
-    "get_all_accounts",
-    "verify_account",
-    "verify_all_accounts",
-    "add_account",
-    "update_account",
-    "delete_account",
-    "set_account_category",
-    # Agent 支持（命令调起 GUI / 等待登录完成）
-    "launch_gui",
-    "wait_for_login",
-    "DEFAULT_CATEGORY",
+    "load_credential",
+    "save_credential",
     "PmsError",
     "STAGE_LOADING",
     "STAGE_QR_READY",
@@ -585,30 +553,6 @@ STATUS_SCAN_COUNTDOWN = "请企微扫码（{0}）......"
 
 # 界面配色（十六进制，避免与 Qt 产生耦合）
 _FONT_FAMILY = "Microsoft YaHei UI"
-_HEX_MUTED = "#86909C"
-_HEX_GREEN = "#2ECC71"
-_HEX_BORDER = "#E5E9F2"
-
-# 内置程序图标（SVG，蓝色圆角磁贴 + 二维码样式的白色方块）。
-# 用于原生弹窗左上角的图标，无需任何外部文件。
-_APP_ICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#1878FF"/>
-  <g fill="#FFFFFF">
-    <rect x="14" y="14" width="15" height="15" rx="3"/>
-    <rect x="35" y="14" width="15" height="15" rx="3"/>
-    <rect x="14" y="35" width="15" height="15" rx="3"/>
-    <rect x="35" y="35" width="7" height="7"/>
-    <rect x="46" y="35" width="7" height="7"/>
-    <rect x="35" y="46" width="7" height="7"/>
-    <rect x="46" y="46" width="7" height="7"/>
-  </g>
-</svg>"""
-
-# 内置刷新/重试图标（SVG，阿里图标库 refresh 双箭头环形图标）。
-# 二维码容器加载/失败态居中显示，并支持旋转。
-_REFRESH_ICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-  <path d="M137.143 322.488L271.798 512h-88.94c0 181.78 147.361 329.143 329.142 329.143 85.84 0 166.355-32.954 227.102-90.899l5.637-5.505 64.65 64.65C731.055 887.723 625.02 932.57 512 932.57c-229.952 0-416.801-184.549-420.515-413.616L91.429 512H2.488l134.655-189.512zM512 182.858c-85.84 0-166.355 32.953-227.102 90.898l-5.637 5.505-64.65-64.65C292.945 136.277 398.98 91.43 512 91.43c229.952 0 416.801 184.549 420.515 413.616l0.056 6.955h88.941L886.857 731.291 752.202 512h88.94c0-181.78-147.361-329.143-329.142-329.143z" fill="#86909C"/>
-</svg>"""
 
 # 这些错误说明「本地凭证不可用」，才允许弹窗重新登录。
 # 网络、限流、权限、参数类错误一律不触发登录界面。
@@ -633,6 +577,7 @@ _USER_INFO_FIELDS = (
 
 _QR_PATTERN = re.compile(r"wwlogin/sso/qrcode\?key=([a-f0-9]{16})")
 _RELOAD = object()  # _poll 的返回值哨兵：表示需要重新加载二维码
+CONFIRM_WAIT_SECONDS = 90   # 已扫码后的等待确认上限（秒）：超过即视为拒绝/无响应 → 换码重扫
 
 
 # --------------------------------------------------------------------------- #
@@ -678,12 +623,23 @@ def _identity_of(user_info: dict[str, Any]) -> str:
 
 
 def _validate_token_remote(transport: Transport, token: str) -> None:
-    """远端校验一份 PMS 凭证（POST /api/Index/index/v423）。"""
-    _pms_ok(
-        transport.json(
-            transport.pms_post(INDEX_PATH, token=token, form=_pms_form(token))
+    """远端校验一份 PMS 凭证（POST /api/Index/index/v423）。
+
+    校验接口（index）的失败即「凭证不可用」——统一归 AUTH_EXPIRED
+    （与 BI 版同源；含服务器「无权限或者token已经过期」40007 一类的拒绝）。
+    """
+    try:
+        _pms_ok(
+            transport.json(
+                transport.pms_post(INDEX_PATH, token=token, form=_pms_form(token))
+            )
         )
-    )
+    except PmsError as exc:
+        if exc.code == "PMS_REQUEST_FAILED":
+            raise PmsError(
+                "AUTH_EXPIRED", f"PMS 凭证验证失败，请重新扫码登录（{exc.message}）"
+            ) from exc
+        raise
 
 
 def collect_login_scope(token: str) -> dict[str, Any]:
@@ -779,7 +735,9 @@ def _check_credential(
 ) -> tuple[str | None, PmsError | None]:
     """检查一份凭证是否可用；返回 (reason, error)，两者皆 None 表示有效。
 
-    单账号（verify_credential）与多账号（verify_account）共用同一套判定。
+    reason 取值：missing / expired / invalid / not_validated（网络类未通过，不代表凭证失效）；
+    reason 与 error.code 同源（凭证类错误给出明确的 expired / invalid）。
+    凭证校验共用这一套判定。
     """
     if not credentials:
         return "missing", PmsError("AUTH_REQUIRED", "尚未登录 PMS，请先执行登录。")
@@ -788,7 +746,13 @@ def _check_credential(
         try:
             _validate_token_remote(transport, str(credentials.get("token") or ""))
         except PmsError as exc:
-            return "not_validated", exc
+            # reason 与错误码同源：凭证类错误（AUTH_EXPIRED / CREDENTIALS_INVALID）→
+            # 明确的 expired / invalid；网络、限流等非凭证类才归 not_validated（不代表凭证失效）。
+            if exc.code in _RECOVERABLE_CODES:
+                reason = "expired" if exc.code == "AUTH_EXPIRED" else "invalid"
+            else:
+                reason = "not_validated"
+            return reason, exc
         finally:
             transport.close()
     return None, None
@@ -838,7 +802,7 @@ def build_credential(
 
 
 # --------------------------------------------------------------------------- #
-# 登录流程内核（不依赖 Qt，可在无界面环境运行）
+# 登录流程内核（弹窗内部组件：不依赖 Qt，但不对外暴露）
 # --------------------------------------------------------------------------- #
 QR_LOGIN_PATH = "/wwlogin/sso/login"
 QR_IMAGE_PATH = "/wwlogin/sso/qrcode"
@@ -854,7 +818,12 @@ WAREHOUSES_PATH = "/datacenter_pms/web/search/providerWarehouseOption/pv9210"
 class LoginFlow:
     """企微扫码登录的完整流程，通过回调把阶段抛给上层（UI 或 CLI）。
 
-    本类不依赖 Qt，可在服务器 / 守护进程 / 任何无界面环境中运行。
+    本类不依赖 Qt（界面框架由上层提供），但**不是对外的无界面登录方式**：
+    本登录器只提供原生弹窗登录，外部请用门面（relogin / get_credential）。
+
+    ⚠ 内部组件：仅供本文件的图形弹窗使用；
+    外部 / Agent 取凭证请用门面（relogin / get_credential）——
+    禁止自行组装本流程 ✗。
 
     参数（构造）：
         max_auto_reload  二维码失效时最多自动重载几次（默认 3）；超出则抛 QR_EXPIRED
@@ -976,6 +945,7 @@ class LoginFlow:
         # 企微状态机要求首拍 lastStatus 为固定初始值，服务端据此推进状态
         last_status = "QRCODE_SCAN_NEVER"
         confirmed = False
+        confirm_deadline = 0.0      # 已扫码后的确认等待截止（手机"拒绝"的兜底）
 
         while time.monotonic() < deadline:
             if self.is_aborted():
@@ -1023,7 +993,10 @@ class LoginFlow:
             ):
                 if not confirmed:
                     confirmed = True
+                    confirm_deadline = time.monotonic() + CONFIRM_WAIT_SECONDS
                     self.on_stage(STAGE_SCANNED, STATUS_CONFIRM)
+                elif time.monotonic() > confirm_deadline:
+                    return _RELOAD      # 扫了但迟迟不确认（含手机"拒绝"）→ 换码重扫
                 self._sleep_or_abort(interval)
                 continue
 
@@ -1035,6 +1008,11 @@ class LoginFlow:
 
             # 取消 / 失效 / 超时 → 回到第一步重新加载二维码
             if status in {"QRCODE_SCAN_ERR", "QRCODE_SCAN_TIMEOUT", "QRCODE_SCAN_CANCEL"}:
+                return _RELOAD
+
+            # 已扫码后出现其它状态（手机"拒绝"、状态回退到未扫、未知值）→ 同样重载，
+            # 避免窗口卡在绿√直到整体超时（实测反馈 2026-09-19：拒绝后不恢复）
+            if confirmed and status:
                 return _RELOAD
 
             if status:
@@ -1148,7 +1126,7 @@ def verify_credential(
     validate_remote: bool = True,
     raise_on_invalid: bool = False,
 ) -> dict[str, Any]:
-    """验证**最近一次登录账号**的凭证（与多账号仓库同一份落盘）。**绝不会弹窗。**
+    """验证本地凭证文件里的凭证。**绝不会弹窗。**
 
     参数：
         validate_remote  True  → 额外请求 /api/Index/index/v423 做远端校验（默认）
@@ -1161,9 +1139,11 @@ def verify_credential(
         无效 → {"ok": False, "authenticated": False, "reason": ..., "error": {...}}
 
     reason 取值：missing（本地没有任何账号）/ invalid（凭证损坏或字段缺失）
-                / not_validated（远端校验未通过；PMS 凭证有效期只能由远端判定）
+                / expired（远端判定登录已过期）
+                / not_validated（远端校验未通过：网络 / 限流类，不代表凭证失效）
     """
-    store = account_store()
+    _migrate_legacy_accounts()
+    cred_path = _credential_file()
 
     def _invalid(reason: str, exc: PmsError) -> dict[str, Any]:
         if raise_on_invalid:
@@ -1175,17 +1155,12 @@ def verify_credential(
             "reused": True,
             "reason": reason,
             "error": exc.to_dict(),
-            "credentialPath": str(store.dir),
+            "credentialPath": str(cred_path),
         }
 
-    latest_account = store.latest_account()
-    if latest_account is None:
+    credential = load_credential()
+    if not credential:
         return _invalid("missing", PmsError("AUTH_REQUIRED", "尚未登录 PMS，请先执行登录。"))
-
-    try:
-        credential = store.get(latest_account)
-    except PmsError as exc:
-        return _invalid("invalid", exc)
 
     reason, error = _check_credential(credential, validate_remote=validate_remote)
     if reason or credential is None:
@@ -1198,14 +1173,14 @@ def verify_credential(
     if validate_remote and not (credential.get("providers") and credential.get("warehouses")):
         # 自愈：为老凭证补「公司 + 仓库口径」（登录信息的一部分）——补齐一次后长期复用
         credential.update(collect_login_scope(str(credential.get("token") or "")))
-    store.upsert(latest_account, credential)
+    save_credential(credential)
     result = dict(credential)
-    # 手工入库（add_account / update_account）的凭证可能不带登录产出时的
-    # 标志字段；验证通过即视为已认证，保证调用方读 authenticated 恒有布尔值。
+    # 验证通过即视为已认证，保证调用方读 authenticated 恒有布尔值。
     result.setdefault("ok", True)
     result.setdefault("authenticated", True)
     result["source"] = "local"
     result["reused"] = True
+    result["credentialPath"] = str(cred_path)
     return result
 
 
@@ -1242,13 +1217,13 @@ def get_credential(
         validate_remote True  → 复用时额外请求 /api/Index/index/v423（默认）
                         False → 复用时只做本地检查，不发网络请求
         interactive     True  → 允许弹窗扫码（默认）
-                        False → 无界面模式；凭证不可用时不弹窗，直接抛 PmsError
-        parent          PyQt5 父窗口（可选）
+                        False → 非交互（调用方保证不弹窗）；凭证不可用时不弹窗，直接抛 PmsError
+        parent          兼容保留参数（不使用）
 
     返回：完整凭证字典（同 build_credential()）；新扫码成功后自动落库并补齐公司/仓口径（与 relogin() 一致）。
 
     抛出：
-        PmsError —— 无界面模式下凭证不可用，或遇到网络/权限类不可恢复错误。
+        PmsError —— 非交互模式下凭证不可用，或遇到网络/权限类不可恢复错误。
     """
     if not force_relogin:
         result = verify_credential(validate_remote=validate_remote)
@@ -1263,7 +1238,9 @@ def get_credential(
 
     if not interactive:
         raise PmsError(
-            "AUTH_REQUIRED", "本地没有可用凭证，且当前为无界面模式，无法扫码登录。"
+            "AUTH_REQUIRED",
+            "本地没有可用凭证（非交互模式，绝不弹窗）。"
+            "需要新登录时请运行：python pms_login.py --reuse（原生扫码窗）。",
         )
     # 新扫码成功即补全登录信息并落库（与 relogin() / login_and_store 同源 ✓）
     return _store_scanned_credential(run_login_dialog(parent=parent))
@@ -1272,10 +1249,10 @@ def get_credential(
 def relogin(*, parent: Any = None) -> dict[str, Any]:
     """功能一：无论本地是否已有凭证，都弹出扫码窗重新登录，返回全新凭证。
 
-    登录成功后按扫码人身份落入统一凭证仓库（accounts/<accountNo>.json）。
+    登录成功后按扫码人身份落入本地凭证文件（credential.json）。
 
     参数：
-        parent   PyQt5 父窗口（可选）
+        parent   兼容保留参数（不使用）
 
     返回：完整凭证字典（source="qr"、reused=False）。
 
@@ -1284,1182 +1261,266 @@ def relogin(*, parent: Any = None) -> dict[str, Any]:
     return login_and_store(parent=parent)
 
 
-# --------------------------------------------------------------------------- #
 # 凭证仓库（唯一落盘形态：按账号名存取完整凭证）
 # --------------------------------------------------------------------------- #
-DEFAULT_CATEGORY = "默认"
-_ACCOUNTS_DIRNAME = "accounts"
+CREDENTIAL_FILENAME = "credential.json"        # 唯一落盘形态：单账户单文件
 
 
-class AccountStore:
-    """按「账号名」存取多份**完整凭证**的仓库，**一个账号一个文件**。
+def _credential_file() -> Path:
+    """本地凭证文件路径（单文件）。"""
+    return _data_home() / CREDENTIAL_FILENAME
 
-    - 存储位置：`%LOCALAPPDATA%\\pms-operations-query\\accounts\\<accountNo>.json`
-    - 存储格式：**明文 JSON**（不做加解密，省去开销）
-    - 写入：临时文件 + `os.replace` 原子替换，权限 600
-    - 账号名：登录后由换取 PMS Token 的响应里的 `accountNo` 决定
 
-    一个账号一个文件的好处：
-        · 故障隔离——单个文件损坏只影响该账号，不牵连其它账号
-        · 更新只重写该文件，不搬运其它账号的数据
-        · 可单独备份 / 查看 / 删除某个账号
-        · 这是本模块唯一的落盘形态，单账号/多账号场景零区分
+def load_credential() -> dict[str, Any]:
+    """读取本地凭证；不存在或损坏返回 {}（绝不抛异常）。"""
+    try:
+        with open(_credential_file(), encoding="utf-8-sig") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        return {}
 
-    同账号再次登录 → 更新；新账号 → 新增，永不静默覆盖其它账号。
 
-    ⚠️ 明文存储意味着拿到该目录文件即可直接使用这些 PMS 凭证。
-       目录位于当前用户 %LOCALAPPDATA% 下，受 NTFS 用户级 ACL 保护，
-       但请自行确认磁盘 / 备份策略符合你们的安全要求。
-    """
+def save_credential(credential: dict[str, Any]) -> str:
+    """原子写本地凭证，返回文件路径。"""
+    _data_home().mkdir(parents=True, exist_ok=True)
+    _atomic_write_json(_credential_file(), credential)
+    return str(_credential_file())
 
-    VERSION = 1
 
-    def __init__(self, directory: Path | None = None) -> None:
-        self.dir = Path(directory) if directory else (_data_home() / _ACCOUNTS_DIRNAME)
-
-    # ---------------- 底层：路径与单文件读写 ---------------- #
-    @staticmethod
-    def _safe_name(account: str) -> str:
-        """把账号名转成安全文件名。"""
-        name = str(account).strip()
-        if not name:
-            raise PmsError("ACCOUNT_INVALID", "账号名不能为空。")
-        safe = "".join(ch if (ch.isalnum() or ch in "-_") else "_" for ch in name)
-        if safe == name:
-            return name
-        digest = hashlib.sha1(name.encode("utf-8")).hexdigest()[:8]
-        return f"{safe}-{digest}"
-
-    def path_for(self, account: str) -> Path:
-        """某个账号的凭证文件路径。"""
-        return self.dir / f"{self._safe_name(account)}.json"
-
-    def _read_entry(self, account: str) -> dict[str, Any] | None:
-        path = self.path_for(account)
-        if not path.is_file():
-            return None
+def _migrate_legacy_accounts() -> None:
+    """一次性迁移：旧版 accounts/ 多账号文件 → 单文件凭证（取最近登录的那份）。"""
+    if _credential_file().is_file():
+        return
+    legacy = _data_home() / "accounts"
+    if not legacy.is_dir():
+        return
+    for path in sorted(legacy.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
         try:
             entry = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            raise PmsError(
-                "CREDENTIALS_INVALID",
-                f"账号凭证文件损坏，请删除后重新登录：{account}",
-                details={"path": str(path)},
-            ) from exc
-        if not isinstance(entry, dict):
-            raise PmsError(
-                "CREDENTIALS_INVALID",
-                f"账号凭证文件格式无效：{account}",
-                details={"path": str(path)},
-            )
-        return entry
-
-    @staticmethod
-    def _credential_of(entry: dict[str, Any]) -> dict[str, Any]:
-        """取出记录里的完整凭证（明文存储，无加解密开销）。"""
-        credential = entry.get("credential")
-        if not isinstance(credential, dict) or not credential:
-            raise PmsError("CREDENTIALS_INVALID", "账号凭证缺失或格式无效，请重新登录。")
-        return credential
-
-    @staticmethod
-    def _summary_of(entry: dict[str, Any]) -> dict[str, Any]:
-        """把一条记录转成摘要（**不含 token**，可安全打印）。"""
-        return {
-            "account": entry.get("account") or "",
-            "displayName": entry.get("displayName") or "",
-            "accountNo": entry.get("accountNo") or "",
-            "userId": entry.get("userId") or "",
-            "category": entry.get("category") or DEFAULT_CATEGORY,
-            "pmsBase": entry.get("pmsBase") or "",
-            "createdAt": int(entry.get("createdAt") or 0),
-            "updatedAt": int(entry.get("updatedAt") or 0),
-            "validatedAt": int(entry.get("validatedAt") or 0),
-            "path": entry.get("path") or "",
-        }
-
-    # ---------------- 对外：读 ---------------- #
-    def _iter_entries(self) -> Iterator[dict[str, Any]]:
-        """扫描目录一次，逐个产出账号记录。
-
-        损坏 / 非法的文件直接跳过，不牵连其它账号。
-        `names()` / `summary()` / `all_credentials()` 共用它，
-        避免「先扫一遍拿名字、再按名字逐个重读」的重复 I/O。
-        """
-        if not self.dir.is_dir():
+        except (OSError, json.JSONDecodeError):
+            continue
+        cred = entry.get("credential") if isinstance(entry, dict) else None
+        if not isinstance(cred, dict) or not cred.get("token"):
+            cred = entry if (isinstance(entry, dict) and entry.get("token")) else None
+        if cred:
+            save_credential(cred)
             return
-        for path in sorted(self.dir.glob("*.json")):
-            try:
-                entry = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-            if isinstance(entry, dict) and str(entry.get("account") or "").strip():
-                yield entry
-
-    def names(self) -> list[str]:
-        """所有已存账号名（按名称排序）。"""
-        return sorted(str(entry["account"]) for entry in self._iter_entries())
-
-    def get(self, account: str) -> dict[str, Any] | None:
-        """取某个账号的完整凭证；不存在返回 None。"""
-        entry = self._read_entry(account)
-        return self._credential_of(entry) if entry else None
-
-    def all_credentials(self) -> dict[str, dict[str, Any]]:
-        """取所有账号的完整凭证：{账号名: 完整凭证}。"""
-        return {
-            str(entry["account"]): entry["credential"]
-            for entry in self._iter_entries()
-            if isinstance(entry.get("credential"), dict)
-        }
-
-    def summary(self) -> list[dict[str, Any]]:
-        """所有账号的摘要（**不含 token**，可安全打印/展示）。"""
-        return [self._summary_of(entry) for entry in self._iter_entries()]
-
-    # ---------------- 对外：写 ---------------- #
-    def upsert(
-        self,
-        account: str,
-        credential: dict[str, Any],
-        *,
-        category: str | None = None,
-    ) -> dict[str, Any]:
-        """新增或更新一个账号的完整凭证（同账号自动覆盖更新）。"""
-        name = str(account).strip()
-        if not name:
-            raise PmsError("ACCOUNT_INVALID", "账号名不能为空。")
-        if not str(credential.get("token") or ""):
-            raise PmsError("AUTH_TOKEN_MISSING", "不能保存空的 PMS Token。")
-
-        path = self.path_for(name)
-        existing = self._read_entry(name)
-        now = int(time.time())
-        user = credential.get("user") or {}
-        credential["credentialPath"] = str(path)
-        entry = {
-            "version": self.VERSION,
-            "account": name,
-            "displayName": str(user.get("userName") or ""),
-            "accountNo": str(user.get("accountNo") or ""),
-            "userId": str(user.get("userId") or ""),
-            "category": category or (existing or {}).get("category") or DEFAULT_CATEGORY,
-            "pmsBase": str(credential.get("pmsBase") or ""),
-            "createdAt": int((existing or {}).get("createdAt") or now),
-            "updatedAt": now,
-            "seq": max((int(e.get("seq") or 0) for e in self._iter_entries()), default=0) + 1,
-            "validatedAt": int(credential.get("validatedAt") or now),
-            "path": str(path),
-            "credential": credential,
-        }
-        _atomic_write_json(path, entry)
-        return credential
-
-    def delete(self, account: str) -> bool:
-        """删除一个账号的凭证文件；返回是否真的删掉了。"""
-        path = self.path_for(account)
-        if not path.is_file():
-            return False
-        try:
-            path.unlink()
-        except OSError as exc:
-            raise PmsError(
-                "CREDENTIALS_INVALID",
-                f"账号凭证文件删除失败：{account}",
-                details={"path": str(path)},
-            ) from exc
-        return True
-
-    def set_category(self, account: str, category: str) -> dict[str, Any]:
-        """设置账号类别；账号不存在时抛 ACCOUNT_NOT_FOUND。"""
-        entry = self._read_entry(account)
-        if entry is None:
-            raise PmsError("ACCOUNT_NOT_FOUND", f"账号不存在：{account}")
-        entry["category"] = str(category)
-        entry["updatedAt"] = int(time.time())
-        _atomic_write_json(self.path_for(account), entry)
-        return self._summary_of(entry)
-
-    def exists(self, account: str) -> bool:
-        return self.path_for(account).is_file()
-
-    def latest_account(self) -> str | None:
-        """最近一次写入凭证的账号名（按 seq 序号判定）；仓库为空返回 None。"""
-        best: str | None = None
-        best_key = (-1, -1)
-        for entry in self._iter_entries():
-            key = (int(entry.get("seq") or 0), int(entry.get("updatedAt") or 0))
-            if key > best_key:
-                best, best_key = str(entry["account"]), key
-        return best
 
 
-def account_store() -> AccountStore:
-    """返回凭证仓库实例（唯一落盘形态：每账号一个文件，目录 accounts/）。"""
-    return AccountStore()
-
-
-def _store_scanned_credential(
-    credential: dict[str, Any],
-    *,
-    account: str | None = None,
-    category: str | None = None,
-) -> dict[str, Any]:
-    """把「刚扫码得到的凭证」补全登录信息并按扫码人身份落库（本模块所有扫码入口共用）。
-
-    步骤：查扫码人身份 → 以 accountNo 为账号键 → 补齐公司 / 仓口径 → 写入统一凭证仓库。
-    """
-    user_info = fetch_user_info(credential)
-    name = account or _identity_of(user_info)
+def _persist_credential(credential: dict[str, Any]) -> dict[str, Any]:
+    """校验扫码人身份 → 补齐公司 / 仓口径 → 写入本地凭证文件（单账户）。"""
+    fetch_user_info(credential)      # 查不到「刚才是谁扫的」→ USER_INFO_FAILED
     # 登录即取全「登录信息」：token + 身份 + 公司口径 + 发货仓清单（取不到不影响登录）
     credential.update(collect_login_scope(str(credential.get("token") or "")))
-    account_store().upsert(name, credential, category=category)
+    credential["credentialPath"] = save_credential(credential)
     return credential
 
 
-def login_and_store(
-    account: str | None = None,
-    *,
-    category: str | None = None,
-    parent: Any = None,
-) -> dict[str, Any]:
-    """调起扫码登录，按**扫码人真实身份**把完整凭证存入仓库。
-
-    登录后会从「换取 PMS Token 的响应」里直接取出账户信息
-    （token 里没有账号字段，但响应体携带 userId / userName / accountNo / 角色），
-    再以该用户的 `accountNo` 作为账号键：
-
-        同一用户再次扫码 → 更新密钥；换个人扫码 → 新增一个账号。
-        每个用户一个文件，彼此隔离、互不覆盖。
-
-    参数：
-        account   强制指定账号名（一般不用）；None → 用查到的 accountNo
-        category  类别标签；None → 已存账号保留原类别，新账号用 DEFAULT_CATEGORY
-        parent    PyQt5 父窗口（可选）
-
-    返回：本次登录拿到的完整凭证（额外含 `user` 字段：该用户身份信息）。
-
-    抛出：PmsError —— 登录失败，或查不到用户信息（USER_INFO_FAILED）
-    """
-    return _store_scanned_credential(
-        run_login_dialog(parent=parent), account=account, category=category
-    )
-
-
-def list_accounts() -> list[dict[str, Any]]:
-    """列出所有已存账号的摘要（**不含 token**，可安全打印）。"""
-    return account_store().summary()
-
-
-def get_account(account: str) -> dict[str, Any] | None:
-    """取某个账号的完整凭证。
-
-    参数：
-        account  账号名
-
-    返回：完整凭证字典；账号不存在返回 None。
-    """
-    return account_store().get(account)
-
-
-def get_all_accounts() -> dict[str, dict[str, Any]]:
-    """取所有账号的完整凭证。
-
-    返回：{账号名: 完整凭证}；仓库为空时返回空字典。
-    """
-    return account_store().all_credentials()
-
-
-def verify_account(
-    account: str, *, validate_remote: bool = True
-) -> dict[str, Any]:
-    """验证单个账号的凭证是否有效（**绝不弹窗**）。
-
-    参数：
-        account          账号名
-        validate_remote  True  → 额外请求 /api/Index/index/v423（默认）
-                        False → 只做本地存在性检查，不发网络请求
-
-    返回：{"account": 账号名, "authenticated": bool, "reason": str|None, "error": dict|None}
-
-    副作用：验证通过时会自动刷新该账号的 validatedAt。
-    reason 取值同 verify_credential()：missing / not_validated。
-    """
-    store = account_store()
-    credential = store.get(account)
-    reason, error = _check_credential(credential, validate_remote=validate_remote)
-    result: dict[str, Any] = {
-        "account": str(account),
-        "authenticated": reason is None,
-        "reason": reason,
-        "error": error.to_dict() if error else None,
-    }
-    if reason is None and credential is not None:
-        credential["validatedAt"] = int(time.time())
-        store.upsert(str(account), credential)
-    return result
-
-
-def verify_all_accounts(
-    *, validate_remote: bool = True
-) -> list[dict[str, Any]]:
-    """批量验证所有账号的凭证。
-
-    参数：
-        validate_remote  True  → 每个账号都做远端校验（默认）
-                        False → 只做本地检查，不发网络请求
-
-    返回：每个账号一条结果，结构同 verify_account()；仓库为空时返回空列表。
-    """
-    return [
-        verify_account(name, validate_remote=validate_remote)
-        for name in account_store().names()
-    ]
-
-
-def add_account(
-    account: str, credential: dict[str, Any], *, category: str | None = None
-) -> dict[str, Any]:
-    """新增一个账号凭证。
-
-    参数：
-        account     账号名（不能为空）
-        credential  完整凭证，至少含 token
-        category    类别；None → DEFAULT_CATEGORY
-
-    返回：存入的完整凭证。
-
-    抛出：PmsError —— ACCOUNT_EXISTS（账号已存在，想覆盖请用 update_account）
-                    / AUTH_TOKEN_MISSING（credential 里没有 token）
-    """
-    store = account_store()
-    if store.exists(account):
-        raise PmsError("ACCOUNT_EXISTS", f"账号已存在：{account}（如需覆盖请用 update_account）")
-    return store.upsert(account, credential, category=category)
-
-
-def update_account(
-    account: str,
-    credential: dict[str, Any] | None = None,
-    *,
-    category: str | None = None,
-) -> dict[str, Any]:
-    """更新账号凭证和/或类别。
-
-    参数：
-        account     账号名
-        credential  新的完整凭证；None → 不改动凭证
-        category    新类别；None → 保留原类别
-
-    传参组合：
-        只传 credential → 仅换凭证，保留原类别
-        只传 category   → 仅改类别，凭证不变
-        都传           → 都改
-        都不传         → 抛 ACCOUNT_INVALID
-
-    返回：更新后的完整凭证。
-
-    抛出：PmsError —— ACCOUNT_NOT_FOUND（账号不存在）
-                    / ACCOUNT_INVALID（两个都没传）
-    """
-    store = account_store()
-    if not store.exists(account):
-        raise PmsError("ACCOUNT_NOT_FOUND", f"账号不存在：{account}")
-    if credential is None and category is None:
-        raise PmsError("ACCOUNT_INVALID", "credential 与 category 至少要传一个。")
-    current = store.get(account)
-    merged = {**(current or {}), **(credential or {})}
-    return store.upsert(account, merged, category=category)
-
-
-def delete_account(account: str) -> bool:
-    """删除一个账号的凭证。
-
-    参数：
-        account  账号名
-
-    返回：True 表示确实删掉了；False 表示该账号本就不存在。
-    """
-    return account_store().delete(account)
-
-
-def set_account_category(account: str, category: str) -> dict[str, Any]:
-    """设置账号类别（如「财务」「仓库」「默认」）。
-
-    参数：
-        account   账号名
-        category  类别字符串（自由文本，不做取值校验）
-
-    返回：更新后的账号条目（摘要字段）。
-
-    抛出：PmsError —— ACCOUNT_NOT_FOUND（账号不存在）
-    """
-    return account_store().set_category(account, category)
+def login_and_store(*, parent: Any = None) -> dict[str, Any]:
+    """调起二维码窗口扫码，按扫码人身份落库并返回完整凭证。"""
+    credential = run_login_dialog(parent=parent)
+    return _persist_credential(credential)
 
 
 # --------------------------------------------------------------------------- #
-# 功能三：Agent 支持（命令调起 GUI / 等待登录完成）
-#
-# 用途：让 AI Agent 把「命令调起 GUI → 等用户扫码 → 取凭证」整链跑完：
-#   --launch      以独立进程启动扫码弹窗，立即返回（不阻塞 Agent）；重复调用幂等
-#   --wait-login  等待「一次新的登录」完成（纯本地轮询、不弹窗）；可重复调用
-# 人类路径完全不变：无参数直接运行 = 原来的扫码弹窗（见第四节、第五节）。
+# 命令行入口
 # --------------------------------------------------------------------------- #
-_RUNTIME_DIRNAME = "runtime"
-_SESSION_FILENAME = "gui_session.json"
-_SESSION_TTL_SECONDS = 900.0  # 启动会话最长认领 15 分钟（与二维码总有效窗口相当）
-_LAUNCH_ENV_VAR = "PMS_LOGIN_LAUNCH_ID"  # 传给 GUI 子进程的会话标识（仅用于退出清理）
-
-
-def _runtime_dir() -> Path:
-    """运行态目录（在用户区，与凭证仓库同级；不落在任何包内）。"""
-    return _data_home() / _RUNTIME_DIRNAME
-
-
-def _session_path() -> Path:
-    return _runtime_dir() / _SESSION_FILENAME
-
-
-def _read_launch_session() -> dict[str, Any] | None:
-    """读取「进行中的 GUI 启动会话」；不存在或已过期返回 None。"""
-    path = _session_path()
-    if not path.is_file():
-        return None
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return None
-    if not isinstance(data, dict):
-        return None
-    started = float(data.get("startedAt") or 0)
-    if started <= 0 or (time.time() - started) > _SESSION_TTL_SECONDS:
-        return None
-    return data
-
-
-def _write_launch_session(session_id: str, pid: int) -> float:
-    """写入启动会话标记；返回写入的时间戳（供调用方原样返回，保持前后一致）。"""
-    started_at = time.time()
-    _atomic_write_json(
-        _session_path(),
-        {"id": str(session_id), "pid": int(pid), "startedAt": started_at},
-    )
-    return started_at
-
-
-def _clear_launch_session(*, only_id: str | None = None) -> None:
-    """删除启动会话标记；给 only_id 时只删该会话（避免误删更新的会话）。"""
-    path = _session_path()
-    if not path.is_file():
-        return
-    if only_id:
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            data = {}
-        if str((data or {}).get("id") or "") != str(only_id):
-            return
-    try:
-        path.unlink()
-    except OSError:
-        pass
-
-
-def _cleanup_launch_session() -> None:
-    """GUI 子进程退出时清理自己持有的会话标记（由 __main__ 的 finally 调用）。"""
-    session_id = str(os.environ.get(_LAUNCH_ENV_VAR) or "").strip()
-    if session_id:
-        _clear_launch_session(only_id=session_id)
-
-
-def _snapshot_latest() -> dict[str, Any] | None:
-    """纯读快照：最近一次入库凭证的 (account, token, updatedAt)。
-
-    只读文件、不发网络、**不写库**——供 --wait-login 轮询判定「是否发生了新登录」。
-    """
-    store = account_store()
-    account = store.latest_account()
-    if account is None:
-        return None
-    try:
-        entry = json.loads(store.path_for(account).read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return None
-    if not isinstance(entry, dict):
-        return None
-    credential = entry.get("credential")
-    if not isinstance(credential, dict):
-        return None
-    return {
-        "account": str(entry.get("account") or account),
-        "token": str(credential.get("token") or ""),
-        "updatedAt": float(entry.get("updatedAt") or 0),
-    }
-
-
-def launch_gui(*, force: bool = False) -> dict[str, Any]:
-    """以独立进程启动扫码弹窗（不阻塞当前进程），供 Agent 命令调起。
-
-    行为：
-      · 已有进行中的启动会话（15 分钟窗口内且凭证未更新）→ 不重复弹窗，返回 alreadyRunning；
-      · 凭证在会话开始后已更新 → 上一轮已完成，允许启动新窗口；
-      · 启动后做 1 秒探测：进程立即退出（如缺少 PyQt5）→ 抛 LAUNCH_FAILED。
-
-    参数：
-        force  True → 忽略进行中的会话，强制启动新窗口
-
-    返回：{"ok", "launched", "alreadyRunning", "pid", "sessionId", "startedAt", "hint"}
-
-    抛出：PmsError —— LAUNCH_FAILED（无法启动 / 启动后立即退出）
-    """
-    if not force:
-        session = _read_launch_session()
-        if session:
-            snapshot = _snapshot_latest()
-            finished = bool(
-                snapshot and snapshot["updatedAt"] >= float(session.get("startedAt") or 0)
-            )
-            if not finished:
-                return {
-                    "ok": True,
-                    "launched": False,
-                    "alreadyRunning": True,
-                    "pid": int(session.get("pid") or 0),
-                    "sessionId": str(session.get("id") or ""),
-                    "startedAt": float(session.get("startedAt") or 0),
-                    "hint": "登录窗口已在进行中：请让用户扫码，然后运行 --wait-login 等待完成。",
-                }
-            _clear_launch_session()
-
-    session_id = uuid.uuid4().hex[:8]
-    if getattr(sys, "frozen", False):
-        command = [sys.executable]  # PyInstaller 打包后的 exe 自身
-    else:
-        command = [sys.executable, str(Path(__file__).resolve())]
-
-    env = os.environ.copy()
-    env[_LAUNCH_ENV_VAR] = session_id
-    kwargs: dict[str, Any] = {
-        "cwd": str(Path(__file__).resolve().parent),
-        "env": env,
-        "stdin": subprocess.DEVNULL,
-        "stdout": subprocess.DEVNULL,
-        "stderr": subprocess.DEVNULL,
-    }
-    if os.name == "nt":
-        # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP：独立进程，不随调用方退出
-        kwargs["creationflags"] = getattr(subprocess, "DETACHED_PROCESS", 0x00000008) | getattr(
-            subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200
-        )
-    else:
-        kwargs["start_new_session"] = True
-
-    try:
-        process = subprocess.Popen(command, **kwargs)
-    except OSError as exc:
-        raise PmsError("LAUNCH_FAILED", f"无法启动登录窗口：{exc}") from exc
-
-    started_at = _write_launch_session(session_id, process.pid)
-    time.sleep(1.0)  # 探测：窗口进程是否启动即退出（缺少 PyQt5 / 初始化失败）
-    if process.poll() is not None:
-        _clear_launch_session(only_id=session_id)
-        raise PmsError(
-            "LAUNCH_FAILED",
-            "登录窗口进程启动后立即退出：请检查 PyQt5 是否已安装（或改用 --no-ui 获取指引）。",
-            details={"exitCode": int(process.returncode or 0)},
-        )
-
-    return {
-        "ok": True,
-        "launched": True,
-        "alreadyRunning": False,
-        "pid": int(process.pid),
-        "sessionId": session_id,
-        "startedAt": started_at,
-        "hint": "登录窗口已在用户桌面弹出：请提示用户扫码；扫完后凭证自动落库，"
-        "运行 --wait-login 等待并取用。",
-    }
-
-
-def wait_for_login(
-    *,
-    timeout: float = 60.0,
-    interval: float = 1.5,
-    grace: float = 0.0,
-    no_remote: bool = False,
-) -> dict[str, Any]:
-    """等待「一次新的登录」完成（纯本地轮询、绝不弹窗），返回完整凭证。
-
-    判定「完成」的信号（任一命中）：
-      ① 凭证 token 发生变化（重扫 / 换人）——主判据；
-      ② 凭证 updatedAt 变新（同一账号重新登录会刷新时间戳）；
-      ③ 启动会话存在，且凭证 updatedAt >= 会话开始时间（本次 --launch 后完成的登录）；
-      ④ grace（默认 0＝关闭）> 0 时：wait 启动前 grace 秒内刚完成的登录视为本次结果
-         （覆盖「用户手快、扫完才轮到 wait」且无启动会话的时序）。
-
-    参数：
-        timeout    总等待上限（秒）；建议 ≤ Agent 单次工具调用超时
-        interval   轮询间隔（秒）；纯本地读取，不发网络请求
-        grace      完成容差（秒，默认 0＝关闭）；>0 时把「启动前 grace 秒内完成的
-                   登录」也视为本次结果——仅在你明确需要该语义时开启
-        no_remote  命中后跳过远端校验（默认会做一次远端校验，与 --status 行为一致）
-
-    返回：
-        成功 → 完整凭证（authenticated=True，额外带 "waited": True）
-        超时 → {"ok": False, "state": "waiting_timeout", "nextAction": ...}（可重复调用）
-    """
-    deadline = time.monotonic() + max(1.0, float(timeout))
-    started = time.time()
-    baseline = _snapshot_latest()
-    session = _read_launch_session()
-    last_error: PmsError | None = None
-
-    def _hit() -> bool:
-        current = _snapshot_latest()
-        if current is None:
-            return False
-        if baseline is None:
-            return True  # 从「无凭证」变为「有凭证」
-        if current["token"] and current["token"] != baseline["token"]:
-            return True  # token 变化
-        if current["updatedAt"] > baseline["updatedAt"]:
-            return True  # 同账号重登，时间戳刷新
-        if session and current["updatedAt"] >= float(session.get("startedAt") or 0):
-            return True  # 本次 --launch 之后完成的登录
-        if grace > 0 and baseline is not None:
-            age = started - baseline["updatedAt"]
-            if 0 <= age <= float(grace):
-                return True  # 启动前 grace 秒内完成的登录（默认关闭）
-        return False
-
-    while time.monotonic() < deadline:
-        if _hit():
-            result = verify_credential(validate_remote=not no_remote)
-            if result.get("authenticated"):
-                result["waited"] = True
-                return result
-            error = result.get("error") or {}
-            last_error = PmsError(
-                str(error.get("code") or "CREDENTIALS_INVALID"),
-                str(error.get("message") or "凭证暂不可用，继续等待。"),
-            )
-        time.sleep(max(0.2, float(interval)))
-
-    return {
-        "ok": False,
-        "authenticated": False,
-        "state": "waiting_timeout",
-        "elapsed": round(time.time() - started, 1),
-        "guiSessionActive": bool(_read_launch_session()),
-        "error": (
-            last_error or PmsError("WAITING_TIMEOUT", "等待登录超时；登录窗口可能仍在等待扫码。")
-        ).to_dict(),
-        "nextAction": "窗口仍在等待扫码 → 可再次运行 --wait-login；"
-        "窗口已关闭或不可见 → 用 --force 重新 --launch，或请用户手动双击本脚本。",
-    }
-
-
-# --------------------------------------------------------------------------- #
-# PyQt5 界面（惰性加载：没装 PyQt5 也能 import 本模块并使用无界面功能）
-# --------------------------------------------------------------------------- #
-_ACTIVE_THREADS: set = set()
-_APP: Any = None  # keep QApplication alive between create_login_dialog and use
-
-
-def _track_thread(thread: Any) -> None:
-    _ACTIVE_THREADS.add(thread)
-    thread.finished.connect(lambda: _ACTIVE_THREADS.discard(thread))
-
-
-def _svg_to_pixmap(svg: str, size: int) -> Any:
-    """把内置 SVG 渲染成透明背景的 QPixmap（图标、刷新图共用）。"""
-    from PyQt5.QtCore import QByteArray, QRectF
-    from PyQt5.QtGui import QColor, QImage, QPainter, QPixmap
-    from PyQt5.QtSvg import QSvgRenderer
-
-    renderer = QSvgRenderer(QByteArray(svg.encode("utf-8")))
-    image = QImage(size, size, QImage.Format_ARGB32)
-    image.fill(QColor(0, 0, 0, 0))
-    painter = QPainter(image)
-    painter.setRenderHint(QPainter.Antialiasing)
-    renderer.render(painter, QRectF(0, 0, size, size))
-    painter.end()
-    return QPixmap.fromImage(image)
-
-
-def _load_qt() -> dict[str, Any]:
-    """导入 PyQt5；缺失时给出可执行的中文提示。"""
-    try:
-        from PyQt5.QtCore import QPointF, QRectF, Qt, QThread, QTimer
-        from PyQt5.QtCore import pyqtSignal
-        from PyQt5.QtGui import (
-            QColor,
-            QFont,
-            QIcon,
-            QPainter,
-            QPainterPath,
-            QPen,
-            QPixmap,
-            QPolygonF,
-        )
-        from PyQt5.QtWidgets import (
-            QApplication,
-            QDialog,
-            QLabel,
-            QVBoxLayout,
-            QWidget,
-        )
-    except ImportError as exc:
-        raise PmsError(
-            "DEPENDENCY_MISSING",
-            "缺少 PyQt5，请先执行 python -m pip install PyQt5。",
-        ) from exc
-
-    return {
-        "Qt": Qt,
-        "QThread": QThread,
-        "QTimer": QTimer,
-        "pyqtSignal": pyqtSignal,
-        "QPointF": QPointF,
-        "QRectF": QRectF,
-        "QColor": QColor,
-        "QFont": QFont,
-        "QPainter": QPainter,
-        "QPainterPath": QPainterPath,
-        "QPen": QPen,
-        "QPixmap": QPixmap,
-        "QPolygonF": QPolygonF,
-        "QIcon": QIcon,
-        "QApplication": QApplication,
-        "QDialog": QDialog,
-        "QLabel": QLabel,
-        "QVBoxLayout": QVBoxLayout,
-        "QWidget": QWidget,
-    }
-
-
-_GUI: Any = None
-
-
-def _ensure_qapp() -> dict[str, Any]:
-    """确保存在 QApplication（在定义任何 pyqtSignal 类之前必须调用）。
-
-    PyQt5 的信号注册要求 QCoreApplication.instance() 在类定义时已非 None，
-    否则会打印 "QWidget: Must construct a QApplication before a QWidget" 并静默失败。
-    实例同时保存在模块级，避免被 GC 回收后构造弹窗时卡死。
-    """
-    global _APP
-    qt = _load_qt()
-    QApplication = qt["QApplication"]
-    existing = QApplication.instance()
-    if existing is not None:
-        _APP = existing
-        return qt
-    try:
-        QApplication.setAttribute(qt["Qt"].AA_EnableHighDpiScaling, True)
-        QApplication.setAttribute(qt["Qt"].AA_UseHighDpiPixmaps, True)
-    except AttributeError:
-        pass
-    _APP = QApplication(sys.argv[:1])
-    return qt
-
-
-def _gui_classes() -> Any:
-    """惰性构建并缓存 LoginDialog 类，保证无 PyQt5 环境也能 import 本模块。"""
-    global _GUI
-    if _GUI is not None:
-        return _GUI
-    qt = _ensure_qapp()  # 必须在定义 pyqtSignal 类之前
-
-    Qt = qt["Qt"]
-    QWidget = qt["QWidget"]
-    QDialog = qt["QDialog"]
-    QThread = qt["QThread"]
-    pyqtSignal = qt["pyqtSignal"]
-    QTimer = qt["QTimer"]
-    QPointF = qt["QPointF"]
-    QRectF = qt["QRectF"]
-    QColor = qt["QColor"]
-    QFont = qt["QFont"]
-    QPainter = qt["QPainter"]
-    QPainterPath = qt["QPainterPath"]
-    QPen = qt["QPen"]
-    QPixmap = qt["QPixmap"]
-    QPolygonF = qt["QPolygonF"]
-    QIcon = qt["QIcon"]
-    QApplication = qt["QApplication"]
-    QVBoxLayout = qt["QVBoxLayout"]
-    QLabel = qt["QLabel"]
-
-    # ------------------------------------------------------------------ #
-    def _make_app_icon() -> Any:
-        """从内置 SVG 渲染程序图标（用于原生弹窗左上角）。"""
-        return QIcon(_svg_to_pixmap(_APP_ICON_SVG, 48))
-
-    # ------------------------------------------------------------------ #
-    class QrCanvas(QWidget):
-        """二维码容器：转圈 / 二维码 / 蒙版绿勾 / 静止加载圈，并支持点击重试。"""
-
-        retryRequested = pyqtSignal()
-        _TICK_MS = 40
-        _STEP_DEG = 10
-        _SPINNER_SIZE = 80
-
-        def __init__(self, size: int = 240, parent: Any = None) -> None:
-            super().__init__(parent)
-            self._stage = STAGE_LOADING
-            self._pixmap = QPixmap()
-            self._spinner = _svg_to_pixmap(_REFRESH_ICON_SVG, self._SPINNER_SIZE)
-            self._angle = 0
-            self._timer = QTimer(self)
-            self._timer.setInterval(self._TICK_MS)
-            self._timer.timeout.connect(self._on_tick)
-            self.setFixedSize(size, size)
-            self.set_stage(STAGE_LOADING)
-
-        # ---------------- 对外接口 ---------------- #
-        def set_pixmap_bytes(self, data: bytes) -> None:
-            pixmap = QPixmap()
-            if not pixmap.loadFromData(data):
-                return
-            self._pixmap = pixmap
-            self.update()
-
-        def set_stage(self, stage: str) -> None:
-            self._stage = stage
-            if stage in (STAGE_LOADING, STAGE_FAILED):
-                self._pixmap = QPixmap()  # 回到加载态时清掉旧二维码
-            spinning = stage == STAGE_LOADING
-            if spinning and not self._timer.isActive():
-                self._timer.start()
-            elif not spinning and self._timer.isActive():
-                self._timer.stop()
-            if not spinning:
-                self._angle = 0
-            self.setCursor(
-                Qt.PointingHandCursor if stage == STAGE_FAILED else Qt.ArrowCursor
-            )
-            self.update()
-
-        # ---------------- 绘制 ---------------- #
-        def _on_tick(self) -> None:
-            self._angle = (self._angle + self._STEP_DEG) % 360
-            self.update()
-
-        def paintEvent(self, event: Any) -> None:  # noqa: N802
-            painter = QPainter(self)
-            painter.setRenderHint(QPainter.Antialiasing)
-            rect = QRectF(self.rect()).adjusted(1, 1, -1, -1)
-            frame = QPainterPath()
-            frame.addRoundedRect(rect, 14, 14)
-            painter.setClipPath(frame)
-            painter.fillPath(frame, QColor(255, 255, 255))
-
-            show_qr = not self._pixmap.isNull() and self._stage in (
-                STAGE_QR_READY,
-                STAGE_SCANNED,
-                STAGE_AUTHENTICATING,
-            )
-            if show_qr:
-                inner = rect.adjusted(8, 8, -8, -8)
-                scaled = self._pixmap.scaled(
-                    inner.size().toSize(), Qt.KeepAspectRatio, Qt.SmoothTransformation
-                )
-                painter.drawPixmap(
-                    int(inner.x() + (inner.width() - scaled.width()) / 2),
-                    int(inner.y() + (inner.height() - scaled.height()) / 2),
-                    scaled,
-                )
-                if self._stage in (STAGE_SCANNED, STAGE_AUTHENTICATING):
-                    painter.fillPath(frame, QColor(0, 0, 0, 172))  # 黑色蒙版
-                    self._draw_check(painter, rect)
-            else:
-                self._draw_svg_spinner(painter, rect)
-
-            painter.setClipping(False)
-            painter.setPen(QPen(QColor(_HEX_BORDER), 1))
-            painter.setBrush(Qt.NoBrush)
-            painter.drawPath(frame)
-
-        def _draw_svg_spinner(self, painter: Any, rect: Any) -> None:
-            """绘制居中的 SVG 刷新图标，加载态时旋转。"""
-            center = rect.center()
-            painter.save()
-            painter.translate(center.x(), center.y())
-            painter.rotate(self._angle)
-            offset = -self._SPINNER_SIZE / 2
-            painter.translate(offset, offset)
-            painter.drawPixmap(0, 0, self._spinner)
-            painter.restore()
-
-        @staticmethod
-        def _draw_check(painter: Any, rect: Any) -> None:
-            center = rect.center()
-            radius = min(rect.width(), rect.height()) * 0.16
-            a = QPointF(center.x() - radius * 0.95, center.y() + radius * 0.05)
-            b = QPointF(center.x() - radius * 0.20, center.y() + radius * 0.80)
-            c = QPointF(center.x() + radius * 1.00, center.y() - radius * 0.78)
-            # 先描白边，保证在任何二维码底色上都清晰
-            outline = QPen(QColor(255, 255, 255, 235), radius * 0.62)
-            outline.setCapStyle(Qt.RoundCap)
-            outline.setJoinStyle(Qt.RoundJoin)
-            painter.setPen(outline)
-            painter.drawPolyline(QPolygonF([a, b, c]))
-            check = QPen(QColor(_HEX_GREEN), radius * 0.36)
-            check.setCapStyle(Qt.RoundCap)
-            check.setJoinStyle(Qt.RoundJoin)
-            painter.setPen(check)
-            painter.drawPolyline(QPolygonF([a, b, c]))
-
-        # ---------------- 交互 ---------------- #
-        def mousePressEvent(self, event: Any) -> None:  # noqa: N802
-            if self._stage == STAGE_FAILED and event.button() == Qt.LeftButton:
-                event.accept()
-                self.retryRequested.emit()
-                return
-            super().mousePressEvent(event)
-
-    # ------------------------------------------------------------------ #
-    class LoginWorker(QThread):
-        """后台跑 LoginFlow，通过信号把阶段抛回 UI 线程。
-
-        注意：这里没有 on_notice 桥接。二维码失效自动重载等提示由弹窗的
-        倒计时与状态文字表达，无需额外信号；on_notice 是 LoginFlow 对外
-        部（非 UI）调用方的公开回调，UI 路径用不到。
-        """
-
-        stageChanged = pyqtSignal(str, str)
-        qrLoaded = pyqtSignal(object)
-        credentialReady = pyqtSignal(object)
-        loginFailed = pyqtSignal(str, str)
-
-        def __init__(self, parent: Any = None) -> None:
-            super().__init__(parent)
-            self._aborted = False
-
-        def abort(self) -> None:
-            self._aborted = True
-            self.requestInterruption()
-
-        def _is_aborted(self) -> bool:
-            return self._aborted or self.isInterruptionRequested()
-
-        def run(self) -> None:  # noqa: D102
-            flow = LoginFlow(
-                on_stage=lambda stage, message: self.stageChanged.emit(stage, message),
-                on_qr=lambda data: self.qrLoaded.emit(data),
-                is_aborted=self._is_aborted,
-            )
-            try:
-                credential = flow.run()
-            except PmsError as exc:
-                if not self._is_aborted():
-                    self.loginFailed.emit(exc.code, exc.message)
-                return
-            except Exception:  # noqa: BLE001
-                if not self._is_aborted():
-                    self.loginFailed.emit("INTERNAL_ERROR", "登录发生未分类错误。")
-                return
-            if not self._is_aborted():
-                self.credentialReady.emit(credential)
-
-    # ------------------------------------------------------------------ #
-    class LoginDialog(QDialog):
-        """标准 Windows 风格登录弹窗。"""
-
-        QR_SIZE = 240
-        PADDING = 24
-        BOTTOM_MARGIN = 16
-        WINDOW_WIDTH = QR_SIZE + 2 * PADDING
-
-        def __init__(self, parent: Any = None) -> None:
-            super().__init__(parent)
-            self._worker: Any = None
-            self.credential: dict[str, Any] | None = None
-            self.last_error: PmsError | None = None
-            self._qr_deadline = 0.0
-            self._countdown = QTimer(self)
-            self._countdown.setInterval(1000)
-            self._countdown.timeout.connect(self._on_countdown_tick)
-
-            self.setWindowTitle("登录 PMS 系统")
-            self.setWindowFlags(Qt.Window)
-            self.setModal(True)
-            self.setWindowIcon(_make_app_icon())
-            self._build_ui()
-            self.setFixedSize(self.WINDOW_WIDTH, self.sizeHint().height())
-            self._center_on_screen()
-            self._start_flow()
-
-        # ---------------- 构建界面 ---------------- #
-        def _build_ui(self) -> None:
-            root = QVBoxLayout(self)
-            root.setContentsMargins(
-                self.PADDING, self.PADDING, self.PADDING, self.BOTTOM_MARGIN
-            )
-            root.setSpacing(0)
-
-            self._canvas = QrCanvas(self.QR_SIZE, self)
-            self._canvas.retryRequested.connect(self._start_flow)
-            root.addWidget(self._canvas, alignment=Qt.AlignCenter)
-
-            root.addSpacing(12)
-
-            self._detail = QLabel(STATUS_LOADING, self)
-            self._detail.setAlignment(Qt.AlignCenter)
-            self._detail.setWordWrap(True)
-            self._detail.setFont(QFont(_FONT_FAMILY, 10))
-            self._detail.setStyleSheet(f"color:{_HEX_MUTED};background:transparent;")
-            root.addWidget(self._detail)
-
-        def _center_on_screen(self) -> None:
-            screen = QApplication.primaryScreen()
-            if not screen:
-                return
-            area = screen.availableGeometry()
-            frame = self.frameGeometry()
-            frame.moveCenter(area.center())
-            self.move(frame.topLeft())
-
-        # ---------------- 流程控制 ---------------- #
-        def _start_flow(self) -> None:
-            self._stop_worker()
-            self._countdown.stop()
-            self._canvas.set_stage(STAGE_LOADING)
-            self._detail.setText(STATUS_LOADING)
-
-            worker = LoginWorker(self)
-            worker.stageChanged.connect(self._on_stage)
-            worker.qrLoaded.connect(self._on_qr)
-            worker.credentialReady.connect(self._on_credential)
-            worker.loginFailed.connect(self._on_failed)
-            self._worker = worker
-            _track_thread(worker)
-            worker.start()
-
-        def _stop_worker(self) -> None:
-            self._countdown.stop()
-            worker, self._worker = self._worker, None
-            if worker is None:
-                return
-            try:
-                worker.stageChanged.disconnect(self._on_stage)
-                worker.qrLoaded.disconnect(self._on_qr)
-                worker.credentialReady.disconnect(self._on_credential)
-                worker.loginFailed.disconnect(self._on_failed)
-            except (RuntimeError, TypeError):
-                pass
-            worker.abort()
-            worker.quit()
-            worker.wait(2000)
-
-        # ---------------- 信号槽 ---------------- #
-        def _on_qr(self, data: Any) -> None:
-            self._canvas.set_pixmap_bytes(bytes(data))
-
-        def _on_stage(self, stage: str, message: str) -> None:
-            self._canvas.set_stage(stage)
-            if stage == STAGE_QR_READY:
-                timeout = float(OAUTH.get("qrTimeoutSeconds") or 300)
-                self._qr_deadline = time.monotonic() + timeout
-                self._countdown.start()
-                self._refresh_countdown()
-                return
-            self._countdown.stop()
-            self._detail.setText(message)
-
-        def _on_countdown_tick(self) -> None:
-            self._refresh_countdown()
-
-        def _refresh_countdown(self) -> None:
-            remaining = int(self._qr_deadline - time.monotonic())
-            if remaining <= 0:
-                self._countdown.stop()
-                return
-            mm, ss = divmod(remaining, 60)
-            self._detail.setText(STATUS_SCAN_COUNTDOWN.format(f"{mm}:{ss:02d}"))
-
-        def _on_credential(self, credential: Any) -> None:
-            self.credential = dict(credential)
-            self._stop_worker()
-            self.accept()
-
-        def _on_failed(self, code: str, message: str) -> None:
-            self.last_error = PmsError(code or "LOGIN_FAILED", message)
-            self._countdown.stop()
-            self._canvas.set_stage(STAGE_FAILED)
-            self._detail.setText(STATUS_RETRY)
-
-        # ---------------- 窗口行为 ---------------- #
-        def closeEvent(self, event: Any) -> None:  # noqa: N802
-            self._stop_worker()
-            super().closeEvent(event)
-
-        def reject(self) -> None:  # noqa: D102
-            self._stop_worker()
-            super().reject()
-
-    _GUI = LoginDialog
-    return _GUI
-
-
-def create_login_dialog(parent: Any = None) -> Any:
-    """创建（但尚未显示）登录弹窗实例，可嵌入已有 PyQt5 程序（异步用法）。
-
-    参数：
-        parent   PyQt5 父窗口（可选）
-
-    返回：LoginDialog 实例。构造后即已在后台线程启动扫码流程（UI 不卡顿）。
-          调用方自行 show()（非阻塞）或 exec_()（阻塞），并通过下列属性 / 信号取结果：
-            dialog.credential  成功后填充的完整凭证字典
-            dialog.last_error  失败后的 PmsError
-            dialog.accepted    Qt 信号：登录成功时触发，此时读 credential
-            dialog.rejected    Qt 信号：用户取消 / 关窗时触发，此时读 last_error
-
-    依赖：需要 PyQt5；未安装时抛 PmsError(DEPENDENCY_MISSING)。
-    """
-    return _gui_classes()(parent)
+QR_TTL_SECONDS = 300          # 二维码有效期（秒；与企微扫码超时一致，仅用于窗口倒计时）
 
 
 def run_login_dialog(
     *,
     parent: Any = None,
 ) -> dict[str, Any]:
-    """弹出登录窗口并等待完成（同步用法，内部跑在后台线程，UI 不卡顿）。
+    """弹出**二维码窗口**（tkinter 标准库、置顶）并等待完成（同步用法）。
+
+    窗口行为：
+        显示二维码 → 用户扫码后盖**半透明蒙版 + 绿色大√**并提示"请确认" →
+        确认成功自动关闭窗口并返回凭证；失效在窗口内自动重载（≤3 次，由 LoginFlow 控制）；
+        用户关窗 → PmsError(LOGIN_CANCELLED)。
 
     参数：
-        parent   PyQt5 父窗口（可选）
+        parent   兼容保留参数（不使用）
 
     返回：成功 → 完整凭证字典（source="qr"、reused=False）。
     抛出：PmsError —— LOGIN_CANCELLED（用户取消）/ QR_EXPIRED（二维码多次失效）
-                    / 网络、限流、权限等不可恢复错误；未装 PyQt5 时抛 DEPENDENCY_MISSING。
-
-    已有 QApplication 时复用，没有则自动创建，可安全嵌入任何 PyQt5 程序。
+                    / 网络、限流、权限等不可恢复错误。
     """
-    dialog_cls = _gui_classes()  # 同时保证 QApplication 已存在
+    import queue as _queue
+    import threading as _th
+    import tkinter as tk
 
-    dialog = dialog_cls(parent)
-    result = dialog.exec_()
+    root = tk.Tk()
+    root.title("PMS · 扫码登录")
+    root.attributes("-topmost", True)              # 置顶：二维码直达用户桌面
+    root.resizable(False, False)
 
-    if result == dialog_cls.Accepted and dialog.credential:
-        return dialog.credential
-    raise dialog.last_error or PmsError("LOGIN_CANCELLED", "用户取消了登录。")
+    QR = 260                                        # 二维码显示尺寸（px）
+    canvas = tk.Canvas(root, width=QR, height=QR, highlightthickness=0, bg="#FFFFFF")
+    canvas.pack(padx=12, pady=(12, 6))
+    img_item = canvas.create_image(QR // 2, QR // 2)
+    mask = canvas.create_rectangle(0, 0, QR, QR, fill="#000000", stipple="gray50",
+                                   outline="", state="hidden")
+    # 绿色大√：绿圆 + 两段白勾（Canvas 原生绘制，零依赖）
+    r = int(QR * 0.25)
+    cx = cy = QR // 2
+    tick_circle = canvas.create_oval(cx - r, cy - r, cx + r, cy + r,
+                                     fill="#00A651", outline="", state="hidden")
+    lw = max(6, int(r * 0.3))
+    tick_l1 = canvas.create_line(cx - r * 0.46, cy + r * 0.02,
+                                 cx - r * 0.12, cy + r * 0.36,
+                                 width=lw, fill="#FFFFFF", capstyle=tk.ROUND, state="hidden")
+    tick_l2 = canvas.create_line(cx - r * 0.12, cy + r * 0.36,
+                                 cx + r * 0.48, cy - r * 0.34,
+                                 width=lw, fill="#FFFFFF", capstyle=tk.ROUND, state="hidden")
+
+    tip = tk.Label(root, text="正在获取二维码……", font=(_FONT_FAMILY, 10),
+                   wraplength=300, justify="center")
+    tip.pack(padx=12, pady=(0, 12))
+
+    evt_q: _queue.Queue = _queue.Queue()
+    result: dict[str, Any] = {"cred": None, "error": None}
+    cancel = {"v": False}
+    deadline = {"v": 0.0}
+    scanned = {"v": False}
+
+    def _hide_tick() -> None:
+        for it in (mask, tick_circle, tick_l1, tick_l2):
+            canvas.itemconfig(it, state="hidden")
+
+    def set_qr(png: bytes) -> None:
+        """（重新）载入二维码——失效重载时复用同一窗口。"""
+        try:
+            photo = tk.PhotoImage(data=png)
+            if photo.width() > QR:
+                photo = photo.subsample(max(1, photo.width() // QR))
+            canvas.itemconfig(img_item, image=photo)
+            canvas._qr_img = photo                  # 保持引用防 GC
+            _hide_tick()
+            scanned["v"] = False
+            deadline["v"] = time.time() + QR_TTL_SECONDS
+            tip.configure(text="请使用企业微信扫码", fg="#333333",
+                          font=(_FONT_FAMILY, 10))
+        except Exception as exc:                    # 渲染失败如实显示，不静默
+            tip.configure(text=f"二维码渲染失败：{exc}", fg="#C0392B")
+
+    def show_scanned() -> None:
+        """已扫码待确认：蒙版 + 绿色大√ + 提示切换。"""
+        _hide_tick()
+        canvas.itemconfig(mask, state="normal")
+        canvas.itemconfig(tick_circle, state="normal")
+        canvas.itemconfig(tick_l1, state="normal")
+        canvas.itemconfig(tick_l2, state="normal")
+        scanned["v"] = True
+        tip.configure(text="扫码成功！请确认~", fg="#00A651",
+                      font=(_FONT_FAMILY, 10, "bold"))
+
+    def worker() -> None:
+        try:
+            flow = LoginFlow(
+                on_qr=lambda png: evt_q.put(("qr", png)),
+                on_notice=lambda text: evt_q.put(("notice", text)),
+                on_stage=lambda stage, message: evt_q.put(("stage", (stage, message))),
+                is_aborted=lambda: cancel["v"],
+            )
+            result["cred"] = flow.run()
+        except BaseException as exc:  # noqa: BLE001 —— 线程内异常回传主线程
+            result["error"] = exc
+        finally:
+            evt_q.put(("done", None))
+
+    def pump() -> None:
+        try:
+            while True:
+                kind, payload = evt_q.get_nowait()
+                if kind == "qr":
+                    set_qr(payload)
+                elif kind == "notice":
+                    tip.configure(text=str(payload), fg="#B7791F")
+                elif kind == "stage":
+                    stage, message = payload
+                    if stage == STAGE_SCANNED:
+                        show_scanned()
+                    elif message:
+                        tip.configure(text=str(message), fg="#333333")
+                elif kind == "done":
+                    root.after(900, root.destroy)   # 让用户看清绿√后再自动关窗
+                    return
+        except _queue.Empty:
+            pass
+        if deadline["v"] and not scanned["v"]:
+            left = int(deadline["v"] - time.time())
+            if left > 0:
+                tip.configure(text=f"请使用企业微信扫码【剩余 {left}s】", fg="#333333")
+            else:
+                tip.configure(text="二维码已过期，正在重新加载…", fg="#C0392B")
+        root.after(150, pump)
+
+    def on_close() -> None:
+        cancel["v"] = True
+        root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW", on_close)
+    pump()
+    _th.Thread(target=worker, daemon=True).start()
+    root.mainloop()
+
+    if result["error"]:
+        raise result["error"]
+    if not result["cred"]:
+        raise PmsError("LOGIN_CANCELLED", "用户取消了登录。")
+    return result["cred"]
 
 
-# --------------------------------------------------------------------------- #
-# 命令行入口
-# --------------------------------------------------------------------------- #
+def check_env() -> dict[str, Any]:
+    """环境自检：登录器可调用性（tkinter / 凭证仓库可写）与下一步指引；绝不弹窗。"""
+    out: dict[str, Any] = {
+        "ok": True,
+        "python": sys.version.split()[0],
+        "gui": None,
+        "credentialDir": str(_data_home()),
+        "fix": None,
+        "next": "python pms_login.py --reuse（弹窗登录）｜--status（只验证）",
+    }
+    try:
+        import tkinter  # noqa: F401  —— 标准库：二维码窗口唯一依赖
+        out["gui"] = "tkinter（标准库，已可用）"
+    except ImportError:
+        out.update(
+            ok=False,
+            gui=None,
+            fix="当前 Python 缺少 tkinter：请重装 / 修复 Python（安装时勾选 tcl/tk 与 IDLE）",
+            next="修复后重新运行 --check 或直接 --reuse 登录",
+        )
+    try:
+        _data_home().mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        out.update(ok=False, fix="检查用户数据目录写入权限",
+                   next=f"凭证仓库目录不可写：{exc!r}"[:200])
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="PMS 登录 · 企微扫码登录（默认弹出扫码窗重新登录；也可只验证已有凭证）",
         epilog=(
-            "给 AI · Agent 的调用契约（唯一登录入口）：\n"
-            "  1) 先验证：--status --no-remote（退出码 0 = 已有可用凭证，直接使用）\n"
-            "  2) 需登录：--launch（命令调起 GUI、立即返回；请提示用户扫码）\n"
-            "  3) 等待：  --wait-login --timeout 55（可重复调用；成功后 stdout 即完整凭证）\n"
-            "  禁止自行实现登录流程 / 自取二维码 / 自拼鉴权 / 绕过本脚本解析凭证。\n"
+            "给 AI · Agent 的调用契约（唯一登录入口 → 直接调用本登录器（黑盒）；禁止读源码后自写登录）：\n"
+            "  1) 自检：--check（依赖 tkinter；缺失给出修复指引）\n"
+            "  2) 验证：--status（退出码 0 = 已有可用凭证，直接用）\n"
+            "  3) 登录：--reuse（唯一点：直接调起原生扫码窗；有效复用、失效才弹窗；依赖缺失自动修复环境）\n"
+            "  4) 取凭证：--status 输出（另：Python 门面 relogin / verify_credential /\n"
+            "     get_credential / is_authenticated）\n"
+            "  弹窗失败 → --check 修复环境后重试；仍失败 → 询问用户（禁止出码绕路）。\n"
+            "  用户已指定或提供凭证 / 登录方式 → 按其走（不受上列限制）。\n"
+            "  禁止：自写登录流程 / 出码绕路 / 自取二维码 / 自拼鉴权 / 组装内部类（LoginFlow 等）/ 绕过本脚本解析凭证。\n"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="环境自检：检查 tkinter 与登录器可调用性；缺失给出修复指引",
     )
     parser.add_argument(
         "--status",
@@ -2471,39 +1532,16 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="优先复用本地有效凭证，仅在失效时才弹窗（默认总是重新扫码）",
     )
-    parser.add_argument("--no-ui", action="store_true", help="无界面模式，不弹窗")
     parser.add_argument("--no-remote", action="store_true", help="跳过远端 index 校验")
-    parser.add_argument(
-        "--launch",
-        action="store_true",
-        help="供 Agent：以独立进程启动扫码窗（命令调起 GUI，不阻塞、立即返回；重复调用幂等）",
-    )
-    parser.add_argument(
-        "--force",
-        action="store_true",
-        help="配合 --launch：忽略进行中的会话，强制启动新窗口",
-    )
-    parser.add_argument(
-        "--wait-login",
-        action="store_true",
-        help="供 Agent：等待一次新的登录完成（不弹窗、纯本地轮询；可重复调用）",
-    )
-    parser.add_argument(
-        "--timeout", type=float, default=60.0, help="--wait-login 等待上限（秒，默认 60）"
-    )
-    parser.add_argument(
-        "--interval", type=float, default=1.5, help="--wait-login 轮询间隔（秒，默认 1.5）"
-    )
-    parser.add_argument(
-        "--grace",
-        type=float,
-        default=0.0,
-        help="--wait-login 完成容差（秒，默认 0=关闭；>0 时把开始前 N 秒内完成的登录也视为本次结果）",
-    )
     args = parser.parse_args(argv)
 
     configure_stdio()
     try:
+        if args.check:
+            result = check_env()
+            emit(result)
+            return 0 if result.get("ok") else 1
+
         if args.status:
             result = verify_credential(validate_remote=not args.no_remote)
             print(
@@ -2514,41 +1552,11 @@ def main(argv: list[str] | None = None) -> int:
             emit(result)
             return 0 if result["authenticated"] else 1
 
-        if args.launch:
-            result = launch_gui(force=bool(args.force))
-            print(
-                "[pms-login] "
-                + (
-                    "登录窗口已启动，请让用户扫码。"
-                    if result.get("launched")
-                    else "已有登录窗口在进行中，未重复弹窗。"
-                ),
-                file=sys.stderr,
-            )
-            emit(result)
-            return 0 if result.get("ok") else 1
-
-        if args.wait_login:
-            result = wait_for_login(
-                timeout=args.timeout,
-                interval=args.interval,
-                grace=args.grace,
-                no_remote=bool(args.no_remote),
-            )
-            if result.get("authenticated"):
-                account = str((result.get("user") or {}).get("accountNo") or "")
-                print(f"[pms-login] 已等到新的登录（账户 {account}）", file=sys.stderr)
-                emit(result)
-                return 0
-            print("[pms-login] 等待登录超时（窗口可能仍在等待扫码，可再次运行）。", file=sys.stderr)
-            emit(result)
-            return 1
-
         # 默认：无论本地是否已有凭证，都弹窗重新扫码获取新凭证。
         credential = get_credential(
             force_relogin=not args.reuse,
             validate_remote=not args.no_remote,
-            interactive=not args.no_ui,
+            interactive=True,
         )
     except PmsError as exc:
         emit({"ok": False, "authenticated": False, "error": exc.to_dict()})
@@ -2572,8 +1580,4 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    finally:
-        # 仅当本进程是 --launch 拉起的 GUI 会话时：退出即清理会话标记
-        _cleanup_launch_session()
+    raise SystemExit(main())

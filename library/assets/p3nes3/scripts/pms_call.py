@@ -7,7 +7,7 @@
 
 token 来源优先级：--token > 环境变量 PMS_TOKEN > 自有登录组件
 （**凭证缺失 / 失效时自动调起登录器本体**——登录动作全部由登录器完成，本脚本只负责取用；
-`--no-ui` 时仅本地检查并报错指路（agent 调登录器；不可用时按登录指引自行获取；获取不到 → 询问用户））。
+`--no-ui` 时仅本地检查并报错指路（agent 调登录器弹窗登录；环境异常先按 `--check` 修复，仍失败 → 询问用户））。
 
 请求构造（二选一）：
 - 完整 URL：--url <https://.../api/...>
@@ -127,7 +127,7 @@ def resolve_token(args: argparse.Namespace) -> str:
     """token 解析：--token > PMS_TOKEN > 自有登录组件（缺 / 失效时自动调起登录器本体）。
 
     与 BI `bi_call.py` 同构：登录动作（弹窗 / 二维码 / 换证 / 落库）全部由登录器完成，
-    本脚本只负责取用；`--no-ui` 时不弹窗、报错指路（agent 调登录器；不可用时按登录指引自行获取；获取不到 → 询问用户）。
+    本脚本只负责取用；`--no-ui` 时不弹窗、报错指路（agent 调登录器弹窗登录；环境异常先按 `--check` 修复，仍失败 → 询问用户）。
     """
     explicit = args.token or os.getenv("PMS_TOKEN")
     if explicit:
@@ -170,7 +170,7 @@ def main() -> int:
         help="PMS token；缺省按 PMS_TOKEN 环境变量、登录器凭证自动取用（缺 / 失效自动调起登录器本体）",
     )
     parser.add_argument("--relogin", action="store_true", help="强制重新企微扫码登录（经由登录器本体）")
-    parser.add_argument("--no-ui", action="store_true", help="凭证不可用时不弹登录窗口（无界面/自动化）")
+    parser.add_argument("--no-ui", action="store_true", help="凭证不可用时不弹登录窗口（确无桌面环境时使用）")
     parser.add_argument("--no-remote", action="store_true", help="跳过登录凭证远端校验")
     parser.add_argument("--provider-id", help="Convenience: inject providerId if absent in payload")
     parser.add_argument("--output", type=Path, help="Write response JSON to this file")

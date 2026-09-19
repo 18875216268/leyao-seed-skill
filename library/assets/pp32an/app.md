@@ -62,8 +62,10 @@ python scripts/hub.py contribute --all-candidates [--dry-run]   # 沉淀上传�
 
 ## 5. 边界与红线（如实）
 
-- **不弹窗、不扫码**：云智库未登录 → 明确返回 `LOGIN_REQUIRED` + 手动登录指引（绝不代扫）——**登录辅助脚本位置**：`library/assets/pp32an/scripts/sources/leyou/leyou_firebase_login.py`（相对包根）——**由人工在资产根 `library/assets/pp32an/` 执行** `python scripts/sources/leyou/leyou_firebase_login.py auto`（异 cwd 脚本路径写全即可，**参数与 cwd 无关** ✓）；登录态只落用户数据区 ✓；
-- **无命中不编造**：`ok:false` + 建议（换说法 / `--expand` / 换 need-type / 请维护者补池）；
+- **不弹窗、不扫码**：云智库未登录 → 明确返回 `LOGIN_REQUIRED` + 手动登录指引（绝不代扫）——**登录一律直接调用独立登录器（唯一入口、黑盒使用；禁止自写 / 自组装登录流程 ✗；用户已指定 / 提供凭证 → 按其走 ✓）**——**独立登录器位置**：`library/assets/pp32an/scripts/sources/leyou/login_leyou_cloud.py`（相对包根；手册 `login_leyou_cloud.md`）——**由 agent 或人工在资产根 `library/assets/pp32an/` 执行** `python scripts/sources/leyou/login_leyou_cloud.py --reuse`（登录窗口直达用户桌面；agent 只管等用户完成扫码；异 cwd 脚本路径写全即可，**参数与 cwd 无关** ✓）；登录态只落用户数据区 ✓；
+- **无命中/不足不轻易放弃（硬）**：**大多数业务知识都可查到**——`ok:false`（未命中）或"单条低相关"（不足）时按建议**继续**（试拆开的词 / 换说法 / `--expand` / 换 need-type），先换词再兜底，不得据此收工 ✗；
+  **组合词自动拆开检索**（如"省外单三"＝"省外"＋"单三"，分别查后合并；整词直查只能召回"提到该词"的条目）✓；
+  确无命中才如实拒答（**不编造**：`ok:false` + 建议，含"请维护者补池"）；
 - **单一权威源**：口径只认 `authority`；多源冲突**显式并列**（`conflict` 字段），不静默择一；
 - **运行数据一律落用户数据区（不写包内、不写 skill 同级）**：优先 `LEYAO_KB_HOME`；被框架挂载时自动归口 `<包父级>/.leyao-data/data/assets/<卡片id>/`（`LEYAO_SEED_HOME` 可覆盖）；独立部署/任意机器统一落 `~/.leyao-kb/`；缓存可随时清理（派生层）；
 - **缓存可失效**：桶级 TTL + **拒答即失效**（防"错答被缓存复利"）+ 命中透出 `cached_at`/`version`（陈旧度可审计）；

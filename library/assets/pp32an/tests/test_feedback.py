@@ -35,7 +35,7 @@ class TestFeedback(unittest.TestCase):
         self.assertFalse(r["ok"])
 
     def test_adopt_promotes_to_semantic(self):
-        _mock_pool([{"answer": "口径：X=Y/Z", "title": "X", "source": "pool", "trust": "authority",
+        _mock_pool([{"answer": "口径：X=Y/Z", "title": "术语：X 口径", "source": "pool", "trust": "authority",
                      "confidence": 0.9, "version": 1, "freshness": 1, "evidence": ["pool#x"],
                      "tags": ["caliber"], "score": 0.9}])
         r = _ask("X 口径怎么算")
@@ -49,7 +49,7 @@ class TestFeedback(unittest.TestCase):
         self.assertEqual(mems[0].get("tier"), "semantic", "adopt 达阈值应晋升 candidate→semantic")
 
     def test_reject_increments_fail(self):
-        _mock_pool([{"answer": "口径：A=B+C", "title": "A", "source": "pool", "trust": "authority",
+        _mock_pool([{"answer": "口径：A=B+C", "title": "术语：A 口径", "source": "pool", "trust": "authority",
                      "confidence": 0.9, "version": 1, "freshness": 1, "evidence": ["pool#y"],
                      "tags": ["caliber"], "score": 0.9}])
         r = _ask("A 口径怎么算")
@@ -58,7 +58,7 @@ class TestFeedback(unittest.TestCase):
         self.assertTrue(mems, "否决应累计 fail")
 
     def test_reject_invalidates_cache(self):
-        _mock_pool([{"answer": "口径：C=D+E", "title": "C", "source": "pool", "trust": "authority",
+        _mock_pool([{"answer": "口径：C=D+E", "title": "术语：C 口径", "source": "pool", "trust": "authority",
                      "confidence": 0.9, "version": 1, "freshness": 1, "evidence": ["pool#z"],
                      "tags": ["caliber"], "score": 0.9}])
         r = _ask("C 口径怎么算")
