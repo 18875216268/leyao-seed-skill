@@ -1,7 +1,7 @@
 {
   "name": "leyao-seed-skill",
-  "version": "0.41.1",
-  "updated": "2026-09-19",
+  "version": "0.41.2",
+  "updated": "2026-09-20",
   "layers": [
     {
       "id": "main",
