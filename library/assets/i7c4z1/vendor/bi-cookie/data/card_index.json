@@ -1,8 +1,8 @@
 {
   "meta": {
-    "generatedAt": 1788924100,
+    "generatedAt": 1790131486,
     "ttlDays": 7,
-    "cardCount": 558
+    "cardCount": 567
   },
   "cards": {
     "a139ac8eba72d424aba24fa9": {
@@ -55,7 +55,7 @@
         "集团框架协议",
         "集采合作厂牌"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a18745b5577c54984aa704f1": {
       "cardId": "a18745b5577c54984aa704f1",
@@ -83,7 +83,7 @@
         "V5销售额",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a1b92b4c95a314843b396bfd": {
       "cardId": "a1b92b4c95a314843b396bfd",
@@ -107,7 +107,7 @@
         "积分变动类型",
         "积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a231216961b85470a81d91e0": {
       "cardId": "a231216961b85470a81d91e0",
@@ -156,7 +156,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a37ee5f8f7c72419f8817e22": {
       "cardId": "a37ee5f8f7c72419f8817e22",
@@ -188,7 +188,7 @@
         "度量名",
         "新客池"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a3df1b563b93e45ebac1b3da": {
       "cardId": "a3df1b563b93e45ebac1b3da",
@@ -208,7 +208,7 @@
         "药店id",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a4792e3202d674591b461235": {
       "cardId": "a4792e3202d674591b461235",
@@ -254,7 +254,7 @@
         "近效期金额",
         "近效期金额占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a4e081db7ae5d4841a2bcab0": {
       "cardId": "a4e081db7ae5d4841a2bcab0",
@@ -290,7 +290,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a5cc34ceb3b0247c597185c7": {
       "cardId": "a5cc34ceb3b0247c597185c7",
@@ -303,7 +303,7 @@
       "fields": [
         "V1V2销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a62a0faff7d2e44b39852615": {
       "cardId": "a62a0faff7d2e44b39852615",
@@ -317,7 +317,7 @@
         "大盘含摇钱树进度",
         "时间进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a72e2549bb61647eabbd1154": {
       "cardId": "a72e2549bb61647eabbd1154",
@@ -341,7 +341,7 @@
         "spuid",
         "品种标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a77d192a39fe1465e95fea58": {
       "cardId": "a77d192a39fe1465e95fea58",
@@ -358,7 +358,7 @@
         "省内P4毛利率",
         "省外P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a935affffd9f8426c809c0cf": {
       "cardId": "a935affffd9f8426c809c0cf",
@@ -400,7 +400,7 @@
         "飞鹰有效店数目标",
         "首推含税销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a96a23679a34b44689c99ad5": {
       "cardId": "a96a23679a34b44689c99ad5",
@@ -428,7 +428,7 @@
         "采购品种数",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a998728a0eb8b4699b1a07b2": {
       "cardId": "a998728a0eb8b4699b1a07b2",
@@ -480,7 +480,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "a9f5bc3f2506642fa830be9c": {
       "cardId": "a9f5bc3f2506642fa830be9c",
@@ -497,7 +497,7 @@
         "厂牌营销方",
         "子公司id"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ab961efe1cf2b4d91bb394a2": {
       "cardId": "ab961efe1cf2b4d91bb394a2",
@@ -510,7 +510,7 @@
       "fields": [
         "渠道内全国销售金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "abce64ab205874285b1c3487": {
       "cardId": "abce64ab205874285b1c3487",
@@ -549,7 +549,7 @@
         "边际利润率",
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ac80c43b3aa20495c8a92af6": {
       "cardId": "ac80c43b3aa20495c8a92af6",
@@ -562,7 +562,7 @@
       "fields": [
         "T1T2签约率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ad278dc53cd9e4de4a350005": {
       "cardId": "ad278dc53cd9e4de4a350005",
@@ -585,7 +585,7 @@
       "fields": [
         "全国金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ad9b69efdecde4be68b552fa": {
       "cardId": "ad9b69efdecde4be68b552fa",
@@ -619,7 +619,7 @@
         "月",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "add7557c048d3411483670ff": {
       "cardId": "add7557c048d3411483670ff",
@@ -681,7 +681,7 @@
         "销售额规划达成率",
         "除占用"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "af46eea0ed2644145b4abe39": {
       "cardId": "af46eea0ed2644145b4abe39",
@@ -705,7 +705,7 @@
         "低起拼-订单金额占比",
         "低起拼订单占比目标上限"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "af76701dac8be4c70bd36aa5": {
       "cardId": "af76701dac8be4c70bd36aa5",
@@ -741,7 +741,7 @@
         "销售金额",
         "销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "afacb4d539274411f8991e68": {
       "cardId": "afacb4d539274411f8991e68",
@@ -773,7 +773,7 @@
       "fields": [
         "T1T2签约率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "afcec8685ca8544459e371af": {
       "cardId": "afcec8685ca8544459e371af",
@@ -824,7 +824,7 @@
         "边际利润额同比变化",
         "采购组长"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "afe229bffba444f308164c21": {
       "cardId": "afe229bffba444f308164c21",
@@ -845,7 +845,7 @@
         "支付日期",
         "药师帮单号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b0331d1551c5d4a0cba011fa": {
       "cardId": "b0331d1551c5d4a0cba011fa",
@@ -909,7 +909,7 @@
         "负边sku数",
         "负边销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b0a24b9a717b640e3ba168da": {
       "cardId": "b0a24b9a717b640e3ba168da",
@@ -937,7 +937,7 @@
         "采购品种数",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b108fedac6e3845e49dace8f": {
       "cardId": "b108fedac6e3845e49dace8f",
@@ -980,7 +980,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b1866256dbe1445f18a9b4f4": {
       "cardId": "b1866256dbe1445f18a9b4f4",
@@ -1023,7 +1023,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b3089c00c9af5472a9c99bf9": {
       "cardId": "b3089c00c9af5472a9c99bf9",
@@ -1064,7 +1064,7 @@
         "降本标签",
         "除自身集团平均p4"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b354b0fb726e3462fb641763": {
       "cardId": "b354b0fb726e3462fb641763",
@@ -1107,7 +1107,7 @@
         "货源稳定型标签",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b3fee25217d5545398eece9b": {
       "cardId": "b3fee25217d5545398eece9b",
@@ -1133,6 +1133,15 @@
           "fdType": "STRING",
           "filterType": "NI",
           "filterLevel": null
+        },
+        {
+          "name": "特殊剔除",
+          "fdId": "c9e72f275ac034c38b001a6b",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
         }
       ],
       "dz": [],
@@ -1143,7 +1152,7 @@
         "厂牌营销方",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b44bfe536140a4d9a8cc9de2": {
       "cardId": "b44bfe536140a4d9a8cc9de2",
@@ -1178,7 +1187,7 @@
         "省内排名",
         "考核标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b484f320fdbc54b06bf2e4e3": {
       "cardId": "b484f320fdbc54b06bf2e4e3",
@@ -1191,7 +1200,7 @@
       "fields": [
         "药师帮单号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b4bd065b67d904277980c63e": {
       "cardId": "b4bd065b67d904277980c63e",
@@ -1204,7 +1213,7 @@
       "fields": [
         "已产生积分"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b6b1f66a8dbb346a6a14aaee": {
       "cardId": "b6b1f66a8dbb346a6a14aaee",
@@ -1236,7 +1245,7 @@
       "fields": [
         "含税金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b7d1a08b431ee4288bb47047": {
       "cardId": "b7d1a08b431ee4288bb47047",
@@ -1259,7 +1268,7 @@
         "药店类型",
         "诊所大客户"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b9ace91315a98418b98003ac": {
       "cardId": "b9ace91315a98418b98003ac",
@@ -1284,7 +1293,7 @@
         "出库日期",
         "含税金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b9b6acc086c1d4161a54bbf9": {
       "cardId": "b9b6acc086c1d4161a54bbf9",
@@ -1298,7 +1307,7 @@
         "不含税边际利润",
         "不含税边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "b9c553199346a407a8f1f36b": {
       "cardId": "b9c553199346a407a8f1f36b",
@@ -1325,7 +1334,7 @@
         "度量名",
         "运营负责人-标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "bc68401297228428c88a2516": {
       "cardId": "bc68401297228428c88a2516",
@@ -1339,7 +1348,7 @@
         "a4_customer_count",
         "日"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "bd79e75f25f3f4d4caf78810": {
       "cardId": "bd79e75f25f3f4d4caf78810",
@@ -1379,7 +1388,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "bfbed2917e23a4ce5b9283f5": {
       "cardId": "bfbed2917e23a4ce5b9283f5",
@@ -1402,7 +1411,7 @@
       "fields": [
         "本地自营金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c0ce6d65064934a899293161": {
       "cardId": "c0ce6d65064934a899293161",
@@ -1416,7 +1425,7 @@
         "除摇钱树达成率",
         "除摇钱树金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c171a7b54c915486aa155ca0": {
       "cardId": "c171a7b54c915486aa155ca0",
@@ -1457,7 +1466,7 @@
         "边际利润额",
         "边际利润额1"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c17eb46a1e8ca492ba0157d1": {
       "cardId": "c17eb46a1e8ca492ba0157d1",
@@ -1487,7 +1496,7 @@
         "月目标",
         "销售金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c19ead352b60d4ce6bf8de21": {
       "cardId": "c19ead352b60d4ce6bf8de21",
@@ -1586,7 +1595,7 @@
         "采购起订量",
         "除占用库存"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c1c84cc1d782a4d0088d485e": {
       "cardId": "c1c84cc1d782a4d0088d485e",
@@ -1605,7 +1614,7 @@
         "诊所",
         "采购品种数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c2fbba07c4bd743118bacfb1": {
       "cardId": "c2fbba07c4bd743118bacfb1",
@@ -1662,7 +1671,7 @@
         "省内外",
         "运营负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c33eef968f4b741b1a0a55e8": {
       "cardId": "c33eef968f4b741b1a0a55e8",
@@ -1712,7 +1721,7 @@
       "fields": [
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c3dddbec614354305b46c416": {
       "cardId": "c3dddbec614354305b46c416",
@@ -1735,7 +1744,7 @@
       "fields": [
         "增长金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c50a1f25f2831422b836c15b": {
       "cardId": "c50a1f25f2831422b836c15b",
@@ -1781,7 +1790,7 @@
         "次优品种数",
         "次优品种比例"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c553e6f83761a421486070ba": {
       "cardId": "c553e6f83761a421486070ba",
@@ -1808,7 +1817,7 @@
         "集采进度",
         "首推目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c6b338d03bfba4931803f2b9": {
       "cardId": "c6b338d03bfba4931803f2b9",
@@ -1893,7 +1902,7 @@
         "采购数量",
         "降本金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c74a8f8b57e72440cbb7b7f1": {
       "cardId": "c74a8f8b57e72440cbb7b7f1",
@@ -1914,7 +1923,7 @@
         "子公司",
         "子公司ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c780c3efd043e4673bf36abf": {
       "cardId": "c780c3efd043e4673bf36abf",
@@ -1954,7 +1963,7 @@
         "药店类型",
         "规模标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c8c7ff007c07843b587ff256": {
       "cardId": "c8c7ff007c07843b587ff256",
@@ -1978,7 +1987,7 @@
         "合同协议管理",
         "集采公司"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "c9e2193e09e7b43fd8230e07": {
       "cardId": "c9e2193e09e7b43fd8230e07",
@@ -2003,7 +2012,7 @@
         "公司名称",
         "重点品种缺货率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "cb7da439a3a3c4017bf8db1f": {
       "cardId": "cb7da439a3a3c4017bf8db1f",
@@ -2046,7 +2055,7 @@
         "规格",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "cba10576f0edf48eabeb9369": {
       "cardId": "cba10576f0edf48eabeb9369",
@@ -2110,7 +2119,7 @@
         "需降本品种数",
         "高滞销品种数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ccae931ce97d54886b9899ab": {
       "cardId": "ccae931ce97d54886b9899ab",
@@ -2133,7 +2142,7 @@
       "fields": [
         "销售额签约率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "cd341358b1fe14c75965558b": {
       "cardId": "cd341358b1fe14c75965558b",
@@ -2161,7 +2170,7 @@
         "本日销售金额",
         "销售进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "cd63838f386eb461e82886d3": {
       "cardId": "cd63838f386eb461e82886d3",
@@ -2199,7 +2208,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ce2095554a19542afa908b6e": {
       "cardId": "ce2095554a19542afa908b6e",
@@ -2227,8 +2236,8 @@
           "filterLevel": null
         },
         {
-          "name": "协议等级",
-          "fdId": "q7e5447bb28374bbbb7e59fc",
+          "name": "协议合作级别",
+          "fdId": "ee28e98512c3f423f8073910",
           "dsId": "k60dad0bbcacc4d5e81cb0d0",
           "cdId": null,
           "fdType": "STRING",
@@ -2251,7 +2260,7 @@
         "本年P4毛利率",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "cf64e9762f4584123bb32ab5": {
       "cardId": "cf64e9762f4584123bb32ab5",
@@ -2283,7 +2292,7 @@
         "年内超额红线毛利(除摇钱树)",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "cfc7bf5d4f30243fc81ac908": {
       "cardId": "cfc7bf5d4f30243fc81ac908",
@@ -2307,7 +2316,7 @@
         "A1B3销售额",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d01159d486db94f9b8e4e1cf": {
       "cardId": "d01159d486db94f9b8e4e1cf",
@@ -2346,7 +2355,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d0c5aafbf7cb140378081d61": {
       "cardId": "d0c5aafbf7cb140378081d61",
@@ -2379,7 +2388,7 @@
         "均价比分层",
         "活动ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d0f0a3ed1933a460ba8179c8": {
       "cardId": "d0f0a3ed1933a460ba8179c8",
@@ -2429,7 +2438,7 @@
       "fields": [
         "增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d1ddfd5d6995b49b68ac67bc": {
       "cardId": "d1ddfd5d6995b49b68ac67bc",
@@ -2442,7 +2451,7 @@
       "fields": [
         "标题"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d22aa68c231a8483ebf29053": {
       "cardId": "d22aa68c231a8483ebf29053",
@@ -2464,7 +2473,7 @@
         "积分数量",
         "药店ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d3d3a2f8b385d4d89916f4b5": {
       "cardId": "d3d3a2f8b385d4d89916f4b5",
@@ -2543,7 +2552,7 @@
         "金额GAP",
         "金额增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d424d4690f7964e8ab0bc12e": {
       "cardId": "d424d4690f7964e8ab0bc12e",
@@ -2602,7 +2611,7 @@
         "销售额不含连锁排名",
         "除占用"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d44be53cdbe6346b79753521": {
       "cardId": "d44be53cdbe6346b79753521",
@@ -2652,7 +2661,7 @@
       "fields": [
         "本年P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d4cd71d7aae2c484f869c966": {
       "cardId": "d4cd71d7aae2c484f869c966",
@@ -2699,7 +2708,7 @@
         "当前spuid",
         "订单数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d5aed88ab3ec34effabc4d76": {
       "cardId": "d5aed88ab3ec34effabc4d76",
@@ -2726,7 +2735,7 @@
         "度量名",
         "活动ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d6f1c5db593544c9eb1f3e01": {
       "cardId": "d6f1c5db593544c9eb1f3e01",
@@ -2745,7 +2754,7 @@
         "时间进度",
         "进度差"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d7ced7a4fa4f04bbcac7e6f0": {
       "cardId": "d7ced7a4fa4f04bbcac7e6f0",
@@ -2759,7 +2768,7 @@
         "月销售同比",
         "销售同比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "d8e8b4c9e6a5a4fd2a0e15ec": {
       "cardId": "d8e8b4c9e6a5a4fd2a0e15ec",
@@ -2777,7 +2786,7 @@
         "子公司名称",
         "客户编码"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "da715f8be21374e7c88757ae": {
       "cardId": "da715f8be21374e7c88757ae",
@@ -2792,7 +2801,7 @@
         "重点品种数",
         "重点品种缺货率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "db1c1cf32f9934a52b2bcf41": {
       "cardId": "db1c1cf32f9934a52b2bcf41",
@@ -2819,7 +2828,7 @@
         "物流变动费率",
         "采购负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "dc7ca2818f35f4baf9a5c2de": {
       "cardId": "dc7ca2818f35f4baf9a5c2de",
@@ -2866,7 +2875,7 @@
         "当前spuid",
         "订单数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "dd66adfc61fc94c618bbaab5": {
       "cardId": "dd66adfc61fc94c618bbaab5",
@@ -2890,7 +2899,7 @@
         "药店ID",
         "药店类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "de4093b2872bc4c7d907b50e": {
       "cardId": "de4093b2872bc4c7d907b50e",
@@ -2935,7 +2944,7 @@
         "库龄分段",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "de4384558f1c74d89b4213d9": {
       "cardId": "de4384558f1c74d89b4213d9",
@@ -2967,7 +2976,7 @@
       "fields": [
         "T1T2签约率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "defff65e7c7834448afe2c5a": {
       "cardId": "defff65e7c7834448afe2c5a",
@@ -2996,7 +3005,7 @@
         "spuid",
         "近7天均价比分层1"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "df917f0016264438fa1cffa7": {
       "cardId": "df917f0016264438fa1cffa7",
@@ -3038,7 +3047,7 @@
         "边际利润率",
         "销售额签约率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e00c22c69cc56433e9e45ec3": {
       "cardId": "e00c22c69cc56433e9e45ec3",
@@ -3109,7 +3118,7 @@
         "规格",
         "采购起订量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e027d2c11b54e454384d43f1": {
       "cardId": "e027d2c11b54e454384d43f1",
@@ -3141,7 +3150,7 @@
         "近7天线上销量全国",
         "重点品种分类"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e0a5dee992f8b40d6b94caaa": {
       "cardId": "e0a5dee992f8b40d6b94caaa",
@@ -3166,7 +3175,7 @@
         "含税金额",
         "周"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e17a667c98ac84b65bdb0b71": {
       "cardId": "e17a667c98ac84b65bdb0b71",
@@ -3209,7 +3218,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e17aae06320bf4e96941b368": {
       "cardId": "e17aae06320bf4e96941b368",
@@ -3249,7 +3258,7 @@
         "经营公司数",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e1861ab0f632c475ba24474e": {
       "cardId": "e1861ab0f632c475ba24474e",
@@ -3300,7 +3309,7 @@
         "环数标签",
         "省内外"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e1e03c9a802d54202b9bbba0": {
       "cardId": "e1e03c9a802d54202b9bbba0",
@@ -3318,7 +3327,7 @@
         "月份",
         "达成率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e2364d07fedf544989fa345f": {
       "cardId": "e2364d07fedf544989fa345f",
@@ -3350,7 +3359,7 @@
       "fields": [
         "增长空间：常驻人口*6.5-本省金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e27707712c92b431b89be54c": {
       "cardId": "e27707712c92b431b89be54c",
@@ -3402,7 +3411,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e28c25061412a4273bc274b4": {
       "cardId": "e28c25061412a4273bc274b4",
@@ -3438,7 +3447,7 @@
         "销售金额",
         "销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e4329ae45b8ec493a9a5aaed": {
       "cardId": "e4329ae45b8ec493a9a5aaed",
@@ -3465,7 +3474,7 @@
         "经营品种数",
         "经营品种数对比目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e4cf037096f7b45ecbb2a0d3": {
       "cardId": "e4cf037096f7b45ecbb2a0d3",
@@ -3511,7 +3520,7 @@
         "度量名",
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e4d0da2e807ae4129a09ac99": {
       "cardId": "e4d0da2e807ae4129a09ac99",
@@ -3562,7 +3571,7 @@
         "采购员",
         "集采20厂牌销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e552b491d288743dba05cb05": {
       "cardId": "e552b491d288743dba05cb05",
@@ -3577,7 +3586,7 @@
         "子公司id",
         "子公司名称"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e5f8c8e988411433e9e2097a": {
       "cardId": "e5f8c8e988411433e9e2097a",
@@ -3594,7 +3603,7 @@
         "店铺含税销售额目标",
         "时间进度GAP"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e68283f6f44bb44dda3e90c7": {
       "cardId": "e68283f6f44bb44dda3e90c7",
@@ -3609,7 +3618,7 @@
         "省内运费率",
         "省外运费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e8354df9606fc4e1e92fa5ae": {
       "cardId": "e8354df9606fc4e1e92fa5ae",
@@ -3628,7 +3637,7 @@
         "有效店数",
         "飞鹰有效店数目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e8baa405bb7a549a089e7dfe": {
       "cardId": "e8baa405bb7a549a089e7dfe",
@@ -3670,7 +3679,7 @@
         "均价趋势分层",
         "活动ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e8da4685719b64f52843d9fb": {
       "cardId": "e8da4685719b64f52843d9fb",
@@ -3693,7 +3702,7 @@
       "fields": [
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e95cb344524094f1393d1e8f": {
       "cardId": "e95cb344524094f1393d1e8f",
@@ -3719,7 +3728,7 @@
         "新协议等级",
         "渠道类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "e9e5a9cb7044f4b94ac783f7": {
       "cardId": "e9e5a9cb7044f4b94ac783f7",
@@ -3737,7 +3746,7 @@
         "药店名称",
         "药店城市"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ea95ad19543a84a269881170": {
       "cardId": "ea95ad19543a84a269881170",
@@ -3758,7 +3767,7 @@
         "度量名",
         "除占用库存"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "eac14bf0be5ec40a395ebcd2": {
       "cardId": "eac14bf0be5ec40a395ebcd2",
@@ -3782,7 +3791,7 @@
         "不含税仓库人工成本费率",
         "不含税配送费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "eb3eb08e254a744fba92445e": {
       "cardId": "eb3eb08e254a744fba92445e",
@@ -3808,7 +3817,7 @@
         "度量名",
         "当月出库降本金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "eb59e333cdc304cab95d1d5b": {
       "cardId": "eb59e333cdc304cab95d1d5b",
@@ -3831,7 +3840,7 @@
       "fields": [
         "去年同期P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "eb7cc6af33c7541e49e35879": {
       "cardId": "eb7cc6af33c7541e49e35879",
@@ -3856,7 +3865,7 @@
         "城市",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ebc2a023bf69540bba3933ea": {
       "cardId": "ebc2a023bf69540bba3933ea",
@@ -3905,7 +3914,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ec3b5c9096fd6426f8e4e35f": {
       "cardId": "ec3b5c9096fd6426f8e4e35f",
@@ -3922,7 +3931,7 @@
         "子公司名称",
         "集采业务销售占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ec899ee4bedd94817a5d36a5": {
       "cardId": "ec899ee4bedd94817a5d36a5",
@@ -3988,7 +3997,7 @@
         "边际利润率-汇总",
         "边际利润率区间"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ec9a26f64c607448aa3b64ee": {
       "cardId": "ec9a26f64c607448aa3b64ee",
@@ -4024,7 +4033,7 @@
         "度量名",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ef331dd6241fd4a418c983db": {
       "cardId": "ef331dd6241fd4a418c983db",
@@ -4064,7 +4073,7 @@
         "月",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f09d8015f8d4a4836a15a24a": {
       "cardId": "f09d8015f8d4a4836a15a24a",
@@ -4099,7 +4108,7 @@
         "供应商id",
         "公司"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f1e11a48f5c1d4319bdbaa6e": {
       "cardId": "f1e11a48f5c1d4319bdbaa6e",
@@ -4139,7 +4148,7 @@
         "销售环比",
         "销售金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f2244f1c4fcce4b54b7d107a": {
       "cardId": "f2244f1c4fcce4b54b7d107a",
@@ -4165,7 +4174,7 @@
         "厂牌营销方",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f2c49d81e9e2045a4a9e5e4a": {
       "cardId": "f2c49d81e9e2045a4a9e5e4a",
@@ -4209,7 +4218,7 @@
         "省内出库金额",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f2d11958bd3d84b578283c05": {
       "cardId": "f2d11958bd3d84b578283c05",
@@ -4260,7 +4269,7 @@
         "省份",
         "省内外"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f3fdf850347d34eb79b9dd45": {
       "cardId": "f3fdf850347d34eb79b9dd45",
@@ -4297,7 +4306,7 @@
         "度量名",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f4a13889fdff044188377287": {
       "cardId": "f4a13889fdff044188377287",
@@ -4356,7 +4365,7 @@
         "近7天线上销量全国",
         "近效期金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f4f8b9cfd23c14fc7813ed0b": {
       "cardId": "f4f8b9cfd23c14fc7813ed0b",
@@ -4372,7 +4381,7 @@
         "省内占比",
         "运费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f4fc7e8819ceb436a9ad2433": {
       "cardId": "f4fc7e8819ceb436a9ad2433",
@@ -4389,7 +4398,7 @@
         "子公司名称",
         "集采业务销售占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f6b23ef9a89fc44208c97e90": {
       "cardId": "f6b23ef9a89fc44208c97e90",
@@ -4402,7 +4411,7 @@
       "fields": [
         "促销费比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f814f5ffcbf0848a5acf9054": {
       "cardId": "f814f5ffcbf0848a5acf9054",
@@ -4478,7 +4487,7 @@
         "金额GAP",
         "金额增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f81a02da35834464d8abf967": {
       "cardId": "f81a02da35834464d8abf967",
@@ -4557,7 +4566,7 @@
         "金额GAP",
         "金额增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f82b598375eac4eae842ab45": {
       "cardId": "f82b598375eac4eae842ab45",
@@ -4571,7 +4580,7 @@
         "摇钱树进度排名",
         "销售进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "f969d9aa9616a44f7865b0a7": {
       "cardId": "f969d9aa9616a44f7865b0a7",
@@ -4597,7 +4606,7 @@
         "应收边际利润率",
         "运费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fa751fe086ee04b479732674": {
       "cardId": "fa751fe086ee04b479732674",
@@ -4656,7 +4665,7 @@
         "省内外",
         "运营负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fabf12582c96344de937bb58": {
       "cardId": "fabf12582c96344de937bb58",
@@ -4708,7 +4717,7 @@
         "集团框架协议",
         "集采合作厂牌"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fb1aebb81797d45ef9e67c4e": {
       "cardId": "fb1aebb81797d45ef9e67c4e",
@@ -4731,7 +4740,7 @@
       "fields": [
         "去年同期P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fc0e33c71c74b472fa4a3593": {
       "cardId": "fc0e33c71c74b472fa4a3593",
@@ -4774,7 +4783,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fd5ad8ba987054b5aaca8c58": {
       "cardId": "fd5ad8ba987054b5aaca8c58",
@@ -4817,7 +4826,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fe4131a6c0fbc4949b147d28": {
       "cardId": "fe4131a6c0fbc4949b147d28",
@@ -4852,7 +4861,7 @@
         "供应商id",
         "公司"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fe9bd5694d8ed45659f4fbe1": {
       "cardId": "fe9bd5694d8ed45659f4fbe1",
@@ -4886,7 +4895,7 @@
         "结算方式",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "feb7fefd23e2d4d9db5d3812": {
       "cardId": "feb7fefd23e2d4d9db5d3812",
@@ -4900,7 +4909,7 @@
         "不含税平台费",
         "不含税平台费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "fec92070fe1924484afaf946": {
       "cardId": "fec92070fe1924484afaf946",
@@ -4913,7 +4922,7 @@
       "fields": [
         "A1B3品种金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g0e3ac52ff5484a129a361cd": {
       "cardId": "g0e3ac52ff5484a129a361cd",
@@ -4972,7 +4981,7 @@
         "本年P4毛利率",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g116d2b5b144a423db7251fa": {
       "cardId": "g116d2b5b144a423db7251fa",
@@ -5021,7 +5030,7 @@
         "目录内外",
         "组长"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g2b9d16e112b54f649e11375": {
       "cardId": "g2b9d16e112b54f649e11375",
@@ -5065,7 +5074,7 @@
         "省内外",
         "药师帮ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g4481c87c1414489eb68acd7": {
       "cardId": "g4481c87c1414489eb68acd7",
@@ -5088,7 +5097,7 @@
       "fields": [
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g4963eeab24e14d109a5a643": {
       "cardId": "g4963eeab24e14d109a5a643",
@@ -5101,7 +5110,7 @@
       "fields": [
         "积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g530790c0e9b04d82b4e78fb": {
       "cardId": "g530790c0e9b04d82b4e78fb",
@@ -5121,7 +5130,7 @@
         "度量名",
         "金额同比增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g65f26fc56f1149998802503": {
       "cardId": "g65f26fc56f1149998802503",
@@ -5144,7 +5153,7 @@
       "fields": [
         "增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g798097fe8a1c4efdbe99cb3": {
       "cardId": "g798097fe8a1c4efdbe99cb3",
@@ -5177,7 +5186,7 @@
         "月份",
         "近7天不动销品种数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g79e2ddcc9b9141adb106d16": {
       "cardId": "g79e2ddcc9b9141adb106d16",
@@ -5206,7 +5215,7 @@
         "省外",
         "诊所"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g7d7ffaa31f754405acdf8eb": {
       "cardId": "g7d7ffaa31f754405acdf8eb",
@@ -5246,10 +5255,14 @@
         "备注",
         "子公司名称",
         "库存表入库数量",
+        "建议请货数量",
+        "当前spuid",
         "当前库存数量",
         "总损失",
         "数量等级",
+        "是否近效期",
         "最后销售日期近28天全国均价",
+        "结算方式小类",
         "规格",
         "订单对应边际利润率",
         "订单对应销售额",
@@ -5257,7 +5270,7 @@
         "近30天已请货未到货数量",
         "采购单编号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g8ace07cc798c4b49b60ca14": {
       "cardId": "g8ace07cc798c4b49b60ca14",
@@ -5298,7 +5311,7 @@
         "药品名称",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g8be7c5e11abe4d61ad77c83": {
       "cardId": "g8be7c5e11abe4d61ad77c83",
@@ -5324,7 +5337,7 @@
         "应收边际利润率",
         "运费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "g9a4387a410fe499f8b6576f": {
       "cardId": "g9a4387a410fe499f8b6576f",
@@ -5347,7 +5360,7 @@
         "月份",
         "金额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ga45c6c8f36614ba69a6c6ca": {
       "cardId": "ga45c6c8f36614ba69a6c6ca",
@@ -5386,7 +5399,7 @@
         "销售金额",
         "销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ga99a599a9d1f430481b1572": {
       "cardId": "ga99a599a9d1f430481b1572",
@@ -5419,7 +5432,7 @@
         "月份",
         "组长"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "gb641594783dd41f58fede56": {
       "cardId": "gb641594783dd41f58fede56",
@@ -5452,7 +5465,7 @@
         "1.02优势数",
         "快照日期"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "gbede4f79303b47ac999ae92": {
       "cardId": "gbede4f79303b47ac999ae92",
@@ -5466,7 +5479,7 @@
         "月销售同比",
         "销售同比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "h38f219d7f09a4c169df1744": {
       "cardId": "h38f219d7f09a4c169df1744",
@@ -5489,7 +5502,7 @@
       "fields": [
         "含税金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "h392dc6c26bdb408496f7940": {
       "cardId": "h392dc6c26bdb408496f7940",
@@ -5502,7 +5515,7 @@
       "fields": [
         "签约率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "h4b8eeb1b94fc4347b0bb140": {
       "cardId": "h4b8eeb1b94fc4347b0bb140",
@@ -5525,7 +5538,7 @@
       "fields": [
         "公司MTD全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "h503b91ffad0e42799da1fff": {
       "cardId": "h503b91ffad0e42799da1fff",
@@ -5554,7 +5567,7 @@
         "药店id",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "h54681bf2ab91418897e851d": {
       "cardId": "h54681bf2ab91418897e851d",
@@ -5584,7 +5597,7 @@
         "相对稳定客户数目标",
         "相对稳定达成进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "h57e043bc2c944b9e9819c05": {
       "cardId": "h57e043bc2c944b9e9819c05",
@@ -5627,7 +5640,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "h92454934ccc54ac9883d658": {
       "cardId": "h92454934ccc54ac9883d658",
@@ -5655,7 +5668,7 @@
         "子公司名称",
         "客户编码"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ha1db4f4abf5748fba79795f": {
       "cardId": "ha1db4f4abf5748fba79795f",
@@ -5677,7 +5690,7 @@
         "边际利润率",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ha5a75e0515b8423080830c4": {
       "cardId": "ha5a75e0515b8423080830c4",
@@ -5698,7 +5711,7 @@
         "分析维度",
         "物流变动费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "hc0a27f13c13348579e4dc78": {
       "cardId": "hc0a27f13c13348579e4dc78",
@@ -5728,7 +5741,7 @@
         "本月包裹金额",
         "本月条目单价"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "hc8387fc6768048ce8e22a4f": {
       "cardId": "hc8387fc6768048ce8e22a4f",
@@ -5741,7 +5754,7 @@
       "fields": [
         "时间进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "hcaa024eb487b423e9cfd6a9": {
       "cardId": "hcaa024eb487b423e9cfd6a9",
@@ -5779,7 +5792,7 @@
         "运费2",
         "配送费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i0e7decc9c7ce4ba5b0f5f3b": {
       "cardId": "i0e7decc9c7ce4ba5b0f5f3b",
@@ -5819,7 +5832,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i13d955943d854a9487091d4": {
       "cardId": "i13d955943d854a9487091d4",
@@ -5832,7 +5845,7 @@
       "fields": [
         "时间进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i1878a21f52284c4ab3bab70": {
       "cardId": "i1878a21f52284c4ab3bab70",
@@ -5875,7 +5888,7 @@
         "边际利润率-汇总",
         "边际利润率区间"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i29d199d069d94bf7a996324": {
       "cardId": "i29d199d069d94bf7a996324",
@@ -5889,7 +5902,7 @@
         "月边率差值",
         "本月边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i2eb7b472df654ec08f718a4": {
       "cardId": "i2eb7b472df654ec08f718a4",
@@ -5932,7 +5945,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i3b416f711c424953872d96d": {
       "cardId": "i3b416f711c424953872d96d",
@@ -5963,7 +5976,7 @@
         "在库编码数",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i3ef4a98ae53c4c258a30c8d": {
       "cardId": "i3ef4a98ae53c4c258a30c8d",
@@ -6021,7 +6034,7 @@
         "维度",
         "项目"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i447b1a39741f49cf89cfc1b": {
       "cardId": "i447b1a39741f49cf89cfc1b",
@@ -6074,7 +6087,7 @@
         "省内加权市占率",
         "过去28天销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i501c7b3e084841f8996b092": {
       "cardId": "i501c7b3e084841f8996b092",
@@ -6098,7 +6111,7 @@
         "负毛-订单金额占比",
         "负毛订单占比目标上限"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i61a3de6c48444a78934a729": {
       "cardId": "i61a3de6c48444a78934a729",
@@ -6113,7 +6126,7 @@
         "重点品种销售目标达成率",
         "重点品种销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i6353e0dfbd13451d980d647": {
       "cardId": "i6353e0dfbd13451d980d647",
@@ -6164,7 +6177,7 @@
         "下单金额",
         "公司销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i662c9bea1a4e444bbcbbcc6": {
       "cardId": "i662c9bea1a4e444bbcbbcc6",
@@ -6202,7 +6215,7 @@
         "达仁堂金额目标",
         "达仁堂金额达成率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i78628e3906634d1ea29c98a": {
       "cardId": "i78628e3906634d1ea29c98a",
@@ -6252,7 +6265,7 @@
       "fields": [
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "i7e6a79f600c242b0b578745": {
       "cardId": "i7e6a79f600c242b0b578745",
@@ -6282,7 +6295,7 @@
         "线上线下类型",
         "药品ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ia6731c65ba67453c980f179": {
       "cardId": "ia6731c65ba67453c980f179",
@@ -6326,7 +6339,7 @@
         "含税金额",
         "时间选择"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ia6866792e67f4a0fb4384fb": {
       "cardId": "ia6866792e67f4a0fb4384fb",
@@ -6350,7 +6363,7 @@
         "度量名",
         "新客池"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ib3beceff22ea4cdba930193": {
       "cardId": "ib3beceff22ea4cdba930193",
@@ -6382,7 +6395,7 @@
         "度量名",
         "目录客户数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ib6fb5a1d23804bf19ed8649": {
       "cardId": "ib6fb5a1d23804bf19ed8649",
@@ -6432,7 +6445,7 @@
       "fields": [
         "增长金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ibecc9c82421346d2bdcd6e8": {
       "cardId": "ibecc9c82421346d2bdcd6e8",
@@ -6455,7 +6468,7 @@
       "fields": [
         "公司MTD全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ibef87f601b4d48e989b19dd": {
       "cardId": "ibef87f601b4d48e989b19dd",
@@ -6489,7 +6502,7 @@
         "采购品种数",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ic0516066968742bdb1a74be": {
       "cardId": "ic0516066968742bdb1a74be",
@@ -6538,7 +6551,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ica16cfa610394ef48c55bea": {
       "cardId": "ica16cfa610394ef48c55bea",
@@ -6555,7 +6568,7 @@
         "厂牌营销方",
         "子公司id"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "iecb171ae0ec9493f8ef726f": {
       "cardId": "iecb171ae0ec9493f8ef726f",
@@ -6602,7 +6615,7 @@
         "边际利润额",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "if00c8ab5e1074c9c89c9b65": {
       "cardId": "if00c8ab5e1074c9c89c9b65",
@@ -6637,7 +6650,7 @@
         "度量名",
         "省内排名分段"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ifc078c59eea34ce1b6d6007": {
       "cardId": "ifc078c59eea34ce1b6d6007",
@@ -6684,7 +6697,7 @@
         "近7天均价比",
         "近7天均价比分层"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j0110e3ba195146548869c75": {
       "cardId": "j0110e3ba195146548869c75",
@@ -6782,7 +6795,7 @@
         "除自身集团平均p4",
         "预估月底销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j02a572cf02b145b8984a058": {
       "cardId": "j02a572cf02b145b8984a058",
@@ -6795,7 +6808,7 @@
       "fields": [
         "不含税边际利润"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j295bd8413ef54c8cb04c4b0": {
       "cardId": "j295bd8413ef54c8cb04c4b0",
@@ -6832,7 +6845,7 @@
         "整体缺货率",
         "省内排名分段"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j374cd19ec718479399645e1": {
       "cardId": "j374cd19ec718479399645e1",
@@ -6952,7 +6965,7 @@
         "采购小类",
         "除占用"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j54ccd5127a7a4d9cb6374cb": {
       "cardId": "j54ccd5127a7a4d9cb6374cb",
@@ -6969,7 +6982,7 @@
         "集采进度排名",
         "集采金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j5a3f04df215049339fc7353": {
       "cardId": "j5a3f04df215049339fc7353",
@@ -7012,7 +7025,7 @@
         "生产厂家",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j62425393cdb94dda8384704": {
       "cardId": "j62425393cdb94dda8384704",
@@ -7061,7 +7074,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j6487c62df27b4943804e523": {
       "cardId": "j6487c62df27b4943804e523",
@@ -7080,7 +7093,7 @@
         "省外",
         "诊所"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j6766097751e1497d9b7b49a": {
       "cardId": "j6766097751e1497d9b7b49a",
@@ -7103,7 +7116,7 @@
       "fields": [
         "本年P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j7e04839a1cf04c2283bb7f3": {
       "cardId": "j7e04839a1cf04c2283bb7f3",
@@ -7129,7 +7142,7 @@
         "销售同比变化额",
         "销售额同比变化率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j82c3eb0cec1e4ea086fa5c1": {
       "cardId": "j82c3eb0cec1e4ea086fa5c1",
@@ -7146,7 +7159,7 @@
         "省内人工费率",
         "省外人工费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "j856e2762732b4c23a863df8": {
       "cardId": "j856e2762732b4c23a863df8",
@@ -7189,7 +7202,7 @@
         "spuid",
         "供应商名称"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ja31407b3339f4c4fba01f89": {
       "cardId": "ja31407b3339f4c4fba01f89",
@@ -7231,7 +7244,7 @@
         "供应商名称",
         "均价-成本预计负毛SPUID数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ja62f67542c6442c3b8c685b": {
       "cardId": "ja62f67542c6442c3b8c685b",
@@ -7263,7 +7276,7 @@
       "fields": [
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jab76b7d9551d4574a85f71f": {
       "cardId": "jab76b7d9551d4574a85f71f",
@@ -7317,7 +7330,7 @@
         "零售单体利润率",
         "零售单体金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jbd22d6c2155b46ce92ebee3": {
       "cardId": "jbd22d6c2155b46ce92ebee3",
@@ -7339,7 +7352,7 @@
         "本月底需达到的承接店数",
         "本月店数GAP值(目标-达成)"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jc747bae4c1d64816a5d322e": {
       "cardId": "jc747bae4c1d64816a5d322e",
@@ -7356,6 +7369,15 @@
           "fdType": "STRING",
           "filterType": "NI",
           "filterLevel": "DETAIL"
+        },
+        {
+          "name": "特殊剔除",
+          "fdId": "wb18e821883fd4f57964cb9a",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": null
         }
       ],
       "dz": [],
@@ -7376,16 +7398,19 @@
         "库存天数",
         "库存数量",
         "库龄",
+        "当前厂牌商务",
         "批次号",
         "效期至",
         "是否BC类滞销",
+        "是否为6045滞销",
+        "是否为近效期品种",
         "结算方式",
         "规格",
         "近28天平台省内均价",
         "近28天线上销量全国",
         "近7天平台省内均价"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jc90f27721553462ab135f3e": {
       "cardId": "jc90f27721553462ab135f3e",
@@ -7424,7 +7449,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jcf20b3ca8c02441ab3b56bc": {
       "cardId": "jcf20b3ca8c02441ab3b56bc",
@@ -7459,7 +7484,7 @@
         "度量名",
         "省内排名分段"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jdb4db36fa76a4ca997cc102": {
       "cardId": "jdb4db36fa76a4ca997cc102",
@@ -7476,7 +7501,7 @@
         "拼团批购销售额",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jecf798c90f774ff5a42bc41": {
       "cardId": "jecf798c90f774ff5a42bc41",
@@ -7501,7 +7526,7 @@
         "厂牌营销方",
         "合同协议管理"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jeedb9321e8e14ccc9138168": {
       "cardId": "jeedb9321e8e14ccc9138168",
@@ -7541,7 +7566,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "jfdf88ba614624a77a0cd7a2": {
       "cardId": "jfdf88ba614624a77a0cd7a2",
@@ -7594,7 +7619,7 @@
         "省内加权市占率",
         "过去28天销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k1052a9da9d5142098cff49f": {
       "cardId": "k1052a9da9d5142098cff49f",
@@ -7628,7 +7653,7 @@
         "年份",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k116e9ad8d92347c4b1bc27a": {
       "cardId": "k116e9ad8d92347c4b1bc27a",
@@ -7651,7 +7676,7 @@
       "fields": [
         "平台金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k1222fcbcd17c44cdbe5dcfb": {
       "cardId": "k1222fcbcd17c44cdbe5dcfb",
@@ -7680,7 +7705,7 @@
         "采购大类",
         "采购小类"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k1f13ccc8208c4617b051624": {
       "cardId": "k1f13ccc8208c4617b051624",
@@ -7747,7 +7772,7 @@
         "省内排名分层",
         "运营负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k237c2f757bde435895981b4": {
       "cardId": "k237c2f757bde435895981b4",
@@ -7761,7 +7786,7 @@
         "分析维度",
         "含税金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k402ae264b109439c9aca7ac": {
       "cardId": "k402ae264b109439c9aca7ac",
@@ -7808,7 +7833,7 @@
         "子公司id",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k4535a49398a745ba875b936": {
       "cardId": "k4535a49398a745ba875b936",
@@ -7822,7 +7847,7 @@
         "公司MTD全国销售额",
         "协议合作级别"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k519c7ebcd0414173bc3c64f": {
       "cardId": "k519c7ebcd0414173bc3c64f",
@@ -7850,7 +7875,7 @@
         "采购品种数",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k5c1b1aa41e6d4b8cb375bf5": {
       "cardId": "k5c1b1aa41e6d4b8cb375bf5",
@@ -7876,11 +7901,11 @@
         "连锁KA销售额",
         "连锁含税销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k629e6149b4194e76a004493": {
       "cardId": "k629e6149b4194e76a004493",
-      "name": "35客户覆盖率数据",
+      "name": "35客户覆盖率数据（实时更新）",
       "chartType": "DETAIL_TABLE",
       "pgId": "ae8983205b34346609d96ea6",
       "cdType": "CHART",
@@ -7892,7 +7917,7 @@
           "cdId": null,
           "fdType": "STRING",
           "filterType": "IN",
-          "filterLevel": "DETAIL"
+          "filterLevel": null
         },
         {
           "name": "业务类型",
@@ -7927,7 +7952,7 @@
         "通用名",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k66bb5403e13f4575b956f8f": {
       "cardId": "k66bb5403e13f4575b956f8f",
@@ -7952,7 +7977,7 @@
         "药品名称",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k6c1e667d915445ecaf71db3": {
       "cardId": "k6c1e667d915445ecaf71db3",
@@ -7966,7 +7991,7 @@
         "已兑换积分",
         "已兑换积分折算金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k6ee50e84aa634af1b8dbbb0": {
       "cardId": "k6ee50e84aa634af1b8dbbb0",
@@ -8034,7 +8059,7 @@
         "边际利润率-汇总",
         "边际利润率区间"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k7f5a3adbb31243fabfe4248": {
       "cardId": "k7f5a3adbb31243fabfe4248",
@@ -8047,7 +8072,7 @@
       "fields": [
         "不含税P4毛利率 "
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k873855a794a34462bd43847": {
       "cardId": "k873855a794a34462bd43847",
@@ -8093,7 +8118,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k8e3a682038b74cb08eb3dea": {
       "cardId": "k8e3a682038b74cb08eb3dea",
@@ -8118,7 +8143,7 @@
         "大盘除摇钱树进度",
         "省内进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "k8e813e8da0754ef69cd4b52": {
       "cardId": "k8e813e8da0754ef69cd4b52",
@@ -8141,7 +8166,7 @@
       "fields": [
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ka163df71826e485d875197a": {
       "cardId": "ka163df71826e485d875197a",
@@ -8184,7 +8209,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ka7d99990462a42d893f904e": {
       "cardId": "ka7d99990462a42d893f904e",
@@ -8214,7 +8239,7 @@
         "边际利润率",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ka7e0120e59c14fc0bd628a5": {
       "cardId": "ka7e0120e59c14fc0bd628a5",
@@ -8222,7 +8247,17 @@
       "chartType": "PIVOT_TABLE",
       "pgId": "m01411409b42a446cb766bb3",
       "cdType": "CHART",
-      "filters": [],
+      "filters": [
+        {
+          "name": "特殊剔除",
+          "fdId": "w130ec25abbb04338b88ab62",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
+        }
+      ],
       "dz": [],
       "fields": [
         "6045滞销占比",
@@ -8246,7 +8281,7 @@
         "近效期占比",
         "近效期扣罚金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kaf88ddd426eb4981bf85e9f": {
       "cardId": "kaf88ddd426eb4981bf85e9f",
@@ -8285,7 +8320,7 @@
         "销售金额",
         "销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kb0e4ba78e77e4b658ceffe3": {
       "cardId": "kb0e4ba78e77e4b658ceffe3",
@@ -8308,7 +8343,7 @@
         "月",
         "本地自营金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kbdcc3ee2352e401e961802b": {
       "cardId": "kbdcc3ee2352e401e961802b",
@@ -8359,7 +8394,7 @@
         "边际利润率",
         "近30天已请货未到货数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kc1d477af10b944d8bd18247": {
       "cardId": "kc1d477af10b944d8bd18247",
@@ -8412,7 +8447,7 @@
         "省内加权市占率",
         "过去28天销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kc6edeed868ff41abbf0fffb": {
       "cardId": "kc6edeed868ff41abbf0fffb",
@@ -8469,11 +8504,11 @@
         "采购员",
         "采购数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kda3b2017af284bb88d176e1": {
       "cardId": "kda3b2017af284bb88d176e1",
-      "name": "销售+覆盖率数据",
+      "name": "销售+覆盖率数据（实时更新）",
       "chartType": "DETAIL_TABLE",
       "pgId": "ae8983205b34346609d96ea6",
       "cdType": "CHART",
@@ -8485,7 +8520,7 @@
           "cdId": null,
           "fdType": "STRING",
           "filterType": "IN",
-          "filterLevel": "DETAIL"
+          "filterLevel": null
         },
         {
           "name": "业务类型",
@@ -8520,7 +8555,7 @@
         "通用名",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kdf9745c033a145b8b5bc755": {
       "cardId": "kdf9745c033a145b8b5bc755",
@@ -8548,7 +8583,7 @@
         "相对稳定客户数目标",
         "相对稳定达成进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "kdfd608cb4dc848b6822bbc6": {
       "cardId": "kdfd608cb4dc848b6822bbc6",
@@ -8573,7 +8608,7 @@
         "含税金额",
         "月"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ke80d45168d564ac182643db": {
       "cardId": "ke80d45168d564ac182643db",
@@ -8598,11 +8633,11 @@
         "厂牌营销方",
         "合同协议管理"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l032af77b2fc64aff8a89050": {
       "cardId": "l032af77b2fc64aff8a89050",
-      "name": " [j7a522644cd174939a8db718] 定价优势分布明细（选中目标区域可放大；卡片右上角，可放大、可导出）",
+      "name": " [j7a522644cd174939a8db718] 定价优势分布明细——圈越大代表库存金额越大（选中目标区域可放大；卡片右上角，可放大、可导出）",
       "chartType": "BASIC_BUBBLE",
       "pgId": "v1cc7f1d49ceb4ae2a85bbe1",
       "cdType": "CHART",
@@ -8633,7 +8668,7 @@
         "活动ID",
         "省内排名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l0960ea134a144b5aa6a3b6d": {
       "cardId": "l0960ea134a144b5aa6a3b6d",
@@ -8684,7 +8719,7 @@
         "省内出库金额",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l1298cda464b14323a445502": {
       "cardId": "l1298cda464b14323a445502",
@@ -8723,7 +8758,7 @@
         "集采&总代\n运营负责人",
         "非TOP大于1%目标金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l21f9d37d22a44004b353a5b": {
       "cardId": "l21f9d37d22a44004b353a5b",
@@ -8754,7 +8789,7 @@
         "省份",
         "药店类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l28e0a81ce0d34174b807c79": {
       "cardId": "l28e0a81ce0d34174b807c79",
@@ -8780,7 +8815,7 @@
         "月",
         "药师帮单号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l3959342b416a4667a81566b": {
       "cardId": "l3959342b416a4667a81566b",
@@ -8794,7 +8829,7 @@
         "剩余可用积分",
         "剩余积分折算金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l3b206aa851c343889e8559d": {
       "cardId": "l3b206aa851c343889e8559d",
@@ -8860,7 +8895,7 @@
         "负责人",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l483d86a2b6314858802293c": {
       "cardId": "l483d86a2b6314858802293c",
@@ -8888,7 +8923,7 @@
         "采购品种数",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l5868a86a2ab54dfeb79300a": {
       "cardId": "l5868a86a2ab54dfeb79300a",
@@ -8913,7 +8948,7 @@
         "公司名称",
         "普品滞销占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l5c08ac3365b54bedb12073b": {
       "cardId": "l5c08ac3365b54bedb12073b",
@@ -8946,7 +8981,7 @@
         "积分数量`",
         "药店ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l6b88a0c9ef9f44b3a553ad4": {
       "cardId": "l6b88a0c9ef9f44b3a553ad4",
@@ -8969,7 +9004,7 @@
       "fields": [
         "增长金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l7ff458082ab5434e8635d0a": {
       "cardId": "l7ff458082ab5434e8635d0a",
@@ -9017,7 +9052,7 @@
         "边际利润率",
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l83c40cc0eeb740bca323302": {
       "cardId": "l83c40cc0eeb740bca323302",
@@ -9062,7 +9097,7 @@
         "月",
         "达标比例"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l8435938d5311433d8cb0c42": {
       "cardId": "l8435938d5311433d8cb0c42",
@@ -9076,7 +9111,7 @@
         "年度边际利润率",
         "年边率差值"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l906205ff00b8455baa414f0": {
       "cardId": "l906205ff00b8455baa414f0",
@@ -9090,7 +9125,7 @@
         "月边率差值",
         "本月边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "l907c01fb001d40079afa3b3": {
       "cardId": "l907c01fb001d40079afa3b3",
@@ -9117,7 +9152,7 @@
         "度量名",
         "渠道类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "lacdb43ecf1984f15b292c21": {
       "cardId": "lacdb43ecf1984f15b292c21",
@@ -9164,7 +9199,7 @@
         "条目数",
         "活动类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "laeb426603d224a2eaa48c3f": {
       "cardId": "laeb426603d224a2eaa48c3f",
@@ -9213,7 +9248,7 @@
         "省内外",
         "运营负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "lc1fc54c7a9d1458cb7c80fa": {
       "cardId": "lc1fc54c7a9d1458cb7c80fa",
@@ -9237,7 +9272,7 @@
         "出库月份",
         "负边品种边际利润额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "lc5d35d3d712c48a09e81e2c": {
       "cardId": "lc5d35d3d712c48a09e81e2c",
@@ -9272,7 +9307,7 @@
         "有采购店数",
         "活跃率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ld3ff055325fc4597b1a4a5c": {
       "cardId": "ld3ff055325fc4597b1a4a5c",
@@ -9321,7 +9356,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ldf6183d571b74529b63747b": {
       "cardId": "ldf6183d571b74529b63747b",
@@ -9337,7 +9372,7 @@
         "省内边际利润率",
         "省外边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "le51ae982893a472bb92ab0a": {
       "cardId": "le51ae982893a472bb92ab0a",
@@ -9352,7 +9387,7 @@
         "含税金额",
         "省份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "leaf455051f824d6db938073": {
       "cardId": "leaf455051f824d6db938073",
@@ -9424,7 +9459,7 @@
         "销售出库价",
         "除自身集团平均p4"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "lf75bb8ec66ef4cd4a267fcd": {
       "cardId": "lf75bb8ec66ef4cd4a267fcd",
@@ -9449,7 +9484,7 @@
         "含摇钱树绩效毛利率-递延后",
         "含摇钱树绩效毛利额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m034961e8014c4e4f8b62a00": {
       "cardId": "m034961e8014c4e4f8b62a00",
@@ -9508,7 +9543,7 @@
         "销售数量",
         "集采手工补贴"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m07905eb1888b455585b0561": {
       "cardId": "m07905eb1888b455585b0561",
@@ -9531,7 +9566,7 @@
         "新客数目标",
         "新客达成进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m0c162a7502784544875862d": {
       "cardId": "m0c162a7502784544875862d",
@@ -9576,7 +9611,7 @@
         "边际利润率",
         "边际利润额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m0f716cddd47d41d8ac3b1f5": {
       "cardId": "m0f716cddd47d41d8ac3b1f5",
@@ -9593,7 +9628,7 @@
         "首推进度排名",
         "首推金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m1ce3d3a95280432da8e0802": {
       "cardId": "m1ce3d3a95280432da8e0802",
@@ -9617,7 +9652,7 @@
         "合同协议管理",
         "集采公司"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m2531d741c40344ec817d44d": {
       "cardId": "m2531d741c40344ec817d44d",
@@ -9630,7 +9665,7 @@
       "fields": [
         "可用积分"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m34b6c965487c4602a95857c": {
       "cardId": "m34b6c965487c4602a95857c",
@@ -9670,7 +9705,7 @@
         "省份",
         "省内外"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m3adfdb97b3814309b0171fb": {
       "cardId": "m3adfdb97b3814309b0171fb",
@@ -9724,7 +9759,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m3afd12d758664ab0b1990da": {
       "cardId": "m3afd12d758664ab0b1990da",
@@ -9751,7 +9786,7 @@
         "月份",
         "月目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m43b1eec07c63403d8fb5256": {
       "cardId": "m43b1eec07c63403d8fb5256",
@@ -9809,7 +9844,7 @@
         "边际利润率",
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m4bf9d6c29e9245a0947049e": {
       "cardId": "m4bf9d6c29e9245a0947049e",
@@ -9852,7 +9887,7 @@
         "spuid",
         "供应商名称"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m562621bff64c41f3a9886e1": {
       "cardId": "m562621bff64c41f3a9886e1",
@@ -9879,7 +9914,7 @@
         "新协议等级",
         "渠道类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m6196262cb6634454af5f4d3": {
       "cardId": "m6196262cb6634454af5f4d3",
@@ -9912,7 +9947,7 @@
         "本周采购情况",
         "采购店数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m61d5360c79094fdd871274c": {
       "cardId": "m61d5360c79094fdd871274c",
@@ -9937,7 +9972,7 @@
         "负边品种销售占比",
         "负边品种销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m65d9f24717a645f3a0d3247": {
       "cardId": "m65d9f24717a645f3a0d3247",
@@ -9981,7 +10016,7 @@
         "整体边际利润率",
         "时间选择"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m7ff0053cbfcd4c20aa4e59f": {
       "cardId": "m7ff0053cbfcd4c20aa4e59f",
@@ -10043,7 +10078,7 @@
         "考核spuid数",
         "运营负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m8b371354259b4fcd94a47b2": {
       "cardId": "m8b371354259b4fcd94a47b2",
@@ -10068,7 +10103,7 @@
         "去年同时间段全国销售额",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m97b5413f72294e6e9492bbf": {
       "cardId": "m97b5413f72294e6e9492bbf",
@@ -10082,7 +10117,7 @@
         "积分变动类型",
         "积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "m9bdf3659aeca40d7a32b4e3": {
       "cardId": "m9bdf3659aeca40d7a32b4e3",
@@ -10098,7 +10133,7 @@
         "月份",
         "本月销售目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "madf00a2cc53c4083ae26026": {
       "cardId": "madf00a2cc53c4083ae26026",
@@ -10164,7 +10199,7 @@
         "负边sku数",
         "负边销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "mc84565e435f14f70a69e517": {
       "cardId": "mc84565e435f14f70a69e517",
@@ -10211,7 +10246,7 @@
         "度量名",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "mcd2f24cc6ca44e80b523194": {
       "cardId": "mcd2f24cc6ca44e80b523194",
@@ -10238,7 +10273,7 @@
         "度量名",
         "活动ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "md22c6f025ead49c0aa7c7c5": {
       "cardId": "md22c6f025ead49c0aa7c7c5",
@@ -10251,7 +10286,7 @@
       "fields": [
         "省份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "mea2fdf9861854ec28dff3dc": {
       "cardId": "mea2fdf9861854ec28dff3dc",
@@ -10264,7 +10299,7 @@
       "fields": [
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n13ff9d7587f04499bf71b87": {
       "cardId": "n13ff9d7587f04499bf71b87",
@@ -10277,7 +10312,7 @@
       "fields": [
         "积分使用/积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n1eaa88c4c6b340c98de394c": {
       "cardId": "n1eaa88c4c6b340c98de394c",
@@ -10301,7 +10336,7 @@
         "药品名称",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n20e8a04541d144ae808631a": {
       "cardId": "n20e8a04541d144ae808631a",
@@ -10333,7 +10368,7 @@
         "边际利润率",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n265b3ca4a0c14c4fbbd3287": {
       "cardId": "n265b3ca4a0c14c4fbbd3287",
@@ -10387,7 +10422,7 @@
         "是否集团精选",
         "状态变更月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n3a3af2d8089b4ec49e8e6a6": {
       "cardId": "n3a3af2d8089b4ec49e8e6a6",
@@ -10417,7 +10452,7 @@
         "本月配送费率",
         "本月配送费率目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n4357d122baa04fb0bc694fa": {
       "cardId": "n4357d122baa04fb0bc694fa",
@@ -10442,7 +10477,7 @@
         "边际利润额达成率",
         "金额达成率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n4524cd2acfd74ff5ab54eff": {
       "cardId": "n4524cd2acfd74ff5ab54eff",
@@ -10466,7 +10501,7 @@
         "KA连锁进度",
         "拼团批购进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n679618c811284effbc2042e": {
       "cardId": "n679618c811284effbc2042e",
@@ -10481,7 +10516,7 @@
         "已用积份/已产生积分",
         "年度清零积分"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n8199c99d38bc4de0b69cf14": {
       "cardId": "n8199c99d38bc4de0b69cf14",
@@ -10550,7 +10585,7 @@
         "金额同比",
         "金额环比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n881753562bb940f3afe01cf": {
       "cardId": "n881753562bb940f3afe01cf",
@@ -10563,7 +10598,7 @@
       "fields": [
         "sDates"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n8b3a4161d49541c7a51bb05": {
       "cardId": "n8b3a4161d49541c7a51bb05",
@@ -10578,7 +10613,7 @@
         "不含税边际利润率",
         "配送费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "n8ff03629e90d4f47bdb66e5": {
       "cardId": "n8ff03629e90d4f47bdb66e5",
@@ -10621,7 +10656,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nb4b571bbfe36475e8eaf351": {
       "cardId": "nb4b571bbfe36475e8eaf351",
@@ -10638,7 +10673,7 @@
         "应收边际利润进度排名",
         "时间进度GAP"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nb5cc18c7212140618ce442d": {
       "cardId": "nb5cc18c7212140618ce442d",
@@ -10702,7 +10737,7 @@
         "金额增长率",
         "销量GAP"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nbaf3084673494b1aa6aeb07": {
       "cardId": "nbaf3084673494b1aa6aeb07",
@@ -10765,7 +10800,7 @@
         "销售出库价",
         "除自身集团平均p4"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nbb40723ce6db447181c5aa9": {
       "cardId": "nbb40723ce6db447181c5aa9",
@@ -10815,7 +10850,7 @@
       "fields": [
         "增长金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nbc15c6ea99ea4d2aa6df42b": {
       "cardId": "nbc15c6ea99ea4d2aa6df42b",
@@ -10854,7 +10889,7 @@
         "库存数量",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nbca07e113d66457c85201e7": {
       "cardId": "nbca07e113d66457c85201e7",
@@ -10897,7 +10932,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nc2011c32b19c47e099249bb": {
       "cardId": "nc2011c32b19c47e099249bb",
@@ -10920,7 +10955,7 @@
       "fields": [
         "增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nc4ce2b1b1b824fbe80414a4": {
       "cardId": "nc4ce2b1b1b824fbe80414a4",
@@ -10971,7 +11006,7 @@
         "省内出库金额",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nc55b5378e8044e1fa3b8957": {
       "cardId": "nc55b5378e8044e1fa3b8957",
@@ -11020,7 +11055,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ncf58b22588774ae195fe698": {
       "cardId": "ncf58b22588774ae195fe698",
@@ -11035,7 +11070,7 @@
         "省内边际利润率",
         "省外边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nd42e25410e1a491db8945dd": {
       "cardId": "nd42e25410e1a491db8945dd",
@@ -11094,7 +11129,7 @@
         "药品id",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nd8547d33d9a746c795b04aa": {
       "cardId": "nd8547d33d9a746c795b04aa",
@@ -11177,7 +11212,7 @@
         "涨价品种数",
         "降本品种数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ne4fc7b08c85042f4a967c94": {
       "cardId": "ne4fc7b08c85042f4a967c94",
@@ -11227,7 +11262,7 @@
       "fields": [
         "公司MTD全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nef80196c2a4d41a191cf597": {
       "cardId": "nef80196c2a4d41a191cf597",
@@ -11257,7 +11292,7 @@
         "药店id",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "nf6c86b7d3fa54d85b8247f9": {
       "cardId": "nf6c86b7d3fa54d85b8247f9",
@@ -11274,7 +11309,7 @@
         "店铺ID",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o046145c1a5bd47f1922ae3b": {
       "cardId": "o046145c1a5bd47f1922ae3b",
@@ -11326,7 +11361,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o089bbc0ad8a9430fabed3ad": {
       "cardId": "o089bbc0ad8a9430fabed3ad",
@@ -11373,14 +11408,18 @@
         "库存天数",
         "库存数量",
         "库龄",
+        "当前厂牌商务",
         "批次号",
         "效期至",
+        "是否为6045滞销",
+        "是否为近效期品种",
         "结算方式",
         "规格",
         "近28天平台省内均价",
+        "近28天线上销量全国",
         "近7天平台省内均价"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o136586337e254b27a357f82": {
       "cardId": "o136586337e254b27a357f82",
@@ -11394,7 +11433,7 @@
         "已用积分/已产生积分",
         "年度清零积分"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o29a5be91b87345a68a0e23a": {
       "cardId": "o29a5be91b87345a68a0e23a",
@@ -11411,7 +11450,7 @@
         "自营产品含税销售额目标",
         "销售进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o310713d7f2e74ba5a954656": {
       "cardId": "o310713d7f2e74ba5a954656",
@@ -11434,7 +11473,7 @@
       "fields": [
         "本年P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o34c08b72800244229591260": {
       "cardId": "o34c08b72800244229591260",
@@ -11457,7 +11496,7 @@
       "fields": [
         "去年同时间段全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o47e59a337bc94a8a9818174": {
       "cardId": "o47e59a337bc94a8a9818174",
@@ -11479,7 +11518,7 @@
         "度量名",
         "除占用库存"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o58868cdb2f2e4bc0ad69432": {
       "cardId": "o58868cdb2f2e4bc0ad69432",
@@ -11554,7 +11593,7 @@
         "集团加权P8",
         "预期可优化金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o69a6fc2e48ed46e29942966": {
       "cardId": "o69a6fc2e48ed46e29942966",
@@ -11604,12 +11643,13 @@
         "商品编码",
         "备注",
         "子公司名称",
+        "当前spuid",
         "数量等级",
         "规格",
         "近30天已请货未到货数量",
         "采购单编号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o7f7a6b7751eb45a98ce3364": {
       "cardId": "o7f7a6b7751eb45a98ce3364",
@@ -11682,7 +11722,7 @@
         "金额GAP",
         "金额增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o83b8d65885d7488bbe6edde": {
       "cardId": "o83b8d65885d7488bbe6edde",
@@ -11710,7 +11750,7 @@
         "月份",
         "类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o940a8c48484649bebf919d3": {
       "cardId": "o940a8c48484649bebf919d3",
@@ -11729,7 +11769,7 @@
         "诊所",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "o95aa29fcb9d0484486fa528": {
       "cardId": "o95aa29fcb9d0484486fa528",
@@ -11764,7 +11804,7 @@
         "药品名称",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ob4e82afa294d4972b29bf53": {
       "cardId": "ob4e82afa294d4972b29bf53",
@@ -11844,7 +11884,7 @@
         "近7天平台该省实付均价",
         "重点发展厂牌"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "obb23c9d19aa24b578d6b73f": {
       "cardId": "obb23c9d19aa24b578d6b73f",
@@ -11884,7 +11924,7 @@
         "边际利润率",
         "运营负责人-标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "obffb700fb71243c2b93a62d": {
       "cardId": "obffb700fb71243c2b93a62d",
@@ -11914,7 +11954,7 @@
         "本月销售目标",
         "销售金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "oc2a42123000e4c199f07a9b": {
       "cardId": "oc2a42123000e4c199f07a9b",
@@ -11946,7 +11986,7 @@
         "月份",
         "计数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "odf2c2391bac444f7af99af6": {
       "cardId": "odf2c2391bac444f7af99af6",
@@ -11973,7 +12013,7 @@
         "子公司名称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "oe0444c666a154eed85090fb": {
       "cardId": "oe0444c666a154eed85090fb",
@@ -11997,7 +12037,7 @@
         "含摇钱树绩效毛利率",
         "递延后含摇钱树绩效毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "oe2cc09a2b074416d95b3988": {
       "cardId": "oe2cc09a2b074416d95b3988",
@@ -12024,7 +12064,7 @@
         "度量名",
         "渠道类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "oe581c1841dcd4e8fa8176a8": {
       "cardId": "oe581c1841dcd4e8fa8176a8",
@@ -12066,12 +12106,16 @@
         "商品编码",
         "备注",
         "子公司名称",
+        "建议请货数量",
+        "当前spuid",
         "数量等级",
+        "是否近效期",
+        "结算方式小类",
         "规格",
         "近30天已请货未到货数量",
         "采购单编号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "oebac421fca6742bb90ef2c0": {
       "cardId": "oebac421fca6742bb90ef2c0",
@@ -12084,7 +12128,7 @@
       "fields": [
         "时间进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "of46f0b6fca3e4b25b914d0e": {
       "cardId": "of46f0b6fca3e4b25b914d0e",
@@ -12110,7 +12154,7 @@
         "度量名",
         "积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "of96f32cc03454f17b176bec": {
       "cardId": "of96f32cc03454f17b176bec",
@@ -12133,7 +12177,7 @@
       "fields": [
         "应收边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ofa016c305a64457b9ef00a5": {
       "cardId": "ofa016c305a64457b9ef00a5",
@@ -12187,7 +12231,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p08f9bc54091844e0820f4b6": {
       "cardId": "p08f9bc54091844e0820f4b6",
@@ -12219,7 +12263,7 @@
         "边际利润率",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p127e4870ae3e430ea1f3c89": {
       "cardId": "p127e4870ae3e430ea1f3c89",
@@ -12232,7 +12276,7 @@
       "fields": [
         "促销补贴金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p128c867ee1ae4fba86e0dac": {
       "cardId": "p128c867ee1ae4fba86e0dac",
@@ -12271,7 +12315,7 @@
         "近7天省内均价",
         "近7天线上销售均价"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p14866b42c7ff4274b53e523": {
       "cardId": "p14866b42c7ff4274b53e523",
@@ -12314,7 +12358,7 @@
         "货源稳定型标签",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p1960e970bdb3484aa0b24f5": {
       "cardId": "p1960e970bdb3484aa0b24f5",
@@ -12373,7 +12417,7 @@
         "省内外",
         "运营负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p39c3ed85d1024b8ba65b896": {
       "cardId": "p39c3ed85d1024b8ba65b896",
@@ -12407,7 +12451,7 @@
         "公司名称",
         "导入时间"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p3db7a4ab200343f9985bcd4": {
       "cardId": "p3db7a4ab200343f9985bcd4",
@@ -12446,7 +12490,7 @@
         "要求成本",
         "重要度排名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p4a8c9ad0196546809a67a8e": {
       "cardId": "p4a8c9ad0196546809a67a8e",
@@ -12459,7 +12503,7 @@
       "fields": [
         "标题"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p5e8bcad8af044230ad49559": {
       "cardId": "p5e8bcad8af044230ad49559",
@@ -12494,7 +12538,7 @@
         "子公司简称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p8c0295264e8d4a869f450ea": {
       "cardId": "p8c0295264e8d4a869f450ea",
@@ -12526,7 +12570,7 @@
       "fields": [
         "含税金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "p968708975a15465eb8dd86b": {
       "cardId": "p968708975a15465eb8dd86b",
@@ -12561,6 +12605,15 @@
           "fdType": "BOOL",
           "filterType": "SPARK_EXPR",
           "filterLevel": "DETAIL"
+        },
+        {
+          "name": "特殊剔除",
+          "fdId": "r3b87373e731547d9ae3fdd9",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
         }
       ],
       "dz": [],
@@ -12569,7 +12622,7 @@
         "6045滞销金额",
         "日期"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pb134405f082445db8425e35": {
       "cardId": "pb134405f082445db8425e35",
@@ -12593,7 +12646,7 @@
         "积分变动类型",
         "积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pb371225682a640679bb3ba4": {
       "cardId": "pb371225682a640679bb3ba4",
@@ -12613,7 +12666,7 @@
         "药店ID",
         "规模标签V2601"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pbaa52e684e4747f4b265b11": {
       "cardId": "pbaa52e684e4747f4b265b11",
@@ -12670,7 +12723,7 @@
         "配送费率",
         "金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pc1e907c1c2f2411faa5e3c1": {
       "cardId": "pc1e907c1c2f2411faa5e3c1",
@@ -12711,7 +12764,7 @@
         "本省常驻人口",
         "院外零售人均金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pc8a00aaa96dd4490b491362": {
       "cardId": "pc8a00aaa96dd4490b491362",
@@ -12763,7 +12816,7 @@
         "类型",
         "边际利润额同比变化"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pcb30afd5ca114298aca9829": {
       "cardId": "pcb30afd5ca114298aca9829",
@@ -12809,7 +12862,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pd434a2346d6b4cb3bb94e02": {
       "cardId": "pd434a2346d6b4cb3bb94e02",
@@ -12857,7 +12910,7 @@
         "非合格品销售额",
         "首推补贴"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pf78d1aa464574886b889668": {
       "cardId": "pf78d1aa464574886b889668",
@@ -12894,11 +12947,11 @@
         "月份",
         "真降本-V2"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "pfe5ed3bceb4544d1b079d14": {
       "cardId": "pfe5ed3bceb4544d1b079d14",
-      "name": "招商登记（仅登记当月）-每周一播报",
+      "name": "广告费招商登记（仅登记当月）-每周一播报",
       "chartType": "PIVOT_TABLE",
       "pgId": "ae8983205b34346609d96ea6",
       "cdType": "CHART",
@@ -12910,18 +12963,17 @@
           "cdId": null,
           "fdType": "STRING",
           "filterType": "NI",
-          "filterLevel": null
+          "filterLevel": "DETAIL"
         }
       ],
       "dz": [],
       "fields": [
-        "公司",
+        "子公司类型",
+        "完整公司名称",
         "广告费招商",
-        "度量名",
-        "类型",
-        "除广告费以外招商费用"
+        "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q06ba2ce9203046d49cc7161": {
       "cardId": "q06ba2ce9203046d49cc7161",
@@ -12934,7 +12986,7 @@
       "fields": [
         "厂牌渠道内销售占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q119de0960aba40d6ad30d98": {
       "cardId": "q119de0960aba40d6ad30d98",
@@ -12957,7 +13009,7 @@
       "fields": [
         "增长金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q1aed618d2aef40738d4894b": {
       "cardId": "q1aed618d2aef40738d4894b",
@@ -12992,7 +13044,7 @@
         "排名段",
         "统计sku数用"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q293523f14eef4f1e829e293": {
       "cardId": "q293523f14eef4f1e829e293",
@@ -13042,7 +13094,7 @@
       "fields": [
         "去年同期P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q4078eaf9c14941b89f35b1a": {
       "cardId": "q4078eaf9c14941b89f35b1a",
@@ -13074,7 +13126,7 @@
         "子公司名称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q61b5ce0edafa434b9792811": {
       "cardId": "q61b5ce0edafa434b9792811",
@@ -13113,7 +13165,7 @@
         "重点厂牌",
         "销售额签约率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q681623af5a6d402f98dcac8": {
       "cardId": "q681623af5a6d402f98dcac8",
@@ -13150,7 +13202,7 @@
         "签约率",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q6c18cc7d16a74311bad1d1f": {
       "cardId": "q6c18cc7d16a74311bad1d1f",
@@ -13204,7 +13256,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q7562c5b50668444ead368c4": {
       "cardId": "q7562c5b50668444ead368c4",
@@ -13227,7 +13279,7 @@
       "fields": [
         "不含税P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q77626a3fd6a246d5a3cc961": {
       "cardId": "q77626a3fd6a246d5a3cc961",
@@ -13279,7 +13331,7 @@
         "做单时间",
         "降本金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q7fedb6dc009a4ff3a7ede8e": {
       "cardId": "q7fedb6dc009a4ff3a7ede8e",
@@ -13305,7 +13357,7 @@
         "线上线下类型",
         "项目类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q89edc7e81dab4df3b54999d": {
       "cardId": "q89edc7e81dab4df3b54999d",
@@ -13318,7 +13370,7 @@
       "fields": [
         "含税金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q96ae65800c864aff9e9bc2c": {
       "cardId": "q96ae65800c864aff9e9bc2c",
@@ -13377,7 +13429,7 @@
         "近效期分母",
         "近效金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q9717f6d0638b492e8531702": {
       "cardId": "q9717f6d0638b492e8531702",
@@ -13413,7 +13465,7 @@
         "公司",
         "平台本月销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q9b599e7af06846d890d0372": {
       "cardId": "q9b599e7af06846d890d0372",
@@ -13463,7 +13515,7 @@
       "fields": [
         "去年同时间段全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "q9d061732888a4aa3a1982b4": {
       "cardId": "q9d061732888a4aa3a1982b4",
@@ -13513,7 +13565,7 @@
       "fields": [
         "本年P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "qb76c514b7370444a94327a4": {
       "cardId": "qb76c514b7370444a94327a4",
@@ -13545,7 +13597,7 @@
         "药店省份",
         "药店类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "qb88d76b2f7df4fb3ae85d82": {
       "cardId": "qb88d76b2f7df4fb3ae85d82",
@@ -13560,7 +13612,7 @@
         "A1B3销售额",
         "全国出库金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "qb973438f7b82419fb4b4a22": {
       "cardId": "qb973438f7b82419fb4b4a22",
@@ -13584,7 +13636,7 @@
         "药品名称",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "qdcacf670e48e494b8d8527f": {
       "cardId": "qdcacf670e48e494b8d8527f",
@@ -13628,7 +13680,7 @@
         "省内加权市占率",
         "过去28天销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "qe215031c0a844b5aa32270b": {
       "cardId": "qe215031c0a844b5aa32270b",
@@ -13692,7 +13744,7 @@
         "采购单编号",
         "销售数量-采购单聚合"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "qed6d433487b543dbb925e5b": {
       "cardId": "qed6d433487b543dbb925e5b",
@@ -13715,7 +13767,7 @@
       "fields": [
         "去年同期P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "qf14640d30c494883a925eb2": {
       "cardId": "qf14640d30c494883a925eb2",
@@ -13748,7 +13800,7 @@
         "销售金额",
         "销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r0542e956bcca420f820a038": {
       "cardId": "r0542e956bcca420f820a038",
@@ -13776,7 +13828,7 @@
         "子公司名称",
         "药品id"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r0e54d33dfd8046fd88cd2b7": {
       "cardId": "r0e54d33dfd8046fd88cd2b7",
@@ -13826,7 +13878,7 @@
       "fields": [
         "增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r0f8f8cee098f47839e4db99": {
       "cardId": "r0f8f8cee098f47839e4db99",
@@ -13880,7 +13932,7 @@
         "线上销售金额",
         "预付款占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r159f74f6f84245dcbc4bd39": {
       "cardId": "r159f74f6f84245dcbc4bd39",
@@ -13925,7 +13977,7 @@
         "过去28天集团最低p8",
         "采购员"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r303182ea69824fd9a09c006": {
       "cardId": "r303182ea69824fd9a09c006",
@@ -13968,7 +14020,7 @@
         "近30天已请货未到货数量",
         "近效期库存金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r57eebe600a9b4b02b4b020b": {
       "cardId": "r57eebe600a9b4b02b4b020b",
@@ -13981,7 +14033,7 @@
       "fields": [
         "省份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r7b6d52aadac34ed3b54ba86": {
       "cardId": "r7b6d52aadac34ed3b54ba86",
@@ -14004,7 +14056,7 @@
       "fields": [
         "去年同时间段全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r7c66fb8023b34ea3bd7b856": {
       "cardId": "r7c66fb8023b34ea3bd7b856",
@@ -14020,7 +14072,7 @@
         "子公司名称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r8facc4493d654861a5a4368": {
       "cardId": "r8facc4493d654861a5a4368",
@@ -14077,7 +14129,7 @@
         "配送费率",
         "金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r925d71008ac4410a877dc26": {
       "cardId": "r925d71008ac4410a877dc26",
@@ -14091,7 +14143,7 @@
         "客户划分",
         "客户数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "r9f0eb0e05b3b41c2b06624b": {
       "cardId": "r9f0eb0e05b3b41c2b06624b",
@@ -14140,7 +14192,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rb20fcbb26ece481d8e8765a": {
       "cardId": "rb20fcbb26ece481d8e8765a",
@@ -14153,7 +14205,7 @@
       "fields": [
         "销售进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rba9dbfefc7c04caa8baae9f": {
       "cardId": "rba9dbfefc7c04caa8baae9f",
@@ -14196,7 +14248,7 @@
         "生产厂家",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rbc7b171b91fa48f2ba22d2e": {
       "cardId": "rbc7b171b91fa48f2ba22d2e",
@@ -14249,7 +14301,7 @@
         "省内排名",
         "近1周均价/近4周均价"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rcb0ac260053d4e31947b050": {
       "cardId": "rcb0ac260053d4e31947b050",
@@ -14268,7 +14320,7 @@
         "连锁核心客户",
         "连锁核心客户数目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rd353be4b441d44888c7828f": {
       "cardId": "rd353be4b441d44888c7828f",
@@ -14287,7 +14339,7 @@
         "子公司id",
         "子公司名称"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rdc02c0795c8e485fa72388e": {
       "cardId": "rdc02c0795c8e485fa72388e",
@@ -14314,7 +14366,7 @@
         "本月小于100元包裹数",
         "本月百元包裹占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rdf0f5c681ed044b1bd49f4d": {
       "cardId": "rdf0f5c681ed044b1bd49f4d",
@@ -14390,7 +14442,7 @@
         "采购员",
         "采购数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "re6a584ca45df40e1a07ffc8": {
       "cardId": "re6a584ca45df40e1a07ffc8",
@@ -14417,7 +14469,7 @@
         "客户类型-2",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "re8bffbd687a14e258bc3ac8": {
       "cardId": "re8bffbd687a14e258bc3ac8",
@@ -14496,7 +14548,7 @@
         "金额GAP",
         "金额增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rec17ed94859b45358d49bfa": {
       "cardId": "rec17ed94859b45358d49bfa",
@@ -14525,7 +14577,7 @@
         "所属省份",
         "渠道类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rfa46694c176441e78f60023": {
       "cardId": "rfa46694c176441e78f60023",
@@ -14553,7 +14605,7 @@
         "子公司名称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rfaaebeb4e2754c5ba6481d0": {
       "cardId": "rfaaebeb4e2754c5ba6481d0",
@@ -14577,7 +14629,7 @@
         "低效重货-订单金额占比",
         "重货订单占比目标上限"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "rff2aca35832946fbacd8868": {
       "cardId": "rff2aca35832946fbacd8868",
@@ -14626,7 +14678,7 @@
         "边际利润额",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s0115af3e9fbf4589a1487ec": {
       "cardId": "s0115af3e9fbf4589a1487ec",
@@ -14659,7 +14711,7 @@
         "月份",
         "近7天不动销库存金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s10a3697987a042419e6c482": {
       "cardId": "s10a3697987a042419e6c482",
@@ -14699,7 +14751,7 @@
         "销售环比",
         "销售金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s10b2fa9e714946e49ce968c": {
       "cardId": "s10b2fa9e714946e49ce968c",
@@ -14714,7 +14766,7 @@
         "含税金额",
         "省内占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s3d6588a37adf4f6298b104b": {
       "cardId": "s3d6588a37adf4f6298b104b",
@@ -14744,7 +14796,7 @@
         "子公司名称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s408e6a90d4cd4cb4b278084": {
       "cardId": "s408e6a90d4cd4cb4b278084",
@@ -14785,7 +14837,7 @@
       "fields": [
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s42cae449793240559e10b82": {
       "cardId": "s42cae449793240559e10b82",
@@ -14837,7 +14889,7 @@
         "集团平均边际利润率",
         "集团整体出库均价"
       ],
-      "updatedAt": 1788924100
+      "updatedAt": 1790131486
     },
     "s49c9b0701ca14d73a8a9151": {
       "cardId": "s49c9b0701ca14d73a8a9151",
@@ -14882,7 +14934,7 @@
         "省内排名",
         "考核标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s4d77767ec8164017aca922f": {
       "cardId": "s4d77767ec8164017aca922f",
@@ -14908,7 +14960,7 @@
         "应收边际利润率",
         "运费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s586be54e06b94b68a45d614": {
       "cardId": "s586be54e06b94b68a45d614",
@@ -14927,7 +14979,7 @@
         "时间进度",
         "进度差"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s5c2f367e05fc4d4997505fa": {
       "cardId": "s5c2f367e05fc4d4997505fa",
@@ -14961,7 +15013,7 @@
         "金额目标",
         "金额达成进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s5f530dc0499f402a87b9a83": {
       "cardId": "s5f530dc0499f402a87b9a83",
@@ -15027,7 +15079,7 @@
         "类型",
         "考核标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s6b03eaa71e084e548b4aaa0": {
       "cardId": "s6b03eaa71e084e548b4aaa0",
@@ -15041,7 +15093,7 @@
         "创建月份",
         "积分使用/积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s7227602bc447484daebf358": {
       "cardId": "s7227602bc447484daebf358",
@@ -15067,7 +15119,7 @@
         "厂牌营销方",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "s9cfc42946f3c458f94e3079": {
       "cardId": "s9cfc42946f3c458f94e3079",
@@ -15096,7 +15148,7 @@
         "类型",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "sc111937f0cd14a5fb157d15": {
       "cardId": "sc111937f0cd14a5fb157d15",
@@ -15119,7 +15171,7 @@
       "fields": [
         "去年同时间段全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "sc21239d5e62f4d47abbbc5c": {
       "cardId": "sc21239d5e62f4d47abbbc5c",
@@ -15133,7 +15185,7 @@
         "出库月份",
         "是否负边品种"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "scb09e1ef97db41aebca7a1f": {
       "cardId": "scb09e1ef97db41aebca7a1f",
@@ -15175,7 +15227,7 @@
         "本年P4毛利率",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "se2b7aba306484d4d862eb95": {
       "cardId": "se2b7aba306484d4d862eb95",
@@ -15210,7 +15262,7 @@
         "连锁核心客户数达成",
         "连锁核心客户数达成率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t0b28cace683e4b69937e769": {
       "cardId": "t0b28cace683e4b69937e769",
@@ -15264,7 +15316,7 @@
         "近7天平台该省实付均价",
         "重点发展厂牌"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t14202f443660446683bdfb4": {
       "cardId": "t14202f443660446683bdfb4",
@@ -15303,7 +15355,7 @@
         "子公司名称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t175fb9738f2e4448947f924": {
       "cardId": "t175fb9738f2e4448947f924",
@@ -15327,7 +15379,7 @@
         "低货值-未达标链接数占比",
         "低货值占比目标上限"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t2f096b6f5fcf47d0bb577ed": {
       "cardId": "t2f096b6f5fcf47d0bb577ed",
@@ -15344,11 +15396,11 @@
         "度量名",
         "集采公司"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t34121a1737b348f9a1aaec9": {
       "cardId": "t34121a1737b348f9a1aaec9",
-      "name": "招商目标-子公司-不包含集采",
+      "name": "招商目标-子公司-普品",
       "chartType": "PIVOT_TABLE",
       "pgId": "ae8983205b34346609d96ea6",
       "cdType": "CHART",
@@ -15381,7 +15433,7 @@
         "招商金额下限",
         "目标月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t3f7a316359ef4680b9304df": {
       "cardId": "t3f7a316359ef4680b9304df",
@@ -15406,7 +15458,7 @@
         "除摇钱树绩效毛利率",
         "除摇钱树绩效毛利率-递延后"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t416a4f280306438590fc974": {
       "cardId": "t416a4f280306438590fc974",
@@ -15456,7 +15508,7 @@
       "fields": [
         "去年同时间段全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t42489b41d0df49b484caca7": {
       "cardId": "t42489b41d0df49b484caca7",
@@ -15513,7 +15565,7 @@
         "考核状态",
         "规格"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t6a298b9b0e894da9bdd3e12": {
       "cardId": "t6a298b9b0e894da9bdd3e12",
@@ -15564,7 +15616,7 @@
         "销售数量",
         "销售类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t6a700ff7337c4202aa7f54f": {
       "cardId": "t6a700ff7337c4202aa7f54f",
@@ -15615,7 +15667,7 @@
         "药店id",
         "运营负责人-标签"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t6bbeb51d59064abdacfd8e2": {
       "cardId": "t6bbeb51d59064abdacfd8e2",
@@ -15629,7 +15681,7 @@
         "出库月份",
         "负边品种含税销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t79ff610b66d441299d04339": {
       "cardId": "t79ff610b66d441299d04339",
@@ -15668,7 +15720,7 @@
         "销售额同比",
         "销售额环比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t80bcc9f3d4db4e1389e34e9": {
       "cardId": "t80bcc9f3d4db4e1389e34e9",
@@ -15689,7 +15741,7 @@
         "子公司",
         "子公司ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t86281cc2246348a0a18e64b": {
       "cardId": "t86281cc2246348a0a18e64b",
@@ -15734,7 +15786,7 @@
         "成本对比区间",
         "类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t8ed6c05815af4ce48eb70be": {
       "cardId": "t8ed6c05815af4ce48eb70be",
@@ -15759,7 +15811,7 @@
         "去年同时间段全国销售额",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t98bed5e24d3340fc813526f": {
       "cardId": "t98bed5e24d3340fc813526f",
@@ -15808,7 +15860,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t9bd783b3b09e4347bfea493": {
       "cardId": "t9bd783b3b09e4347bfea493",
@@ -15823,7 +15875,7 @@
         "已产生积分",
         "积分数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "t9cbf5b3c3d2844c7a7e5207": {
       "cardId": "t9cbf5b3c3d2844c7a7e5207",
@@ -15873,7 +15925,7 @@
       "fields": [
         "去年同期P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ta842bbae32ac4f7c86ca018": {
       "cardId": "ta842bbae32ac4f7c86ca018",
@@ -15906,7 +15958,7 @@
         "度量名",
         "新客池"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "tb6cd808238dd42428f69ff7": {
       "cardId": "tb6cd808238dd42428f69ff7",
@@ -15939,7 +15991,7 @@
         "本周采购情况",
         "采购店数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "tba3f02b3569b4bf7aaf095b": {
       "cardId": "tba3f02b3569b4bf7aaf095b",
@@ -15977,7 +16029,7 @@
         "采购品种数",
         "采购天数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "tcd9c072d4085406db718be2": {
       "cardId": "tcd9c072d4085406db718be2",
@@ -16013,7 +16065,7 @@
         "采购天数分层",
         "采购金额分层"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "td9bfafb54b454018a899e95": {
       "cardId": "td9bfafb54b454018a899e95",
@@ -16054,7 +16106,7 @@
         "边际利润率",
         "边际利润额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "tfcd14e5e677b4a3d8341463": {
       "cardId": "tfcd14e5e677b4a3d8341463",
@@ -16097,7 +16149,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u007fdedc3af94b068e19429": {
       "cardId": "u007fdedc3af94b068e19429",
@@ -16120,7 +16172,7 @@
       "fields": [
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u17e9f95bc99c41bc81fde08": {
       "cardId": "u17e9f95bc99c41bc81fde08",
@@ -16133,7 +16185,7 @@
       "fields": [
         "药店id"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u1b9fc265bb6c4cb3b808420": {
       "cardId": "u1b9fc265bb6c4cb3b808420",
@@ -16179,7 +16231,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u1e5a197ad6424d9394d68f8": {
       "cardId": "u1e5a197ad6424d9394d68f8",
@@ -16222,7 +16274,7 @@
         "环数标签",
         "省内外"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u358ad2e12234459fa90aba6": {
       "cardId": "u358ad2e12234459fa90aba6",
@@ -16251,7 +16303,7 @@
         "平台本月销售额",
         "环比金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u3ad4a82260014307ad94615": {
       "cardId": "u3ad4a82260014307ad94615",
@@ -16289,7 +16341,7 @@
         "省内市占机会",
         "省内市占率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u4129848a31644772ab8caa9": {
       "cardId": "u4129848a31644772ab8caa9",
@@ -16313,7 +16365,7 @@
         "公司MTD全国销售额",
         "厂牌营销方"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u50bbe257ed7142a09690b0d": {
       "cardId": "u50bbe257ed7142a09690b0d",
@@ -16367,7 +16419,7 @@
         "销售出库价",
         "除自身集团平均p4"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u5f68e283ee904f75bef1c74": {
       "cardId": "u5f68e283ee904f75bef1c74",
@@ -16380,7 +16432,7 @@
       "fields": [
         "含税金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u77420a00fe854726ae076a5": {
       "cardId": "u77420a00fe854726ae076a5",
@@ -16399,7 +16451,7 @@
         "省外客户数",
         "诊所"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u78db0193c8c64e509c199eb": {
       "cardId": "u78db0193c8c64e509c199eb",
@@ -16421,7 +16473,7 @@
         "子公司",
         "子公司ID"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u8a3a082536944fa1adf93c7": {
       "cardId": "u8a3a082536944fa1adf93c7",
@@ -16469,7 +16521,7 @@
         "省外单三金额",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u8b1dd97df68842e2ade425f": {
       "cardId": "u8b1dd97df68842e2ade425f",
@@ -16511,7 +16563,7 @@
         "省份",
         "省内外"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u93e3530516ea471396735d6": {
       "cardId": "u93e3530516ea471396735d6",
@@ -16536,7 +16588,7 @@
         "负边编码数-P8",
         "负边销售额占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "u94f2e1d716804d20b8547cf": {
       "cardId": "u94f2e1d716804d20b8547cf",
@@ -16554,7 +16606,7 @@
         "度量名",
         "采购单编号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ua1bca5ea43e34eee9abf399": {
       "cardId": "ua1bca5ea43e34eee9abf399",
@@ -16568,7 +16620,7 @@
         "不含税边际利润率",
         "分析维度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ua4bfe6c362d94ca581951d1": {
       "cardId": "ua4bfe6c362d94ca581951d1",
@@ -16603,7 +16655,7 @@
         "当月满足率",
         "月份"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ua7cf2eb1dde44818a764dc8": {
       "cardId": "ua7cf2eb1dde44818a764dc8",
@@ -16618,7 +16670,7 @@
         "日期",
         "条目单价"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "uaaa7528abb9243b59df9e75": {
       "cardId": "uaaa7528abb9243b59df9e75",
@@ -16643,7 +16695,7 @@
         "时间进度",
         "进度差"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ub1692a8a08ad49939c6216b": {
       "cardId": "ub1692a8a08ad49939c6216b",
@@ -16685,7 +16737,7 @@
         "边际利润率",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "uc9ad69d705a0494f997d5fd": {
       "cardId": "uc9ad69d705a0494f997d5fd",
@@ -16723,7 +16775,7 @@
         "省份",
         "药店id"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "udd494d5206094f69876c367": {
       "cardId": "udd494d5206094f69876c367",
@@ -16767,7 +16819,7 @@
         "省内外",
         "运营负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "udf10e27d6cb04bd8accdd5b": {
       "cardId": "udf10e27d6cb04bd8accdd5b",
@@ -16799,7 +16851,7 @@
       "fields": [
         "对标XM人均金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ue744f3e91b854ff0aecc206": {
       "cardId": "ue744f3e91b854ff0aecc206",
@@ -16845,7 +16897,7 @@
         "省内加权市占率",
         "过去28天销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ueecee55817914ea3ad07c02": {
       "cardId": "ueecee55817914ea3ad07c02",
@@ -16881,7 +16933,7 @@
         "过往4周采购分布",
         "采购店数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "uf4010bc02828440e8310981": {
       "cardId": "uf4010bc02828440e8310981",
@@ -16913,7 +16965,7 @@
         "类型",
         "负边品种边际利润额-P8"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v030c0ea31e1045ad8fcb02c": {
       "cardId": "v030c0ea31e1045ad8fcb02c",
@@ -16931,7 +16983,7 @@
         "订单数占比",
         "采购单编号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v0ad748f9152f4768a0288a8": {
       "cardId": "v0ad748f9152f4768a0288a8",
@@ -17014,7 +17066,7 @@
         "近28天平台省内均价",
         "通用名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v1342b7a6a5534b2381bf56f": {
       "cardId": "v1342b7a6a5534b2381bf56f",
@@ -17080,7 +17132,7 @@
         "飞鹰有效店数目标",
         "首推含税销售额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v1540a2d613dc40e0948ff63": {
       "cardId": "v1540a2d613dc40e0948ff63",
@@ -17115,7 +17167,7 @@
         "月",
         "药师帮单号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v1b60f226678b41ba8f6d3ae": {
       "cardId": "v1b60f226678b41ba8f6d3ae",
@@ -17132,7 +17184,7 @@
         "度量名",
         "集采公司"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v211a617670244b3f8611c8b": {
       "cardId": "v211a617670244b3f8611c8b",
@@ -17172,7 +17224,7 @@
         "金额达成率",
         "销售金额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v23671990872c4d7390489e7": {
       "cardId": "v23671990872c4d7390489e7",
@@ -17194,7 +17246,7 @@
         "药店类型",
         "规模标签V2601"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v372974ffef224a40911a042": {
       "cardId": "v372974ffef224a40911a042",
@@ -17243,7 +17295,7 @@
         "运营负责人",
         "通用名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v37695c5612944a7baa0c6fa": {
       "cardId": "v37695c5612944a7baa0c6fa",
@@ -17333,7 +17385,7 @@
         "销售开票单号",
         "销售数量"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v41ffbda5d8c94a6eabb1f27": {
       "cardId": "v41ffbda5d8c94a6eabb1f27",
@@ -17376,7 +17428,7 @@
         "边际利润率-汇总",
         "边际利润率区间"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v5562025346844c2ab0c702e": {
       "cardId": "v5562025346844c2ab0c702e",
@@ -17389,7 +17441,7 @@
       "fields": [
         "店铺优惠率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v5d07b962c3bc443fa48dd6f": {
       "cardId": "v5d07b962c3bc443fa48dd6f",
@@ -17422,7 +17474,7 @@
         "下单金额",
         "做单时间"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v68cde9c1a0dc43178269386": {
       "cardId": "v68cde9c1a0dc43178269386",
@@ -17445,7 +17497,7 @@
       "fields": [
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v7aef49ee27dd4b6db08c7ff": {
       "cardId": "v7aef49ee27dd4b6db08c7ff",
@@ -17487,7 +17539,7 @@
         "省内出库金额",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v80679817249a4694ae3217e": {
       "cardId": "v80679817249a4694ae3217e",
@@ -17513,7 +17565,7 @@
         "重点品种月度销售额目标",
         "销售额进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v882bd356b2ba40df9899432": {
       "cardId": "v882bd356b2ba40df9899432",
@@ -17527,7 +17579,7 @@
         "已兑换积分",
         "已用积份/已产生积分"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v8d3c25c98b8c45a9aeb75e9": {
       "cardId": "v8d3c25c98b8c45a9aeb75e9",
@@ -17550,7 +17602,7 @@
       "fields": [
         "平台本省市占率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v91ad63bb49b74a268eae19d": {
       "cardId": "v91ad63bb49b74a268eae19d",
@@ -17593,7 +17645,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "v9c264374a22942c0b2a811d": {
       "cardId": "v9c264374a22942c0b2a811d",
@@ -17616,7 +17668,7 @@
       "fields": [
         "增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "vb61784bfc0494b21ad9036f": {
       "cardId": "vb61784bfc0494b21ad9036f",
@@ -17653,7 +17705,7 @@
         "药店名称",
         "过往4周采购分布"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "vbd2ff2f6c31d48bab7a9b1b": {
       "cardId": "vbd2ff2f6c31d48bab7a9b1b",
@@ -17686,7 +17738,7 @@
         "条目单价区间",
         "条目数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "vc5405e8f8a364f5aaadc8ea": {
       "cardId": "vc5405e8f8a364f5aaadc8ea",
@@ -17726,7 +17778,7 @@
         "省份",
         "省内外"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "vcd2d5e7488244dc2951e957": {
       "cardId": "vcd2d5e7488244dc2951e957",
@@ -17782,7 +17834,7 @@
         "留存率",
         "类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "ve9e6ac4f1fd44bffb72b42d": {
       "cardId": "ve9e6ac4f1fd44bffb72b42d",
@@ -17817,7 +17869,7 @@
         "供应商id",
         "公司"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "veabb18cea31445a18835c27": {
       "cardId": "veabb18cea31445a18835c27",
@@ -17876,7 +17928,7 @@
         "边际利润率",
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "vf40d567aae3344fb8fb8a34": {
       "cardId": "vf40d567aae3344fb8fb8a34",
@@ -17889,7 +17941,7 @@
       "fields": [
         "不含税边际利润率 "
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "vf965b675656d4976901e47b": {
       "cardId": "vf965b675656d4976901e47b",
@@ -17908,7 +17960,7 @@
         "度量名",
         "条目单价 "
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w116eb4cdec6e4b73843b934": {
       "cardId": "w116eb4cdec6e4b73843b934",
@@ -17941,7 +17993,7 @@
         "条目单价区间",
         "条目数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w1bbaf1500e884a5e87af1cd": {
       "cardId": "w1bbaf1500e884a5e87af1cd",
@@ -17973,7 +18025,7 @@
       "fields": [
         "本省常驻人口"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w2965c4c8e8af4d08a8b8e72": {
       "cardId": "w2965c4c8e8af4d08a8b8e72",
@@ -17991,7 +18043,7 @@
         "需降本品种数",
         "高滞销品种数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w410174c586a74d51a39c72a": {
       "cardId": "w410174c586a74d51a39c72a",
@@ -18005,7 +18057,7 @@
         "大盘金额1",
         "大盘金额达成率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w545290eaa8d747a7bb52968": {
       "cardId": "w545290eaa8d747a7bb52968",
@@ -18054,7 +18106,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w5747f707b3d54e608511135": {
       "cardId": "w5747f707b3d54e608511135",
@@ -18107,7 +18159,7 @@
         "近7天均价比1",
         "近7天平台该省实付均价"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w732577728fa5444098d0f23": {
       "cardId": "w732577728fa5444098d0f23",
@@ -18145,7 +18197,7 @@
         "近4周采购次数",
         "近四周采购分布"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w7f912047f1404ad49058181": {
       "cardId": "w7f912047f1404ad49058181",
@@ -18175,7 +18227,7 @@
         "订单超时自动退款数-目标",
         "订单超时自动退款数-达成"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w81c159cca6ba48518e2db78": {
       "cardId": "w81c159cca6ba48518e2db78",
@@ -18188,7 +18240,7 @@
       "fields": [
         "销售进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w92afe36a5bfa45659927f3d": {
       "cardId": "w92afe36a5bfa45659927f3d",
@@ -18231,7 +18283,7 @@
         "近效期占比",
         "近效期品种金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w9a1871a30c2a41bd9da06cc": {
       "cardId": "w9a1871a30c2a41bd9da06cc",
@@ -18264,7 +18316,7 @@
         "店数",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "w9dc4c8a6529e4eb68f85aa5": {
       "cardId": "w9dc4c8a6529e4eb68f85aa5",
@@ -18278,7 +18330,7 @@
         "不含税P4毛利率",
         "分析维度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wa20756b0c18b4fcfbfa477c": {
       "cardId": "wa20756b0c18b4fcfbfa477c",
@@ -18301,7 +18353,7 @@
       "fields": [
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wab39322f454e4133b78b5f4": {
       "cardId": "wab39322f454e4133b78b5f4",
@@ -18350,7 +18402,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "waf4fe8db24694f3ca67292e": {
       "cardId": "waf4fe8db24694f3ca67292e",
@@ -18382,7 +18434,7 @@
         "资金占用",
         "采购单编号"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wb4411ddd50ef4ccf8a5c4e3": {
       "cardId": "wb4411ddd50ef4ccf8a5c4e3",
@@ -18432,7 +18484,7 @@
       "fields": [
         "公司MTD全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wcc01e2da10be467d91ca477": {
       "cardId": "wcc01e2da10be467d91ca477",
@@ -18482,7 +18534,7 @@
       "fields": [
         "销售额省占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wce7ea72541c1450681cf020": {
       "cardId": "wce7ea72541c1450681cf020",
@@ -18525,7 +18577,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wd2557e2a859e4043b697b9d": {
       "cardId": "wd2557e2a859e4043b697b9d",
@@ -18554,7 +18606,7 @@
         "省外",
         "诊所"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wd3572afdcbc44df9ad2be18": {
       "cardId": "wd3572afdcbc44df9ad2be18",
@@ -18577,7 +18629,7 @@
       "fields": [
         "本年P4毛利率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "we16bcbf048504f8da0f8053": {
       "cardId": "we16bcbf048504f8da0f8053",
@@ -18612,7 +18664,7 @@
         "子公司简称",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "we1bf322626674a57b860a34": {
       "cardId": "we1bf322626674a57b860a34",
@@ -18655,7 +18707,7 @@
         "省外含税销售额目标",
         "省外总采购客户数指标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "we37c7c02ddae47149c08bff": {
       "cardId": "we37c7c02ddae47149c08bff",
@@ -18699,7 +18751,7 @@
         "活动ID",
         "活动类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "we53d13247ad24b8db8d6bf8": {
       "cardId": "we53d13247ad24b8db8d6bf8",
@@ -18713,7 +18765,7 @@
         "年度边际利润率",
         "年边率差值"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wf9648ad8ef4240e19b49e63": {
       "cardId": "wf9648ad8ef4240e19b49e63",
@@ -18736,7 +18788,7 @@
       "fields": [
         "仓库人工费率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "wf9f583f7b26843f8be9894e": {
       "cardId": "wf9f583f7b26843f8be9894e",
@@ -18768,7 +18820,7 @@
       "fields": [
         "本省居民人均金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x1f9a831cb30947b79b2eb28": {
       "cardId": "x1f9a831cb30947b79b2eb28",
@@ -18781,7 +18833,7 @@
       "fields": [
         "V1V2销售占比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x3bcf0649ae9b4b4c8dbe914": {
       "cardId": "x3bcf0649ae9b4b4c8dbe914",
@@ -18816,6 +18868,15 @@
           "fdType": "BOOL",
           "filterType": "SPARK_EXPR",
           "filterLevel": "DETAIL"
+        },
+        {
+          "name": "特殊剔除",
+          "fdId": "iac0e2c31efee43e3afc5129",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
         }
       ],
       "dz": [],
@@ -18827,7 +18888,7 @@
         "度量名",
         "类型"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x3e750e48cc72471a9800d6d": {
       "cardId": "x3e750e48cc72471a9800d6d",
@@ -18836,15 +18897,6 @@
       "pgId": "e69c32cad542d4055aa4dfff",
       "cdType": "CHART",
       "filters": [
-        {
-          "name": "公司名称",
-          "fdId": "m39867db3e79e426cac9fdfa",
-          "dsId": "l452f47c8f2204aa1896777d",
-          "cdId": null,
-          "fdType": "STRING",
-          "filterType": "NI",
-          "filterLevel": "DETAIL"
-        },
         {
           "name": "月份",
           "fdId": "sc3114c21e05a45c18ab558f",
@@ -18870,7 +18922,7 @@
         "缺货率-汇总",
         "边际利润率-汇总"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x3f1d561b7d364f9cb7131fa": {
       "cardId": "x3f1d561b7d364f9cb7131fa",
@@ -18903,7 +18955,7 @@
         "销售额同比增长率",
         "销售额达成率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x4dca19152d9c4a149154f38": {
       "cardId": "x4dca19152d9c4a149154f38",
@@ -18918,7 +18970,7 @@
         "活动ID",
         "活动中链接数"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x6a4c9306fc2d4b8cabdeb82": {
       "cardId": "x6a4c9306fc2d4b8cabdeb82",
@@ -18946,7 +18998,7 @@
         "环数标签",
         "边际利润率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x7276aeb5f388451c9af1248": {
       "cardId": "x7276aeb5f388451c9af1248",
@@ -18986,7 +19038,7 @@
         "是否优势",
         "环比金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x7a642aaadadb4213afbaa67": {
       "cardId": "x7a642aaadadb4213afbaa67",
@@ -19005,7 +19057,7 @@
         "诊所店数目标",
         "诊所金额目标"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x82e3103e3e4249788a41983": {
       "cardId": "x82e3103e3e4249788a41983",
@@ -19037,7 +19089,7 @@
       "fields": [
         "边际利润额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x91a3c6bf6ee147389116343": {
       "cardId": "x91a3c6bf6ee147389116343",
@@ -19060,7 +19112,7 @@
       "fields": [
         "公司MTD全国销售额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "x9b666569631e48769e69667": {
       "cardId": "x9b666569631e48769e69667",
@@ -19107,7 +19159,7 @@
         "子公司id",
         "度量名"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xace04910a2eb45679e9f10a": {
       "cardId": "xace04910a2eb45679e9f10a",
@@ -19142,7 +19194,7 @@
         "度量名",
         "排名段"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xae18b61949c146338a031bc": {
       "cardId": "xae18b61949c146338a031bc",
@@ -19179,7 +19231,7 @@
         "重点A1B3缺货品种数",
         "重点品种缺货率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xbd9a6e87543a470f84ef5b5": {
       "cardId": "xbd9a6e87543a470f84ef5b5",
@@ -19195,7 +19247,7 @@
         "时间进度",
         "进度差"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xc6ce38067c3449a9968d221": {
       "cardId": "xc6ce38067c3449a9968d221",
@@ -19249,7 +19301,7 @@
         "集采进度",
         "首推进度"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xc92a667cbe20410791caad1": {
       "cardId": "xc92a667cbe20410791caad1",
@@ -19283,7 +19335,7 @@
         "类型",
         "负责人"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xe01671830e9f4dbdbeaa355": {
       "cardId": "xe01671830e9f4dbdbeaa355",
@@ -19297,7 +19349,7 @@
         "已产生积分",
         "已产生积分折算金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xecacbba449434a9c87bc268": {
       "cardId": "xecacbba449434a9c87bc268",
@@ -19323,7 +19375,7 @@
         "边际利润率环比",
         "销售额环比"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xfa6274b35fa74f5e8dce3f7": {
       "cardId": "xfa6274b35fa74f5e8dce3f7",
@@ -19413,7 +19465,7 @@
         "金额GAP",
         "金额增长率"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
     },
     "xfdce13eeff804754a03c0e8": {
       "cardId": "xfdce13eeff804754a03c0e8",
@@ -19427,7 +19479,388 @@
         "下单数量",
         "下单金额"
       ],
-      "updatedAt": 1788924069
+      "updatedAt": 1790131486
+    },
+    "bf8f6e76b814349968fb975e": {
+      "cardId": "bf8f6e76b814349968fb975e",
+      "name": "双十一大促招商目标",
+      "chartType": "PIVOT_TABLE",
+      "pgId": "ae8983205b34346609d96ea6",
+      "cdType": "CHART",
+      "filters": [],
+      "dz": [],
+      "fields": [
+        "公司",
+        "增长额目标",
+        "度量名",
+        "招商金额目标",
+        "目标月份",
+        "销售额目标"
+      ],
+      "updatedAt": 1790131486
+    },
+    "f429e9b74fefa4548a81a0c8": {
+      "cardId": "f429e9b74fefa4548a81a0c8",
+      "name": "子公司降本品种明细（VS 合理P4*0.985）（实时更新）",
+      "chartType": "DETAIL_TABLE",
+      "pgId": "ae8983205b34346609d96ea6",
+      "cdType": "CHART",
+      "filters": [
+        {
+          "name": "出库月份",
+          "fdId": "ne1bb26e8b3e44a97bd59833",
+          "dsId": "r9aa975b309aa43c3ad77b6f",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        }
+      ],
+      "dz": [],
+      "fields": [
+        "spuid",
+        "公司",
+        "净出库数量",
+        "净出库金额含税",
+        "出库P4成本单价",
+        "出库月份",
+        "厂家",
+        "双十一降本金额",
+        "合理P4",
+        "品种负责人",
+        "商品名称",
+        "库存数量",
+        "批次号",
+        "是否满足双十一降本"
+      ],
+      "updatedAt": 1790131486
+    },
+    "f9cad079bac1e4381bfcebcb": {
+      "cardId": "f9cad079bac1e4381bfcebcb",
+      "name": "滞销分析_采购员维度（含趋势）",
+      "chartType": "PIVOT_TABLE",
+      "pgId": "m01411409b42a446cb766bb3",
+      "cdType": "CHART",
+      "filters": [
+        {
+          "name": "特殊业务标签+1",
+          "fdId": "k64530b2cb26440c2b607fb2",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "公司名称",
+          "fdId": "i6d61fad0624d426393ae07e",
+          "dsId": "t45f0306f6f594cf9b9b0c43",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "结算方式",
+          "fdId": "i32b2cdddb7e74433a059090",
+          "dsId": "t45f0306f6f594cf9b9b0c43",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "日期筛选",
+          "fdId": "ef140cf562c2640918310a5f",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "特殊剔除",
+          "fdId": "j932ded6a3e84401d8505efe",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
+        }
+      ],
+      "dz": [],
+      "fields": [
+        "6045库存金额",
+        "6045滞销占比",
+        "sDates",
+        "公司名称",
+        "品种负责人",
+        "库存金额",
+        "度量名",
+        "特殊业务标签",
+        "近效期占比",
+        "近效期金额"
+      ],
+      "updatedAt": 1790131486
+    },
+    "l5357bebc99f548ed8a633c7": {
+      "cardId": "l5357bebc99f548ed8a633c7",
+      "name": "子公司降本/非降本品种（VS 合理P4*0.985）_销售对比",
+      "chartType": "PIVOT_TABLE",
+      "pgId": "ae8983205b34346609d96ea6",
+      "cdType": "CHART",
+      "filters": [
+        {
+          "name": "出库月份",
+          "fdId": "ne1bb26e8b3e44a97bd59833",
+          "dsId": "r9aa975b309aa43c3ad77b6f",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        }
+      ],
+      "dz": [],
+      "fields": [
+        "公司",
+        "净出库金额含税",
+        "出库月份",
+        "度量名",
+        "是否双十一降本"
+      ],
+      "updatedAt": 1790131486
+    },
+    "pce83414cbc1d4fd39db3850": {
+      "cardId": "pce83414cbc1d4fd39db3850",
+      "name": "缺货率走势_采购员维度",
+      "chartType": "PIVOT_TABLE",
+      "pgId": "m01411409b42a446cb766bb3",
+      "cdType": "CHART",
+      "filters": [
+        {
+          "name": "日期筛选",
+          "fdId": "n7b7506b25f824acf9d211ff",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "公司名称",
+          "fdId": "kcfff298962e649c49b89324",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": null
+        }
+      ],
+      "dz": [],
+      "fields": [
+        "sDates",
+        "公司名称",
+        "品种负责人",
+        "度量名",
+        "整体缺货率",
+        "类型",
+        "重点品种缺货率"
+      ],
+      "updatedAt": 1790131486
+    },
+    "r13df519cb0c64af7b7ef21e": {
+      "cardId": "r13df519cb0c64af7b7ef21e",
+      "name": "滞销&近效明细（2026.01.01至今）",
+      "chartType": "DETAIL_TABLE",
+      "pgId": "m01411409b42a446cb766bb3",
+      "cdType": "CHART",
+      "filters": [
+        {
+          "name": "sDates",
+          "fdId": "v01cfdbb986ed4b93b13356b",
+          "dsId": "t45f0306f6f594cf9b9b0c43",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "GE",
+          "filterLevel": null
+        }
+      ],
+      "dz": [],
+      "fields": [
+        "p1",
+        "p1成本金额",
+        "p4",
+        "p4成本金额",
+        "sDates",
+        "spuid",
+        "业务标签",
+        "业务类型",
+        "乐药编码",
+        "产品批号",
+        "入库数量",
+        "入库时间",
+        "公司名称",
+        "分仓名称",
+        "分库龄段",
+        "厂家",
+        "品种负责人",
+        "商品名称",
+        "商品编码",
+        "子公司id",
+        "库存天数",
+        "库存数量",
+        "库房名称",
+        "库龄",
+        "批次号",
+        "效期至",
+        "是否为6045滞销",
+        "是否为近效期品种",
+        "滞销跌价损失",
+        "特殊业务标签",
+        "省内排名",
+        "类型",
+        "结算方式",
+        "规格",
+        "近28天全国均价",
+        "近28天已请货数量",
+        "近28天平台省内均价",
+        "近28天线上销量全国",
+        "近7天平台省内均价",
+        "集团业务",
+        "集团事业部业务",
+        "集团商品标签"
+      ],
+      "updatedAt": 1790131486
+    },
+    "s4b51fa9ef3624f519a64ff2": {
+      "cardId": "s4b51fa9ef3624f519a64ff2",
+      "name": "滞销分析_公司维度（含趋势）",
+      "chartType": "PIVOT_TABLE",
+      "pgId": "m01411409b42a446cb766bb3",
+      "cdType": "CHART",
+      "filters": [
+        {
+          "name": "特殊业务标签+1",
+          "fdId": "k64530b2cb26440c2b607fb2",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "公司名称",
+          "fdId": "i6d61fad0624d426393ae07e",
+          "dsId": "t45f0306f6f594cf9b9b0c43",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "结算方式",
+          "fdId": "i32b2cdddb7e74433a059090",
+          "dsId": "t45f0306f6f594cf9b9b0c43",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "日期筛选",
+          "fdId": "ef140cf562c2640918310a5f",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        },
+        {
+          "name": "特殊剔除",
+          "fdId": "j932ded6a3e84401d8505efe",
+          "dsId": null,
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "NI",
+          "filterLevel": "DETAIL"
+        }
+      ],
+      "dz": [],
+      "fields": [
+        "6045库存金额",
+        "6045滞销占比",
+        "sDates",
+        "公司名称",
+        "库存金额",
+        "度量名",
+        "特殊业务标签",
+        "近效期占比",
+        "近效期金额"
+      ],
+      "updatedAt": 1790131486
+    },
+    "t000116d45d1c44deb2bc589": {
+      "cardId": "t000116d45d1c44deb2bc589",
+      "name": "子公司降本金额（VS 合理P4*0.985）",
+      "chartType": "PIVOT_TABLE",
+      "pgId": "ae8983205b34346609d96ea6",
+      "cdType": "CHART",
+      "filters": [
+        {
+          "name": "出库月份",
+          "fdId": "ne1bb26e8b3e44a97bd59833",
+          "dsId": "r9aa975b309aa43c3ad77b6f",
+          "cdId": null,
+          "fdType": "STRING",
+          "filterType": "IN",
+          "filterLevel": "DETAIL"
+        }
+      ],
+      "dz": [],
+      "fields": [
+        "公司",
+        "出库月份",
+        "双十一降本金额",
+        "度量名"
+      ],
+      "updatedAt": 1790131486
+    },
+    "u7b9f5b775a3d4a65a478a6f": {
+      "cardId": "u7b9f5b775a3d4a65a478a6f",
+      "name": "普品品种目标明细（固定不变）",
+      "chartType": "DETAIL_TABLE",
+      "pgId": "ae8983205b34346609d96ea6",
+      "cdType": "CHART",
+      "filters": [],
+      "dz": [],
+      "fields": [
+        "25年同期-3K覆盖率",
+        "25年同期-5万覆盖率",
+        "25年同期-全国出库金额",
+        "25年同期-省内市占率",
+        "26年3K客户增长额目标",
+        "26年5万客户增长额目标",
+        "26年其他客户增长额目标",
+        "OTO搜索人气排名段",
+        "SABC分级",
+        "spuid",
+        "公司",
+        "厂家",
+        "厂牌营销方",
+        "品种负责人",
+        "商品名称",
+        "增长额目标",
+        "当前考核状态",
+        "招商金额目标",
+        "新采购亚类",
+        "是否普品50",
+        "是否目标品类",
+        "目标月份",
+        "规格",
+        "销售额目标",
+        "集团业务"
+      ],
+      "updatedAt": 1790131486
     }
   }
 }

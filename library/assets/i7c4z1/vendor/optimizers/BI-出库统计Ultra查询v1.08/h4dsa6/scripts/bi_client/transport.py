@@ -218,6 +218,17 @@ class DirectTransport:
             raise BiError("AUTH_FORBIDDEN", "当前 BI 账号无权执行该请求。")
         if response.status_code == 429:
             raise BiError("RATE_LIMITED", "BI 请求过于频繁。", retryable=True)
+        if response.status_code == 500:
+            try:
+                _body = response.json()
+            except Exception:
+                _body = {}
+            _ec = _body.get("error_code") or (_body.get("error") or {}).get("status")
+            if _ec == 1004 or "无权访问" in str(_body.get("error_message", "")):
+                raise BiError(
+                    "NO_PERMISSION",
+                    "当前 BI 账号无该页面/卡片的数据权限（error_code:1004 无权访问）。",
+                )
         if response.status_code in (502, 503, 504):
             raise BiError(
                 "UPSTREAM_UNAVAILABLE",

@@ -1,0 +1,3209 @@
+{
+  "meta": {
+    "generatedAt": "2026-09-23 13:11:58",
+    "source": "https://bi.leyopharm.com",
+    "folderName": "摇钱树业务线",
+    "folderId": "q4e929703ce5247db98af47a",
+    "pageCount": 6,
+    "cardCount": 183,
+    "chartCount": 100,
+    "selectorCount": 41,
+    "fieldCount": 456,
+    "withCandidates": true,
+    "requests": 57
+  },
+  "fields": {
+    "rc4868e9a575e4e1790f3585": {
+      "fdId": "rc4868e9a575e4e1790f3585",
+      "name": "摇钱树MTD拼团出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "f5e3f18ae14994bebb9bb785": {
+      "fdId": "f5e3f18ae14994bebb9bb785",
+      "name": "摇钱树MTD出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b70e3a0204ef3493294902d5": {
+      "fdId": "b70e3a0204ef3493294902d5",
+      "name": "摇钱树MTD出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n21ba978444964ff592a50e9": {
+      "fdId": "n21ba978444964ff592a50e9",
+      "name": "摇钱树整体进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "sb0e56999b2144c0fb88ec4a": {
+      "fdId": "sb0e56999b2144c0fb88ec4a",
+      "name": "时间进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n462ea76dc6604a56a30069c": {
+      "fdId": "n462ea76dc6604a56a30069c",
+      "name": "时间进度差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "t6fbd16103781462783043c4": {
+      "fdId": "t6fbd16103781462783043c4",
+      "name": "子公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "w7540e840e6e04820a7704c3": {
+      "fdId": "w7540e840e6e04820a7704c3",
+      "name": "摇钱树进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "mc8d6104337f6487d8c56990": {
+      "fdId": "mc8d6104337f6487d8c56990",
+      "name": "摇钱树MTD一口价出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c611507f0227449bca7befe4": {
+      "fdId": "c611507f0227449bca7befe4",
+      "name": "摇钱树批购包邮出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "mf80d18d6008c4060a9bae97": {
+      "fdId": "mf80d18d6008c4060a9bae97",
+      "name": "摇钱树整件购出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "fd101f169790949479fc6e68": {
+      "fdId": "fd101f169790949479fc6e68",
+      "name": "包邮类活动总出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "j44a78dfa7f894187949bd0c": {
+      "fdId": "j44a78dfa7f894187949bd0c",
+      "name": "子公司ID",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "f6f5c889c89244ac6a7bc902"
+    },
+    "m2bbca499bc7d48a3b3cb8e8": {
+      "fdId": "m2bbca499bc7d48a3b3cb8e8",
+      "name": "公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "t8e27209ac17a45b4a84375f": {
+      "fdId": "t8e27209ac17a45b4a84375f",
+      "name": "负利润&滞销费目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f6f5c889c89244ac6a7bc902"
+    },
+    "v7e5825f0ad6442ac85db8b6": {
+      "fdId": "v7e5825f0ad6442ac85db8b6",
+      "name": "除顽固分子应收负利润和滞销费",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f6f5c889c89244ac6a7bc902"
+    },
+    "k9b330c3184c2467583356f6": {
+      "fdId": "k9b330c3184c2467583356f6",
+      "name": "距离年度目标差距",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "dd0fc4fdb042e4669a3de9ca": {
+      "fdId": "dd0fc4fdb042e4669a3de9ca",
+      "name": "负利润和滞销费进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f6f5c889c89244ac6a7bc902"
+    },
+    "o678c14d8e5a341528f92440": {
+      "fdId": "o678c14d8e5a341528f92440",
+      "name": "负利润&滞销费基数",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f6f5c889c89244ac6a7bc902"
+    },
+    "w89ac99b2018248abbf1f17a": {
+      "fdId": "w89ac99b2018248abbf1f17a",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l3a52eecf088b49e5a6e578e": {
+      "fdId": "l3a52eecf088b49e5a6e578e",
+      "name": "不含税配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "e7ef94641a29549da9c5a2bc": {
+      "fdId": "e7ef94641a29549da9c5a2bc",
+      "name": "不含税仓库人工费",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l256e5524e3324040ab274fd": {
+      "fdId": "l256e5524e3324040ab274fd",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "t0bb3c025781b4ac9ab79463": {
+      "fdId": "t0bb3c025781b4ac9ab79463",
+      "name": "子公司id",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "p9eb99e242c604be09ddad71": {
+      "fdId": "p9eb99e242c604be09ddad71",
+      "name": "店铺含税销售额目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n487d15c7d15d43eeb9d7536": {
+      "fdId": "n487d15c7d15d43eeb9d7536",
+      "name": "摇钱树含税销售额目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b8797ddb8458f4133960aea1": {
+      "fdId": "b8797ddb8458f4133960aea1",
+      "name": "自营出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "ufef96cebcac14ff38494bb2"
+    },
+    "p5569b6edf7cd44ed80b7b4d": {
+      "fdId": "p5569b6edf7cd44ed80b7b4d",
+      "name": "摇钱树进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "o152da666a66c4a0b80e2c98": {
+      "fdId": "o152da666a66c4a0b80e2c98",
+      "name": "时间进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l4ec24057f9914c43ba0e697": {
+      "fdId": "l4ec24057f9914c43ba0e697",
+      "name": "摇钱树MTD省内出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c61be2e4e936d451c90d454a": {
+      "fdId": "c61be2e4e936d451c90d454a",
+      "name": "摇钱树省内拼团出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "g3eae8dda1aec4210bf4426e": {
+      "fdId": "g3eae8dda1aec4210bf4426e",
+      "name": "摇钱树省外拼团出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "u1a1ffd307f75412ca7738be": {
+      "fdId": "u1a1ffd307f75412ca7738be",
+      "name": "摇钱树省内一口价出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ke93ab9ae586b4c4ea69259d": {
+      "fdId": "ke93ab9ae586b4c4ea69259d",
+      "name": "摇钱树省外一口价出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "v56df5943cdc94bfe832b36e": {
+      "fdId": "v56df5943cdc94bfe832b36e",
+      "name": "摇钱树MTD拼团出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "wab1128a36091487c8486c7a": {
+      "fdId": "wab1128a36091487c8486c7a",
+      "name": "公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "f8ff78a7afe3e4c839e25aaf": {
+      "fdId": "f8ff78a7afe3e4c839e25aaf",
+      "name": "近30天动销金额>=3000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "w50d2e1e325bf471296f2618": {
+      "fdId": "w50d2e1e325bf471296f2618",
+      "name": "低效品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ef9fd0acaf81c4d4c80e98f3": {
+      "fdId": "ef9fd0acaf81c4d4c80e98f3",
+      "name": "动销金额>=10000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "qd596c249c5d44f348f09532": {
+      "fdId": "qd596c249c5d44f348f09532",
+      "name": "6000<=动销金额<10000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "x784dfec717eb4ed883edc3d": {
+      "fdId": "x784dfec717eb4ed883edc3d",
+      "name": "3000<=动销金额<6000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "vc5c6bb70d4254c5baa3dcab": {
+      "fdId": "vc5c6bb70d4254c5baa3dcab",
+      "name": "1000<=动销金额<3000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ic25674c3bfdd4a03b59ef95": {
+      "fdId": "ic25674c3bfdd4a03b59ef95",
+      "name": "500<=动销金额<1000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "w59d58ba876f44a5cafa7f5c": {
+      "fdId": "w59d58ba876f44a5cafa7f5c",
+      "name": "0<动销金额<500品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "s739076f1241c475cb8bf384": {
+      "fdId": "s739076f1241c475cb8bf384",
+      "name": "0动销品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ee35203de7e0e406ab75202e": {
+      "fdId": "ee35203de7e0e406ab75202e",
+      "name": "动销金额>=10000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "k38a61957968b45d2a7ea165": {
+      "fdId": "k38a61957968b45d2a7ea165",
+      "name": "6000<=动销金额<10000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "q5ee6fd21bdb5488dae29eec": {
+      "fdId": "q5ee6fd21bdb5488dae29eec",
+      "name": "3000<=动销金额<6000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b57106da047c44da8897baa5": {
+      "fdId": "b57106da047c44da8897baa5",
+      "name": "1000<=动销金额<3000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "j4ad07edefcf841e2b509c30": {
+      "fdId": "j4ad07edefcf841e2b509c30",
+      "name": "500<=动销金额<1000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ac9a6aff5ea1c4c98bef9070": {
+      "fdId": "ac9a6aff5ea1c4c98bef9070",
+      "name": "0<动销金额<500品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "q0318c1e5207a4514a229335": {
+      "fdId": "q0318c1e5207a4514a229335",
+      "name": "0动销品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "w583cb36c7aa94791a20873c": {
+      "fdId": "w583cb36c7aa94791a20873c",
+      "name": "公司ID",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "g4a9d648ff9e74bbb8fc4969"
+    },
+    "n58c352d9d81b46c9afabb0a": {
+      "fdId": "n58c352d9d81b46c9afabb0a",
+      "name": "公司",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "g4a9d648ff9e74bbb8fc4969"
+    },
+    "x1b3d9233415c40be9613aac": {
+      "fdId": "x1b3d9233415c40be9613aac",
+      "name": "入库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "g4a9d648ff9e74bbb8fc4969"
+    },
+    "pe7879cc89d7c4d569647156": {
+      "fdId": "pe7879cc89d7c4d569647156",
+      "name": "排名区间",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "g4a9d648ff9e74bbb8fc4969"
+    },
+    "daddfb289eb544f5593b8d9d": {
+      "fdId": "daddfb289eb544f5593b8d9d",
+      "name": "总库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "ue326e9f144af426a96f6932": {
+      "fdId": "ue326e9f144af426a96f6932",
+      "name": "provider_id",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "le407288779d24bdca9d0146": {
+      "fdId": "le407288779d24bdca9d0146",
+      "name": "库存金额目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "h3ba09abd205d41d0a2969c6": {
+      "fdId": "h3ba09abd205d41d0a2969c6",
+      "name": "库存目标GAP",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "x0ea97cd878614e01bde0c16": {
+      "fdId": "x0ea97cd878614e01bde0c16",
+      "name": "合格库区库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "cb172d7e1e961439393f6714": {
+      "fdId": "cb172d7e1e961439393f6714",
+      "name": "在途库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "r01aacba360d64f05a5f79d5": {
+      "fdId": "r01aacba360d64f05a5f79d5",
+      "name": "近30天动销金额>=3000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "oc47c2b2ed552461f933b5b5": {
+      "fdId": "oc47c2b2ed552461f933b5b5",
+      "name": "近30天动销金额>=3000品种数",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "m10fbb6801e504ca2844ab28": {
+      "fdId": "m10fbb6801e504ca2844ab28",
+      "name": "低效品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "x82a19d501e554ea1a0bb787": {
+      "fdId": "x82a19d501e554ea1a0bb787",
+      "name": "低效品种数占比",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "pdccce6d087114e51bda1628": {
+      "fdId": "pdccce6d087114e51bda1628",
+      "name": "低效品种数占比",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "gb99808429ffc4251bd99864": {
+      "fdId": "gb99808429ffc4251bd99864",
+      "name": "近30天动销金额>=3000品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "tb2f11351115e4a32b73351b": {
+      "fdId": "tb2f11351115e4a32b73351b",
+      "name": "商务经理",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "sc03066d845794efd886986d": {
+      "fdId": "sc03066d845794efd886986d",
+      "name": "合格库区库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "tc15ffe351dce45f9be317f8": {
+      "fdId": "tc15ffe351dce45f9be317f8",
+      "name": "本月累计上架品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "pf53227b788034f9485cb8af": {
+      "fdId": "pf53227b788034f9485cb8af",
+      "name": "日期",
+      "fdType": "DATE",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "eb0a2bb69b1674a10bb973d0": {
+      "fdId": "eb0a2bb69b1674a10bb973d0",
+      "name": "本月累计上架药品ID数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "ab1c2687330f74ccf9ba2c2f": {
+      "fdId": "ab1c2687330f74ccf9ba2c2f",
+      "name": "当前在库ID数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "c9b710b57bd5f40b589bc7db": {
+      "fdId": "c9b710b57bd5f40b589bc7db",
+      "name": "本月累计上架编码数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "e154bdf80e1294995843c791": {
+      "fdId": "e154bdf80e1294995843c791",
+      "name": "当前在库编码数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "qa555b07a1da54b39958c14c": {
+      "fdId": "qa555b07a1da54b39958c14c",
+      "name": "仓动销大于0品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "e793470f623d14c2b9cf135a"
+    },
+    "i18f1c32e49b347f9b2ca4c3": {
+      "fdId": "i18f1c32e49b347f9b2ca4c3",
+      "name": "近30天动销编码数",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "a855fea40548e4666a9813d1": {
+      "fdId": "a855fea40548e4666a9813d1",
+      "name": "库存目标GAP",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "s45c2e4582d1b4ae6bad7d82": {
+      "fdId": "s45c2e4582d1b4ae6bad7d82",
+      "name": "对应本省本仓ID",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "h6e7c4f739241480d8ebd091": {
+      "fdId": "h6e7c4f739241480d8ebd091",
+      "name": "运营商务",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "e741800344f464ed09512718": {
+      "fdId": "e741800344f464ed09512718",
+      "name": "公司名",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "l851f6af1f8ea44b1a9ba16f": {
+      "fdId": "l851f6af1f8ea44b1a9ba16f",
+      "name": "对应组别",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "jc906a6e3b5d342a88515054": {
+      "fdId": "jc906a6e3b5d342a88515054",
+      "name": "边际利润额目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "ud721bf95b759499ca8a9994": {
+      "fdId": "ud721bf95b759499ca8a9994",
+      "name": "仓MTD边际利润额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "h8ff7d390bcbf4bfd835d9b2": {
+      "fdId": "h8ff7d390bcbf4bfd835d9b2",
+      "name": "仓MTD边际利润额(金钱豹调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "jf9a4953c9dae4c89b48215b": {
+      "fdId": "jf9a4953c9dae4c89b48215b",
+      "name": "边际利润额进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "v89cf9be9bee248ada9e4e2b": {
+      "fdId": "v89cf9be9bee248ada9e4e2b",
+      "name": "摇钱树含税销售额目标",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "k596c5a2366ca4d7faf9c283": {
+      "fdId": "k596c5a2366ca4d7faf9c283",
+      "name": "仓MTD金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "s03a293d5b0e4496f92e71dc": {
+      "fdId": "s03a293d5b0e4496f92e71dc",
+      "name": "仓销售达成率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "bb41a9b0f7e8048a6a9e9a44": {
+      "fdId": "bb41a9b0f7e8048a6a9e9a44",
+      "name": "动销SKU数目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "s1a3fc65548094959878a0d8": {
+      "fdId": "s1a3fc65548094959878a0d8",
+      "name": "正负激励：仓SKU实际",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "xaf3762c55c4b44d185cd8fc": {
+      "fdId": "xaf3762c55c4b44d185cd8fc",
+      "name": "正负激励：个人实际SKU",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b46871f32307a49d3ae03970": {
+      "fdId": "b46871f32307a49d3ae03970",
+      "name": "商务个人总金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "ra05c9a89fc6044de9cd60a0": {
+      "fdId": "ra05c9a89fc6044de9cd60a0",
+      "name": "商务个人总金额(剔除低效品)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "qb4a0f3a0dd314dd6b909424": {
+      "fdId": "qb4a0f3a0dd314dd6b909424",
+      "name": "商务个人边际利润额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "p63bc83d4b9c1441dad5cc03": {
+      "fdId": "p63bc83d4b9c1441dad5cc03",
+      "name": "商务个人边际利润额(金钱豹调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "c11f423fdc6ec421f946d586": {
+      "fdId": "c11f423fdc6ec421f946d586",
+      "name": "25年本仓存量",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "cc6573a25d75a4f17803c3ca": {
+      "fdId": "cc6573a25d75a4f17803c3ca",
+      "name": "26年本仓金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "vf021abf6dd8d4178a821712": {
+      "fdId": "vf021abf6dd8d4178a821712",
+      "name": "本仓增量",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "bed469add8b0945c18f0941d": {
+      "fdId": "bed469add8b0945c18f0941d",
+      "name": "26年外仓金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ie90fe751204641c8906f1e0": {
+      "fdId": "ie90fe751204641c8906f1e0",
+      "name": "25年本仓存量不含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "e7906ced6368c41cd8dccd58": {
+      "fdId": "e7906ced6368c41cd8dccd58",
+      "name": "26年本仓不含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "r6bd92afb406a4e56afd8d38": {
+      "fdId": "r6bd92afb406a4e56afd8d38",
+      "name": "商务外仓MTD金额-广东东健",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "xf8b35b170b0f4b9d832da76": {
+      "fdId": "xf8b35b170b0f4b9d832da76",
+      "name": "商务外仓MTD金额-广东帝豪",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "u1aaf17d888954302b006236": {
+      "fdId": "u1aaf17d888954302b006236",
+      "name": "商务外仓MTD金额-湖北诚为上",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "oa58d6e03090e476b9886e3c": {
+      "fdId": "oa58d6e03090e476b9886e3c",
+      "name": "商务外仓MTD金额-四川北乐帮",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "d7a4fb9c71f204c70a9e5102": {
+      "fdId": "d7a4fb9c71f204c70a9e5102",
+      "name": "商务外仓MTD金额-安徽乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "o50ad7ca47d1d4d81b652ee2": {
+      "fdId": "o50ad7ca47d1d4d81b652ee2",
+      "name": "商务外仓MTD金额-江苏金石",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "sd68514c7414344309a02a71": {
+      "fdId": "sd68514c7414344309a02a71",
+      "name": "商务外仓MTD金额-山东共好药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "w62cdef8d0b1a49f08091dcd": {
+      "fdId": "w62cdef8d0b1a49f08091dcd",
+      "name": "商务外仓MTD金额-重庆央拓",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "v8b7f2af6aeaf4979ab07afa": {
+      "fdId": "v8b7f2af6aeaf4979ab07afa",
+      "name": "商务外仓MTD金额-河南惠盈",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "dbf3a6064e11d485e9dddc13": {
+      "fdId": "dbf3a6064e11d485e9dddc13",
+      "name": "商务外仓MTD金额-福建东华宇泰",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "vf9a85d7f2dc94f7d8cd96dd": {
+      "fdId": "vf9a85d7f2dc94f7d8cd96dd",
+      "name": "商务外仓MTD金额-吉林众鑫",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "id7ef9709ce544ce4b96b088": {
+      "fdId": "id7ef9709ce544ce4b96b088",
+      "name": "商务外仓MTD金额-黑龙江常乐",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "r108bd905fdc24271b731c01": {
+      "fdId": "r108bd905fdc24271b731c01",
+      "name": "商务外仓MTD金额-辽宁乐兴",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "c376d01c0b8cb4ce2bfb6f58": {
+      "fdId": "c376d01c0b8cb4ce2bfb6f58",
+      "name": "商务外仓MTD金额-北京惠生",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "k9be6bca5d21742d7a3089bf": {
+      "fdId": "k9be6bca5d21742d7a3089bf",
+      "name": "商务外仓MTD金额-浙江乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "ndb69cef3300141b7ac20903": {
+      "fdId": "ndb69cef3300141b7ac20903",
+      "name": "商务外仓MTD金额-陕西乐盈",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "lfe6f86c1ae5b4d77a9f84ad": {
+      "fdId": "lfe6f86c1ae5b4d77a9f84ad",
+      "name": "商务外仓MTD金额-山西乐进",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "r3470f4c0a10a45fe83430e8": {
+      "fdId": "r3470f4c0a10a45fe83430e8",
+      "name": "商务外仓MTD金额-河北泽怡",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "e6d9e103d671c454dbc5e258": {
+      "fdId": "e6d9e103d671c454dbc5e258",
+      "name": "商务外仓MTD金额-湖南乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "j397c13ef63b24ffe88ec852": {
+      "fdId": "j397c13ef63b24ffe88ec852",
+      "name": "商务外仓MTD金额-江西乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "j47c262eb36c948569492351": {
+      "fdId": "j47c262eb36c948569492351",
+      "name": "商务外仓MTD金额-广西乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "m0795ce1305d04fb1bd3b821": {
+      "fdId": "m0795ce1305d04fb1bd3b821",
+      "name": "商务边额-广东东健",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "nd7a19898b0b14f178e97ed9": {
+      "fdId": "nd7a19898b0b14f178e97ed9",
+      "name": "商务边额-广东帝豪",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "hbc9c0dd69704435ab75443f": {
+      "fdId": "hbc9c0dd69704435ab75443f",
+      "name": "商务边额-湖北诚为上",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "q6dd6ea48e1b34bd1a3bb8b4": {
+      "fdId": "q6dd6ea48e1b34bd1a3bb8b4",
+      "name": "商务边额-四川北乐帮",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "f3dc105d920f74bbe849342f": {
+      "fdId": "f3dc105d920f74bbe849342f",
+      "name": "商务边额-安徽乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "f594259d73ca249208f068df": {
+      "fdId": "f594259d73ca249208f068df",
+      "name": "商务边额-江苏金石",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "g53667e5c14704bed9a1ce67": {
+      "fdId": "g53667e5c14704bed9a1ce67",
+      "name": "商务边额-山东共好药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "e3d9127c19edb478291c99a1": {
+      "fdId": "e3d9127c19edb478291c99a1",
+      "name": "商务边额-重庆央拓",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "nbd6ace6fa7b141ffb16bae7": {
+      "fdId": "nbd6ace6fa7b141ffb16bae7",
+      "name": "商务边额-河南惠盈",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "u0d010a5c6b294e3e8f960a1": {
+      "fdId": "u0d010a5c6b294e3e8f960a1",
+      "name": "商务边额-福建东华宇泰",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "d6168ebdaa9ce4f5b8a6de65": {
+      "fdId": "d6168ebdaa9ce4f5b8a6de65",
+      "name": "商务边额-吉林众鑫",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "c000dfd4b99db4efb80d3a8a": {
+      "fdId": "c000dfd4b99db4efb80d3a8a",
+      "name": "商务边额-黑龙江常乐",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "w8f6da396e70649f69769cff": {
+      "fdId": "w8f6da396e70649f69769cff",
+      "name": "商务边额-辽宁乐兴",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "pc20eb9db53fb4a6786c46ad": {
+      "fdId": "pc20eb9db53fb4a6786c46ad",
+      "name": "商务边额-北京惠生",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "weff735aa35b447128ae8657": {
+      "fdId": "weff735aa35b447128ae8657",
+      "name": "商务边额-浙江乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "sd7c0326fab1a44ef8fcb4fd": {
+      "fdId": "sd7c0326fab1a44ef8fcb4fd",
+      "name": "商务边额-陕西乐盈",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "rcd4955cf7c4b4bf6b68da5d": {
+      "fdId": "rcd4955cf7c4b4bf6b68da5d",
+      "name": "商务边额-山西乐进",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "x8e90496032194a2bb5fc4e3": {
+      "fdId": "x8e90496032194a2bb5fc4e3",
+      "name": "商务边额-河北泽怡",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "f9ec614eae495446e8297b07": {
+      "fdId": "f9ec614eae495446e8297b07",
+      "name": "商务边额-湖南乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "k4f3c67271a634f4cbb0c33b": {
+      "fdId": "k4f3c67271a634f4cbb0c33b",
+      "name": "商务边额-江西乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "s0e2d9ad057ac48bcbf3faed": {
+      "fdId": "s0e2d9ad057ac48bcbf3faed",
+      "name": "商务边额-广西乐药",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "sd101dc3b2d874ea1ab2a979"
+    },
+    "wa26f4cb12d394096a4ed0fa": {
+      "fdId": "wa26f4cb12d394096a4ed0fa",
+      "name": "运营商务",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "f215894fad7a34402971393a": {
+      "fdId": "f215894fad7a34402971393a",
+      "name": "对应本省本仓ID",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ea6261c1213954241ba05931": {
+      "fdId": "ea6261c1213954241ba05931",
+      "name": "子公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "xe2dd597819694811b1a8ea2": {
+      "fdId": "xe2dd597819694811b1a8ea2",
+      "name": "个人MTD金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "m2f7fe6afc4eb429f864e92f": {
+      "fdId": "m2f7fe6afc4eb429f864e92f",
+      "name": "摇钱树MTD出库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "rd092b05a76da49329e83846": {
+      "fdId": "rd092b05a76da49329e83846",
+      "name": "仓销售达成率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "h27203104727d42c0bd42102": {
+      "fdId": "h27203104727d42c0bd42102",
+      "name": "个人本仓动销大于4000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "b269ca261ee42407f898b1a0": {
+      "fdId": "b269ca261ee42407f898b1a0",
+      "name": "仓动销大于4000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "ab4116d7e299a49959659ee3": {
+      "fdId": "ab4116d7e299a49959659ee3",
+      "name": "个人本仓动销大于3000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "l9b0616b99a8f415da17cc2f": {
+      "fdId": "l9b0616b99a8f415da17cc2f",
+      "name": "仓动销大于3000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "a0d5513b23b464d8c840e795": {
+      "fdId": "a0d5513b23b464d8c840e795",
+      "name": "本月累计上架药品ID数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "l8395af8fd7fa4564925bc4f": {
+      "fdId": "l8395af8fd7fa4564925bc4f",
+      "name": "本仓毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "v9a9a344961764aefb3a70b0": {
+      "fdId": "v9a9a344961764aefb3a70b0",
+      "name": "本仓不含税运费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ub20f553e853f4e23ad8e561": {
+      "fdId": "ub20f553e853f4e23ad8e561",
+      "name": "本仓毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l3138acfaf89b4094bef0dac": {
+      "fdId": "l3138acfaf89b4094bef0dac",
+      "name": "个人毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n7f6ca85bcdc64242b5df2d8": {
+      "fdId": "n7f6ca85bcdc64242b5df2d8",
+      "name": "个人不含税运费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "kb1a477b76ece46c4981b515": {
+      "fdId": "kb1a477b76ece46c4981b515",
+      "name": "个人毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "p36a26b1e4377453ab5ac168": {
+      "fdId": "p36a26b1e4377453ab5ac168",
+      "name": "负利润年度目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "n3a209d3f18f74fce8a688b0": {
+      "fdId": "n3a209d3f18f74fce8a688b0",
+      "name": "除顽固分子最新负利润",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "ca073c39669704eb4a1684c1": {
+      "fdId": "ca073c39669704eb4a1684c1",
+      "name": "负利润进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "d5571af18ff5b4fb69dc9067": {
+      "fdId": "d5571af18ff5b4fb69dc9067",
+      "name": "个人动销大于0品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "q2e355de8c4ac44b2af2ae30": {
+      "fdId": "q2e355de8c4ac44b2af2ae30",
+      "name": "个人动销大于500品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "k682826ad55ba45a987c71ce": {
+      "fdId": "k682826ad55ba45a987c71ce",
+      "name": "个人动销大于3000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": "d53dcd124011c41e8ba4984c"
+    },
+    "t0ac5d1e6508740b682ad06e": {
+      "fdId": "t0ac5d1e6508740b682ad06e",
+      "name": "仓动销大于0品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b58da6cd3a8ca40cfb85726b": {
+      "fdId": "b58da6cd3a8ca40cfb85726b",
+      "name": "仓动销大于500品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "i207b4ede08374fb6ae4c2f8": {
+      "fdId": "i207b4ede08374fb6ae4c2f8",
+      "name": "仓动销大于20000品种数",
+      "fdType": "LONG",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "e86f20d40ee774838b79a0ef": {
+      "fdId": "e86f20d40ee774838b79a0ef",
+      "name": "子公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "bc598cb5f3d20451d9557d02"
+    },
+    "wd7d2d578a3c34b5f9d17869": {
+      "fdId": "wd7d2d578a3c34b5f9d17869",
+      "name": "活动类型分类",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "ra64e468f71164d1883c5a46": {
+      "fdId": "ra64e468f71164d1883c5a46",
+      "name": "含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "v8499efe0968448919bc48c9": {
+      "fdId": "v8499efe0968448919bc48c9",
+      "name": "不含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "uaf46d07c1f714f63996f41d": {
+      "fdId": "uaf46d07c1f714f63996f41d",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "jca15b620ee10499ab47de72": {
+      "fdId": "jca15b620ee10499ab47de72",
+      "name": "不含税配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "q40b44d54dfae48ba9ab5f98": {
+      "fdId": "q40b44d54dfae48ba9ab5f98",
+      "name": "不含税仓库人工费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "h199e1f90ad41453f908cd2e": {
+      "fdId": "h199e1f90ad41453f908cd2e",
+      "name": "毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l5a4f0ac552ab4bff9de1299": {
+      "fdId": "l5a4f0ac552ab4bff9de1299",
+      "name": "不含税边际利润",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "f8cc1658603a84b1a9feca59": {
+      "fdId": "f8cc1658603a84b1a9feca59",
+      "name": "销售数量",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "bc598cb5f3d20451d9557d02"
+    },
+    "q8328c75606344f2a9befbb4": {
+      "fdId": "q8328c75606344f2a9befbb4",
+      "name": "单盒均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "v9f9b1a6afd8b478ab41587a": {
+      "fdId": "v9f9b1a6afd8b478ab41587a",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n8b4826f4b6204a9b8d91ae1": {
+      "fdId": "n8b4826f4b6204a9b8d91ae1",
+      "name": "边际利润率（随心购支付调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "rfa1e0f57fb5744d2a2a47ac": {
+      "fdId": "rfa1e0f57fb5744d2a2a47ac",
+      "name": "出库日期",
+      "fdType": "DATE",
+      "metaType": null,
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "k81aa164d2c8e48efa7f44d6": {
+      "fdId": "k81aa164d2c8e48efa7f44d6",
+      "name": "摇钱树货主名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "bc598cb5f3d20451d9557d02"
+    },
+    "jfec231c7e88d40e996a082e": {
+      "fdId": "jfec231c7e88d40e996a082e",
+      "name": "ERP商品编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "dde2a3bbbb0294aee8133e6e": {
+      "fdId": "dde2a3bbbb0294aee8133e6e",
+      "name": "商品名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "l0d0bde46215246e985f2525": {
+      "fdId": "l0d0bde46215246e985f2525",
+      "name": "商品规格",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "hcd33222791a24a209ac2d03": {
+      "fdId": "hcd33222791a24a209ac2d03",
+      "name": "厂家",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "qc2e7e5d4ab324adb8db1416": {
+      "fdId": "qc2e7e5d4ab324adb8db1416",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "i6328eb0293ed43cb80d9cc5": {
+      "fdId": "i6328eb0293ed43cb80d9cc5",
+      "name": "不含税配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "p099e61fe9b70409c8db6757": {
+      "fdId": "p099e61fe9b70409c8db6757",
+      "name": "不含税仓库人工费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "h1c9c8955b3f64e09b2eebb4": {
+      "fdId": "h1c9c8955b3f64e09b2eebb4",
+      "name": "毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "bed4d50fe15b14536b96ea01": {
+      "fdId": "bed4d50fe15b14536b96ea01",
+      "name": "单盒均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l19b46d10435747bab6957d4": {
+      "fdId": "l19b46d10435747bab6957d4",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "m20fd3fe64fee4b9caa4100e": {
+      "fdId": "m20fd3fe64fee4b9caa4100e",
+      "name": "边际利润率（随心购支付调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "h7bd36ff0d05048ad8ef3a78": {
+      "fdId": "h7bd36ff0d05048ad8ef3a78",
+      "name": "出库日期",
+      "fdType": "DATE",
+      "metaType": "DIM",
+      "dsId": "n2dff76218e304b0bb8ce7d7"
+    },
+    "h7bd36ff0d05048ad8ef3a78_week": {
+      "fdId": "h7bd36ff0d05048ad8ef3a78_week",
+      "name": "周",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "n2dff76218e304b0bb8ce7d7"
+    },
+    "h7bd36ff0d05048ad8ef3a78_month": {
+      "fdId": "h7bd36ff0d05048ad8ef3a78_month",
+      "name": "月",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "n2dff76218e304b0bb8ce7d7"
+    },
+    "s70660af07b9949afb20b8aa": {
+      "fdId": "s70660af07b9949afb20b8aa",
+      "name": "含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "n2dff76218e304b0bb8ce7d7"
+    },
+    "l41357b2d3667478b82734d2": {
+      "fdId": "l41357b2d3667478b82734d2",
+      "name": "客户类型",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "ud201fd8f90da44e9959ef4e": {
+      "fdId": "ud201fd8f90da44e9959ef4e",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "rd92946fbf8494eac8b926f0": {
+      "fdId": "rd92946fbf8494eac8b926f0",
+      "name": "不含税配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "w5141ee7766d241d3bda5fbc": {
+      "fdId": "w5141ee7766d241d3bda5fbc",
+      "name": "不含税仓库人工费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "r1d7f7dd412904fb694ed99f": {
+      "fdId": "r1d7f7dd412904fb694ed99f",
+      "name": "毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "cedd096fe891a4e008013d23": {
+      "fdId": "cedd096fe891a4e008013d23",
+      "name": "单价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "f0a3a48ad2cb34a6a976ce0b"
+    },
+    "c13549e26096c405a8fde647": {
+      "fdId": "c13549e26096c405a8fde647",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "e59313fd6077e489581eadc2": {
+      "fdId": "e59313fd6077e489581eadc2",
+      "name": "边际利润率（随心购支付调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "rc4c021508b5249cba791174": {
+      "fdId": "rc4c021508b5249cba791174",
+      "name": "摇钱树货主id",
+      "fdType": "INT",
+      "metaType": "METRIC",
+      "dsId": "bc598cb5f3d20451d9557d02"
+    },
+    "e5616399edbc9402b861089d": {
+      "fdId": "e5616399edbc9402b861089d",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "x0c3a24e6ca714220a6521b4": {
+      "fdId": "x0c3a24e6ca714220a6521b4",
+      "name": "不含税配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b2b2be194d00249959196069": {
+      "fdId": "b2b2be194d00249959196069",
+      "name": "不含税仓库人工费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "daf51ae100d454b2ebce7b77": {
+      "fdId": "daf51ae100d454b2ebce7b77",
+      "name": "毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "i382ab7691f01499ca763dd9": {
+      "fdId": "i382ab7691f01499ca763dd9",
+      "name": "单盒均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "p4fec8dbb82aa44c19794cb8": {
+      "fdId": "p4fec8dbb82aa44c19794cb8",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "w777088603b474f7381e6162": {
+      "fdId": "w777088603b474f7381e6162",
+      "name": "边际利润率（随心购支付调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c153cbff467d543e09da53d8": {
+      "fdId": "c153cbff467d543e09da53d8",
+      "name": "业务类型",
+      "fdType": "STRING",
+      "metaType": null,
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "n95d21a41d8234f46a1e45b5": {
+      "fdId": "n95d21a41d8234f46a1e45b5",
+      "name": "子公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "haf6b350a9c184a9c88109ee": {
+      "fdId": "haf6b350a9c184a9c88109ee",
+      "name": "摇钱树货主名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "a7f42e5e8501f4828ae38c5e": {
+      "fdId": "a7f42e5e8501f4828ae38c5e",
+      "name": "ERP商品编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "rd668759e8cf74b799aa8522": {
+      "fdId": "rd668759e8cf74b799aa8522",
+      "name": "药品id",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "lbb6f0d318e8e499a8315091": {
+      "fdId": "lbb6f0d318e8e499a8315091",
+      "name": "商务经理",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "d34354508c46c443aa808156": {
+      "fdId": "d34354508c46c443aa808156",
+      "name": "药师帮单号",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "p4b7ee0e3d738431cbbd736a": {
+      "fdId": "p4b7ee0e3d738431cbbd736a",
+      "name": "商品名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "m07bcbcd27ce04ee4ba19b25": {
+      "fdId": "m07bcbcd27ce04ee4ba19b25",
+      "name": "商品规格",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "pa5f917e0a301492b969abbd": {
+      "fdId": "pa5f917e0a301492b969abbd",
+      "name": "生产厂家",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "xb9ff91a34c41456e8885398": {
+      "fdId": "xb9ff91a34c41456e8885398",
+      "name": "含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "ec9144f1eaf0f4ad0938b6f3": {
+      "fdId": "ec9144f1eaf0f4ad0938b6f3",
+      "name": "不含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "ccb96a8028dba4e38916239d": {
+      "fdId": "ccb96a8028dba4e38916239d",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "r15cced5b579a4398be858e0": {
+      "fdId": "r15cced5b579a4398be858e0",
+      "name": "不含税配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l30e836cd6f9a42ffb319baa": {
+      "fdId": "l30e836cd6f9a42ffb319baa",
+      "name": "不含税仓库人工费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "p26914e2e7f04446fb149498": {
+      "fdId": "p26914e2e7f04446fb149498",
+      "name": "毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "j22e901e701c54cb8beea54d": {
+      "fdId": "j22e901e701c54cb8beea54d",
+      "name": "不含税边际利润额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "kff44e31fddac4ad99c16390": {
+      "fdId": "kff44e31fddac4ad99c16390",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "lfc3ecddd8a424d22a3e0c43": {
+      "fdId": "lfc3ecddd8a424d22a3e0c43",
+      "name": "订单均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ie9cf2b572f8d4a8188b0ebf": {
+      "fdId": "ie9cf2b572f8d4a8188b0ebf",
+      "name": "客户支付运费",
+      "fdType": "INT",
+      "metaType": "METRIC",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "hc1bb5bd795014df8854570f": {
+      "fdId": "hc1bb5bd795014df8854570f",
+      "name": "支付日期",
+      "fdType": "DATE",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "hc1bb5bd795014df8854570f_week": {
+      "fdId": "hc1bb5bd795014df8854570f_week",
+      "name": "周",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "hc1bb5bd795014df8854570f_month": {
+      "fdId": "hc1bb5bd795014df8854570f_month",
+      "name": "月",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "b37fb4be50ad44631b5d6d48"
+    },
+    "f845db209d10b475c9497b27": {
+      "fdId": "f845db209d10b475c9497b27",
+      "name": "不含税边际利润",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "hb2a4138ca5b44cd48558d5d"
+    },
+    "ua0207857f3af473ea5eaf31": {
+      "fdId": "ua0207857f3af473ea5eaf31",
+      "name": "最大值排名",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "qe4dff730d78449aabdb1d66": {
+      "fdId": "qe4dff730d78449aabdb1d66",
+      "name": "子公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "tecc57ba8e9524ee2a3b8835"
+    },
+    "pf040b5d700c744d994f2c80": {
+      "fdId": "pf040b5d700c744d994f2c80",
+      "name": "含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "e92fafb560cd9433ca4a7fb6"
+    },
+    "oedac62e5f9954fabac7fa95_month": {
+      "fdId": "oedac62e5f9954fabac7fa95_month",
+      "name": "月",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "tecc57ba8e9524ee2a3b8835"
+    },
+    "f421a9257e75d48ab90b7399": {
+      "fdId": "f421a9257e75d48ab90b7399",
+      "name": "排名",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "k0f580b2685af4d7e8b0d953": {
+      "fdId": "k0f580b2685af4d7e8b0d953",
+      "name": "商务经理",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "na12943e166a84f8ba11c7b9"
+    },
+    "d13a4194fefa44a1d8bf5fac": {
+      "fdId": "d13a4194fefa44a1d8bf5fac",
+      "name": "含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "na12943e166a84f8ba11c7b9"
+    },
+    "w1f04c70f9f5f4ca59243254_month": {
+      "fdId": "w1f04c70f9f5f4ca59243254_month",
+      "name": "月",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "na12943e166a84f8ba11c7b9"
+    },
+    "l5762a66453924a1abc7b99a": {
+      "fdId": "l5762a66453924a1abc7b99a",
+      "name": "排名",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "a2efc64bdb7f34fae9ca3764": {
+      "fdId": "a2efc64bdb7f34fae9ca3764",
+      "name": "商务经理",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k0573143162774aafbf2b1e5"
+    },
+    "i8738ae3f3d634a48954e369": {
+      "fdId": "i8738ae3f3d634a48954e369",
+      "name": "含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "k0573143162774aafbf2b1e5"
+    },
+    "i94a2206e5eee49eca8d06aa_month": {
+      "fdId": "i94a2206e5eee49eca8d06aa_month",
+      "name": "月",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "k0573143162774aafbf2b1e5"
+    },
+    "k54c763c77178483bb647bf4": {
+      "fdId": "k54c763c77178483bb647bf4",
+      "name": "近30天有销售或者仍在库",
+      "fdType": "DOUBLE",
+      "metaType": null,
+      "dsId": "ta8db4060afc74e63acae921"
+    },
+    "d72d5b474ac044e6c9ab3dd2": {
+      "fdId": "d72d5b474ac044e6c9ab3dd2",
+      "name": "公司编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "w5cb5bca174d64ee1b766f2a": {
+      "fdId": "w5cb5bca174d64ee1b766f2a",
+      "name": "商品名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "vc12a7f9cfbb141d8b6aa719": {
+      "fdId": "vc12a7f9cfbb141d8b6aa719",
+      "name": "商品规格",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "i6fc115a6f24946cab5251a5": {
+      "fdId": "i6fc115a6f24946cab5251a5",
+      "name": "厂家",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "jf6386f5238e4422181eaf46": {
+      "fdId": "jf6386f5238e4422181eaf46",
+      "name": "商务经理",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "rbe21089bb7e34f87a57844b": {
+      "fdId": "rbe21089bb7e34f87a57844b",
+      "name": "摇钱树货主名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "pea01b3f8a5e74324905ec0c": {
+      "fdId": "pea01b3f8a5e74324905ec0c",
+      "name": "近7天的销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "o5fa3c354cf194410ae8bc3b": {
+      "fdId": "o5fa3c354cf194410ae8bc3b",
+      "name": "近30天的销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "d65e9bcc1e4b14d8095fd5ec": {
+      "fdId": "d65e9bcc1e4b14d8095fd5ec",
+      "name": "本月销售",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "k0d59410541f04c148ef9877": {
+      "fdId": "k0d59410541f04c148ef9877",
+      "name": "月环比",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "d12746fd189f345e48c5fe7b": {
+      "fdId": "d12746fd189f345e48c5fe7b",
+      "name": "年同比",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b64e534a0f0ba47af92f4d94": {
+      "fdId": "b64e534a0f0ba47af92f4d94",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "b9be9a7bc9740496483797ab": {
+      "fdId": "b9be9a7bc9740496483797ab",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "qfa1d8a134ff14599aad4fb8": {
+      "fdId": "qfa1d8a134ff14599aad4fb8",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "o5eae0ed37e464de0a23c977": {
+      "fdId": "o5eae0ed37e464de0a23c977",
+      "name": "配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "q8079f7dcb25a4365883ed1d": {
+      "fdId": "q8079f7dcb25a4365883ed1d",
+      "name": "人工费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "e885684771c4a4175b20018c": {
+      "fdId": "e885684771c4a4175b20018c",
+      "name": "条目单价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "uc954faa63bb64d6a9c45c66": {
+      "fdId": "uc954faa63bb64d6a9c45c66",
+      "name": "未动销天数",
+      "fdType": "INT",
+      "metaType": "METRIC",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "o19affada7e7c4a55976a7f9": {
+      "fdId": "o19affada7e7c4a55976a7f9",
+      "name": "在库P4成本金额",
+      "fdType": "FLOAT",
+      "metaType": "METRIC",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "uc143458b8c5748cca5f90ac": {
+      "fdId": "uc143458b8c5748cca5f90ac",
+      "name": "库存天数",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "c323a900c629c4943a77cc07"
+    },
+    "x234010978ec94c069ca1d0b": {
+      "fdId": "x234010978ec94c069ca1d0b",
+      "name": "本季度有销售或仍在库",
+      "fdType": "DOUBLE",
+      "metaType": null,
+      "dsId": "ta8db4060afc74e63acae921"
+    },
+    "lf140e7e68e9a4e8d9d7f1cf": {
+      "fdId": "lf140e7e68e9a4e8d9d7f1cf",
+      "name": "子公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "ta8db4060afc74e63acae921"
+    },
+    "v0504ca5b479e4fdaaf69767": {
+      "fdId": "v0504ca5b479e4fdaaf69767",
+      "name": "在库品种数",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n001ba2ee2d984b178ee6c9b": {
+      "fdId": "n001ba2ee2d984b178ee6c9b",
+      "name": "库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "vfdc646107ccc4452a0b1d38": {
+      "fdId": "vfdc646107ccc4452a0b1d38",
+      "name": "滞销品种数",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "seaa967785d2e4718ae41fb0": {
+      "fdId": "seaa967785d2e4718ae41fb0",
+      "name": "当前除占用库存",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ve9be75b7b26f478db10ea31": {
+      "fdId": "ve9be75b7b26f478db10ea31",
+      "name": "product id",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "kf4615969b53147a09554fea": {
+      "fdId": "kf4615969b53147a09554fea",
+      "name": "公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "g7149fda2d9884513988b4a2": {
+      "fdId": "g7149fda2d9884513988b4a2",
+      "name": "商务经理",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "s4ee92ce2c73b4611b335ad1": {
+      "fdId": "s4ee92ce2c73b4611b335ad1",
+      "name": "摇钱树货主名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "n252fe0603ac14e23a646d48": {
+      "fdId": "n252fe0603ac14e23a646d48",
+      "name": "商品名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "u76148442b74f43178d55ef9": {
+      "fdId": "u76148442b74f43178d55ef9",
+      "name": "批准文号",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "l563397c11f13499d8e54945": {
+      "fdId": "l563397c11f13499d8e54945",
+      "name": "商品编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "mef6f2d1aeca34324bac336f": {
+      "fdId": "mef6f2d1aeca34324bac336f",
+      "name": "乐药编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "fe98d14d7830b45baa4e8302": {
+      "fdId": "fe98d14d7830b45baa4e8302",
+      "name": "spuid",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "ac766148c774645379be6f67": {
+      "fdId": "ac766148c774645379be6f67",
+      "name": "药师帮ID",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "j8c135b8951524fffb82b172": {
+      "fdId": "j8c135b8951524fffb82b172",
+      "name": "商品规格",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "o464bdb71cf164562b2c4cc2": {
+      "fdId": "o464bdb71cf164562b2c4cc2",
+      "name": "单价区间分层",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "f0d0b6b7116444410b98d281": {
+      "fdId": "f0d0b6b7116444410b98d281",
+      "name": "可售天数分层",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "n1f6dae5a8b0640ac9b352e3": {
+      "fdId": "n1f6dae5a8b0640ac9b352e3",
+      "name": "在途库存",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "i2c7a3fe9b0624711be819b9": {
+      "fdId": "i2c7a3fe9b0624711be819b9",
+      "name": "近30天销售数量",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "pc5c47e9034cf401999f2cb8": {
+      "fdId": "pc5c47e9034cf401999f2cb8",
+      "name": "近7天销售数量",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "x3bf200670b844c989edb2d9": {
+      "fdId": "x3bf200670b844c989edb2d9",
+      "name": "近30天平台全国均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "tf30518ca5f2a44658635a5a": {
+      "fdId": "tf30518ca5f2a44658635a5a",
+      "name": "近7天平台全国均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "d44cc62567c5b440ea6a49fd": {
+      "fdId": "d44cc62567c5b440ea6a49fd",
+      "name": "近30天省内均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ge855551e92f94f619e0a4ba": {
+      "fdId": "ge855551e92f94f619e0a4ba",
+      "name": "近7天省内均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "o6ff2ca13b2604eeeabc7ce2": {
+      "fdId": "o6ff2ca13b2604eeeabc7ce2",
+      "name": "近30天仓销售均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ka914855bf18943369e183db": {
+      "fdId": "ka914855bf18943369e183db",
+      "name": "近7天仓销售均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "a362ab1c50da542a5922b065": {
+      "fdId": "a362ab1c50da542a5922b065",
+      "name": "最后一次创建采购订单价格",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "g533b1bd9e0c24ef1997c47a": {
+      "fdId": "g533b1bd9e0c24ef1997c47a",
+      "name": "最后一次创建采购订单日期",
+      "fdType": "DATE",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "i9867507d403b4effad3f9bf": {
+      "fdId": "i9867507d403b4effad3f9bf",
+      "name": "近28天不含税边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "c0d4711f70dc8485b8206ff2": {
+      "fdId": "c0d4711f70dc8485b8206ff2",
+      "name": "补货标签",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "q2604912610ee45d1a85074e": {
+      "fdId": "q2604912610ee45d1a85074e",
+      "name": "建议补货量",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "m6da091dd2c5b49ac9fc77d6": {
+      "fdId": "m6da091dd2c5b49ac9fc77d6",
+      "name": "品种标签",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "c8c037fa1811d42e593300c1": {
+      "fdId": "c8c037fa1811d42e593300c1",
+      "name": "厂家",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "c9a03a1c61c3a4de9912ca0c": {
+      "fdId": "c9a03a1c61c3a4de9912ca0c",
+      "name": "可售天数",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "bb2a5e3985fca482cb6ce316": {
+      "fdId": "bb2a5e3985fca482cb6ce316",
+      "name": "动态数值",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "o96dec3b66d94426b8deaa37": {
+      "fdId": "o96dec3b66d94426b8deaa37",
+      "name": "近28天边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "h8f560108f84440bc8920f25": {
+      "fdId": "h8f560108f84440bc8920f25",
+      "name": "热销挂网最低价格",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "k33ba6a42e5d943e980582b5": {
+      "fdId": "k33ba6a42e5d943e980582b5",
+      "name": "热销挂网最高价格",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c144bd841c2564173a452c7a": {
+      "fdId": "c144bd841c2564173a452c7a",
+      "name": "热销挂网平均价格",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "pa96a5a4239134037a67ca9c": {
+      "fdId": "pa96a5a4239134037a67ca9c",
+      "name": "近30天动销金额分层",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "m6f1b355bb224448f86a510f": {
+      "fdId": "m6f1b355bb224448f86a510f",
+      "name": "当前库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "w1fcec2357ad84c40a3bdf78": {
+      "fdId": "w1fcec2357ad84c40a3bdf78",
+      "name": "7天前库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c2ed3edb36b044300bfe5f52": {
+      "fdId": "c2ed3edb36b044300bfe5f52",
+      "name": "库存金额环比",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "occ4633809f4a4e68be21572": {
+      "fdId": "occ4633809f4a4e68be21572",
+      "name": "对比7天前低效品种增加值",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "wa1cb6e23494640de8b0d045": {
+      "fdId": "wa1cb6e23494640de8b0d045",
+      "name": "缺货率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b62d32928cdda4b49bd74f32": {
+      "fdId": "b62d32928cdda4b49bd74f32",
+      "name": "公司编码是否缺货",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "hade436d6c25a44fe9a3877a": {
+      "fdId": "hade436d6c25a44fe9a3877a",
+      "name": "编码数对比",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "x6c699fc851b448cb86cd260": {
+      "fdId": "x6c699fc851b448cb86cd260",
+      "name": "当前低效品种库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c9aff1395647f4c13a12c6df": {
+      "fdId": "c9aff1395647f4c13a12c6df",
+      "name": "库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "k568af327ec2c42c4b687a06"
+    },
+    "vc01c659eeb3a47eaa37b30b": {
+      "fdId": "vc01c659eeb3a47eaa37b30b",
+      "name": "现有库存天数",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "vd443322b874e4f3c94a1d1d": {
+      "fdId": "vd443322b874e4f3c94a1d1d",
+      "name": "当前是否有库存",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ee5569d9db325480e834c5d5": {
+      "fdId": "ee5569d9db325480e834c5d5",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "wfc16ee85feb4429da7581a0": {
+      "fdId": "wfc16ee85feb4429da7581a0",
+      "name": "在库成本金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c0980fc6f156c4d548aa5380": {
+      "fdId": "c0980fc6f156c4d548aa5380",
+      "name": "未动销天数分组",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "a409822b2160d41d9ad68338": {
+      "fdId": "a409822b2160d41d9ad68338",
+      "name": "库存公司编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "fdcfba7c19afb4c5ebab8f72": {
+      "fdId": "fdcfba7c19afb4c5ebab8f72",
+      "name": "销售时间结构",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "u00b58838c720433ba60e472": {
+      "fdId": "u00b58838c720433ba60e472",
+      "name": "含税金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "jb41ea096128e4262bbc36f5": {
+      "fdId": "jb41ea096128e4262bbc36f5",
+      "name": "子公司名称",
+      "fdType": "STRING",
+      "metaType": null,
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "b763b030f4589485596cada5": {
+      "fdId": "b763b030f4589485596cada5",
+      "name": "ERP商品编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "q304df678772f46948df19b3": {
+      "fdId": "q304df678772f46948df19b3",
+      "name": "是否本仓",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "h16bffe68922c41d8b925d36": {
+      "fdId": "h16bffe68922c41d8b925d36",
+      "name": "含税金额-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "kab329d0f7fc04abda9e7d17": {
+      "fdId": "kab329d0f7fc04abda9e7d17",
+      "name": "不含税金额-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ncf810ed3f23f472db8de8cb": {
+      "fdId": "ncf810ed3f23f472db8de8cb",
+      "name": "最新YTD",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "md9086602ca9a41b591b4344": {
+      "fdId": "md9086602ca9a41b591b4344",
+      "name": "人工费率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "v4d4c5c475a594f6988490e7": {
+      "fdId": "v4d4c5c475a594f6988490e7",
+      "name": "省内人工费率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "k0d57ee9ba9a44858b8ac1e2": {
+      "fdId": "k0d57ee9ba9a44858b8ac1e2",
+      "name": "省外人工费率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n58a25b7e9b99402caac7b06": {
+      "fdId": "n58a25b7e9b99402caac7b06",
+      "name": "边际利润率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "m570f73a003ce4297b8dc982": {
+      "fdId": "m570f73a003ce4297b8dc982",
+      "name": "边际利润率（随心购支付调整）-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "u6ef3db0adbcb49fda10a2cf": {
+      "fdId": "u6ef3db0adbcb49fda10a2cf",
+      "name": "边际利润额-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "lcc5e164fbf63424783a6689": {
+      "fdId": "lcc5e164fbf63424783a6689",
+      "name": "毛利率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b19c020be16724205916e608": {
+      "fdId": "b19c020be16724205916e608",
+      "name": "省内毛利率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "s991ee60b9ff244d5ae840db": {
+      "fdId": "s991ee60b9ff244d5ae840db",
+      "name": "省外毛利率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "s2ebfbb596a4f4756b8b7e38": {
+      "fdId": "s2ebfbb596a4f4756b8b7e38",
+      "name": "不含税配送费率-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "c7c3608fc1271409ca613ed2": {
+      "fdId": "c7c3608fc1271409ca613ed2",
+      "name": "配送费率（随心购调整）-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "i80bd233a386746cb9e60809": {
+      "fdId": "i80bd233a386746cb9e60809",
+      "name": "出库月份",
+      "fdType": "DATE",
+      "metaType": null,
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "l974bb27712574a9c9a64f1f": {
+      "fdId": "l974bb27712574a9c9a64f1f",
+      "name": "活动类型（新）",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "j034ffc60a755499288226a3": {
+      "fdId": "j034ffc60a755499288226a3",
+      "name": "公司编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "j7ba6274e1f4f4bb9b4ce340": {
+      "fdId": "j7ba6274e1f4f4bb9b4ce340",
+      "name": "商品名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "uaf15c1b0f0ec4a6ca33b020": {
+      "fdId": "uaf15c1b0f0ec4a6ca33b020",
+      "name": "商品规格",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "w831869ecf4f74bc4bb739fb": {
+      "fdId": "w831869ecf4f74bc4bb739fb",
+      "name": "摇钱树货主名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "s5d2d754f36d34173b63c82f": {
+      "fdId": "s5d2d754f36d34173b63c82f",
+      "name": "商务经理",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "sc146acee6b87497f889652f": {
+      "fdId": "sc146acee6b87497f889652f",
+      "name": "含税单盒均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "g17d9c255df5740d387ddfb9": {
+      "fdId": "g17d9c255df5740d387ddfb9",
+      "name": "销售数量",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "w3b5abcedf97f4ed2829fd1c": {
+      "fdId": "w3b5abcedf97f4ed2829fd1c",
+      "name": "客户类型（新）",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "c723800431730451a820dcec": {
+      "fdId": "c723800431730451a820dcec",
+      "name": "省内外",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "kc604392475844203a145a18": {
+      "fdId": "kc604392475844203a145a18",
+      "name": "价格分层",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "wcd78c478110144ce8dfba6f": {
+      "fdId": "wcd78c478110144ce8dfba6f",
+      "name": "边际利润额分层",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "b386aa2849180499dbfab9ce": {
+      "fdId": "b386aa2849180499dbfab9ce",
+      "name": "不含税平台费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "mc5bba570dd8842ac85f805a": {
+      "fdId": "mc5bba570dd8842ac85f805a",
+      "name": "不含税平台费",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "a98b0457d2c174976a01fe60_month": {
+      "fdId": "a98b0457d2c174976a01fe60_month",
+      "name": "月",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "a98b0457d2c174976a01fe60_week": {
+      "fdId": "a98b0457d2c174976a01fe60_week",
+      "name": "周",
+      "fdType": "SUB_DATE",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "a98b0457d2c174976a01fe60": {
+      "fdId": "a98b0457d2c174976a01fe60",
+      "name": "出库日期",
+      "fdType": "DATE",
+      "metaType": null,
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "g20c20773c797441fbd10047": {
+      "fdId": "g20c20773c797441fbd10047",
+      "name": "边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ea448f2f409784c59882ff67": {
+      "fdId": "ea448f2f409784c59882ff67",
+      "name": "毛利率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "sd3398181e7704042be07e2a": {
+      "fdId": "sd3398181e7704042be07e2a",
+      "name": "配送费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l1796c1fb6f4642cf9267ed0": {
+      "fdId": "l1796c1fb6f4642cf9267ed0",
+      "name": "仓库人工费率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "a845df36422464046b5e954d": {
+      "fdId": "a845df36422464046b5e954d",
+      "name": "条目单价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "i42d3acb60cd14de883c2f43": {
+      "fdId": "i42d3acb60cd14de883c2f43",
+      "name": "边际利润额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "edbdce9cdf68642e2971eb96": {
+      "fdId": "edbdce9cdf68642e2971eb96",
+      "name": "厂家",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "ga864d13081cc4f6783b27d1": {
+      "fdId": "ga864d13081cc4f6783b27d1",
+      "name": "乐药编码",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "vdfb13cb121b248eba36de00": {
+      "fdId": "vdfb13cb121b248eba36de00",
+      "name": "药品id",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "p3c927bca3be14f6b8ec2416": {
+      "fdId": "p3c927bca3be14f6b8ec2416",
+      "name": "商务总监",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "a69e417337aa345ed99488f7": {
+      "fdId": "a69e417337aa345ed99488f7",
+      "name": "不含税边际利润",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "ga1e0fed2c93745da8582e63": {
+      "fdId": "ga1e0fed2c93745da8582e63",
+      "name": "不含税边际利润(随心购支付调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "hd82aec059b9e46fc98fd750": {
+      "fdId": "hd82aec059b9e46fc98fd750",
+      "name": "药店id",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "i9c60e076f2554bec8196309": {
+      "fdId": "i9c60e076f2554bec8196309",
+      "name": "近30天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "af340fec2f1d4466682ff1c5": {
+      "fdId": "af340fec2f1d4466682ff1c5",
+      "name": "销售均价",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "m9ee015e9976b42e5a7ad2c9": {
+      "fdId": "m9ee015e9976b42e5a7ad2c9",
+      "name": "销售均价区间",
+      "fdType": "STRING",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "r8b2026fadb854a24974282a": {
+      "fdId": "r8b2026fadb854a24974282a",
+      "name": "近7天全国均价",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "a0baf077ac5704cfb95b76d9": {
+      "fdId": "a0baf077ac5704cfb95b76d9",
+      "name": "价格优势",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "t2940663167f84d228955620": {
+      "fdId": "t2940663167f84d228955620",
+      "name": "价格优势率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "j29e3122b77434039afa0fe7": {
+      "fdId": "j29e3122b77434039afa0fe7",
+      "name": "平台上月销售金额",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "m366c786f4e4143cfaff772e": {
+      "fdId": "m366c786f4e4143cfaff772e",
+      "name": "全国排名(客户数)",
+      "fdType": "INT",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "b592f78ff5e314f78a6111cf": {
+      "fdId": "b592f78ff5e314f78a6111cf",
+      "name": "排名区间",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "tdebb89fae5c14e238bea194": {
+      "fdId": "tdebb89fae5c14e238bea194",
+      "name": "毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "t6a75c1b6e1bc4d1c85525e5": {
+      "fdId": "t6a75c1b6e1bc4d1c85525e5",
+      "name": "边际利润率(随心购支付调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "l18f70f61bece4637b591726": {
+      "fdId": "l18f70f61bece4637b591726",
+      "name": "除占用",
+      "fdType": "FLOAT",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "tec023bf53fcb4b348dad5a9": {
+      "fdId": "tec023bf53fcb4b348dad5a9",
+      "name": "在库金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "g923c1cb337d548c5b261020": {
+      "fdId": "g923c1cb337d548c5b261020",
+      "name": "库存天数",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "vcd42ac47e9dd4eb7803b80f": {
+      "fdId": "vcd42ac47e9dd4eb7803b80f",
+      "name": "最近补货日期",
+      "fdType": "DATE",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "ia812e76f01a04c68824ccfd": {
+      "fdId": "ia812e76f01a04c68824ccfd",
+      "name": "近30天已请货未到货数量",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "q7f8db778732f4bd3a0526d4": {
+      "fdId": "q7f8db778732f4bd3a0526d4",
+      "name": "近30天累计缺货天数",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "e10c26ea259f240bdb6d20d5": {
+      "fdId": "e10c26ea259f240bdb6d20d5",
+      "name": "边际利润率（随心购调整）",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "nf235ac5d48a94446abcfabb": {
+      "fdId": "nf235ac5d48a94446abcfabb",
+      "name": "货主当前总库存",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "g55274af402844c62b3a771e": {
+      "fdId": "g55274af402844c62b3a771e",
+      "name": "毛运差",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "e28427de8f28c49e5bba1d6e": {
+      "fdId": "e28427de8f28c49e5bba1d6e",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "f2824eb8380904d33aa7d4ac": {
+      "fdId": "f2824eb8380904d33aa7d4ac",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "ge84cd82362944936afbbd2b": {
+      "fdId": "ge84cd82362944936afbbd2b",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "j7e4e1773454f481d8f9b510": {
+      "fdId": "j7e4e1773454f481d8f9b510",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "xc175e1ed11284938911c386": {
+      "fdId": "xc175e1ed11284938911c386",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "j4eb8089196b6423ebce5d5d": {
+      "fdId": "j4eb8089196b6423ebce5d5d",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "l8af5949385ff43daa28ab4a": {
+      "fdId": "l8af5949385ff43daa28ab4a",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "jce666c5a63fc4281beacd8c": {
+      "fdId": "jce666c5a63fc4281beacd8c",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "jee62acd98ff042a5bda6a63": {
+      "fdId": "jee62acd98ff042a5bda6a63",
+      "name": "边际利润率(随心购支付调整)",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "u438625f829554a5a91c53b2": {
+      "fdId": "u438625f829554a5a91c53b2",
+      "name": "分析维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "c26feb1f5da7f4fccada5b0c": {
+      "fdId": "c26feb1f5da7f4fccada5b0c",
+      "name": "库存金额（新）",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "wa57596dd74e94f9d8eaa632": {
+      "fdId": "wa57596dd74e94f9d8eaa632",
+      "name": "库存金额目标（新）",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "u83e5fc9eb3d44efdb202c16": {
+      "fdId": "u83e5fc9eb3d44efdb202c16",
+      "name": "边际利润额月目标",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "bc590a0b5a25c48c0a3bd2f3": {
+      "fdId": "bc590a0b5a25c48c0a3bd2f3",
+      "name": "时间进度",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "w28763ec75bba4fb596fb6bb": {
+      "fdId": "w28763ec75bba4fb596fb6bb",
+      "name": "目前进度-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "e3ed29d0f675e4ccabb1d45b": {
+      "fdId": "e3ed29d0f675e4ccabb1d45b",
+      "name": "进度差-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "b79c90b48324f4487b7aeee0": {
+      "fdId": "b79c90b48324f4487b7aeee0",
+      "name": "费率情况",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "j08cf5686899447739911113": {
+      "fdId": "j08cf5686899447739911113",
+      "name": "库存公司名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "sa6fc6265814c4adb98dc2de": {
+      "fdId": "sa6fc6265814c4adb98dc2de",
+      "name": "库存摇钱树货主名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "m3b2b1707464149bc9924d61": {
+      "fdId": "m3b2b1707464149bc9924d61",
+      "name": "库存商品名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "bc822c69a49fb419f97bb75f": {
+      "fdId": "bc822c69a49fb419f97bb75f",
+      "name": "库存 商品规格",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "r856d1c73e3c24f4a9587a1f": {
+      "fdId": "r856d1c73e3c24f4a9587a1f",
+      "name": "最早入库日期",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "kfc68588315b44cac935a71d": {
+      "fdId": "kfc68588315b44cac935a71d",
+      "name": "最后采购订单日期",
+      "fdType": "DATE",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "n4875bb5f97d241d3844e1a6": {
+      "fdId": "n4875bb5f97d241d3844e1a6",
+      "name": "最后销售日期（日期格式）",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "v32d70bec225740f2aa54aaa": {
+      "fdId": "v32d70bec225740f2aa54aaa",
+      "name": "未动销天数",
+      "fdType": "INT",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "x998bc48601214155afc2a1a": {
+      "fdId": "x998bc48601214155afc2a1a",
+      "name": "近30天全国均价",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "e297a74a30baf4f35ba948a9": {
+      "fdId": "e297a74a30baf4f35ba948a9",
+      "name": "边际利润率（随心购调整）",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "p958b08fbc5264ceb82a526d": {
+      "fdId": "p958b08fbc5264ceb82a526d",
+      "name": "品种增掉量分组",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "k852cff0966a346f1a533330": {
+      "fdId": "k852cff0966a346f1a533330",
+      "name": "上7天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "h395f5106eac2487aa70ec09": {
+      "fdId": "h395f5106eac2487aa70ec09",
+      "name": "近7天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "a07b13b7028974c079e9702a": {
+      "fdId": "a07b13b7028974c079e9702a",
+      "name": "变化值",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n92a9f367718d40a2bd5c4b7": {
+      "fdId": "n92a9f367718d40a2bd5c4b7",
+      "name": "变化率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "x47c3cea0a6954e4fa2fbecf": {
+      "fdId": "x47c3cea0a6954e4fa2fbecf",
+      "name": "库存金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "d19b419a6c6a7473295f5b53": {
+      "fdId": "d19b419a6c6a7473295f5b53",
+      "name": "上30天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "wefee873895ec40cc959c8f6": {
+      "fdId": "wefee873895ec40cc959c8f6",
+      "name": "货主子公司30天增掉量情况",
+      "fdType": "STRING",
+      "metaType": null,
+      "dsId": "sef35be7c05464105b147da3"
+    },
+    "pfa53ee3b881d40fc8c6019e": {
+      "fdId": "pfa53ee3b881d40fc8c6019e",
+      "name": "维度",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": null
+    },
+    "a758102087386459aa953a23": {
+      "fdId": "a758102087386459aa953a23",
+      "name": "摇钱树货主名称",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "qf712408da3ea474b92e1cf0": {
+      "fdId": "qf712408da3ea474b92e1cf0",
+      "name": "上30天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "o4d409ab3c176418ca89cc6a": {
+      "fdId": "o4d409ab3c176418ca89cc6a",
+      "name": "近30天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "k30efeb5fd5394f4783ab84d": {
+      "fdId": "k30efeb5fd5394f4783ab84d",
+      "name": "变化值",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "o2a34a5b47cd649f7acd79d1": {
+      "fdId": "o2a34a5b47cd649f7acd79d1",
+      "name": "变化率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ha1b5e08d7ff3431c9f1fd38": {
+      "fdId": "ha1b5e08d7ff3431c9f1fd38",
+      "name": "货主总体30天增掉量",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "sef35be7c05464105b147da3"
+    },
+    "a603ccaae19bc4699a46c38e": {
+      "fdId": "a603ccaae19bc4699a46c38e",
+      "name": "货主全国销售变化值",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "hdfcd3e457c7b4d1f8afd776": {
+      "fdId": "hdfcd3e457c7b4d1f8afd776",
+      "name": "上7天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ic52179462a8f40aca45608b": {
+      "fdId": "ic52179462a8f40aca45608b",
+      "name": "近7天销售金额",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "n7f610d730c4846389f93b33": {
+      "fdId": "n7f610d730c4846389f93b33",
+      "name": "货主7天总体增掉量",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "sef35be7c05464105b147da3"
+    },
+    "i45bae79b78194283bd2fe4a": {
+      "fdId": "i45bae79b78194283bd2fe4a",
+      "name": "货主7天全国销售变化值",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "ie98cfd254e0a44f3b26f11a": {
+      "fdId": "ie98cfd254e0a44f3b26f11a",
+      "name": "近14天边际利润率",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "vf36f1fe2ee6741e8b1e5212": {
+      "fdId": "vf36f1fe2ee6741e8b1e5212",
+      "name": "货主子公司7天增掉量情况",
+      "fdType": "STRING",
+      "metaType": null,
+      "dsId": "sef35be7c05464105b147da3"
+    },
+    "q91ee2aff7e504cd7b64fe0f": {
+      "fdId": "q91ee2aff7e504cd7b64fe0f",
+      "name": "边际利润率（随心购调整）",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "e8fd686e9c476458d8ed00de": {
+      "fdId": "e8fd686e9c476458d8ed00de",
+      "name": "省份",
+      "fdType": "STRING",
+      "metaType": "DIM",
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "ff2ab2b227b2d4652994bf0f": {
+      "fdId": "ff2ab2b227b2d4652994bf0f",
+      "name": "近30天边际利润额",
+      "fdType": "DOUBLE",
+      "metaType": null,
+      "dsId": "adaa03de09dd84a74a5c19e5"
+    },
+    "o81e4111effc0405ebc8e9d2": {
+      "fdId": "o81e4111effc0405ebc8e9d2",
+      "name": "边际利润率（随心购调整）",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "oa5efa6910d984fc3bc82682": {
+      "fdId": "oa5efa6910d984fc3bc82682",
+      "name": "目前进度-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    },
+    "h20b335e1affc493ab1ca93e": {
+      "fdId": "h20b335e1affc493ab1ca93e",
+      "name": "进度差-除集采50%",
+      "fdType": "DOUBLE",
+      "metaType": "METRIC",
+      "dsId": null
+    }
+  }
+}

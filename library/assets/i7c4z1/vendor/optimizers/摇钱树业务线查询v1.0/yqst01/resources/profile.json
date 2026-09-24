@@ -1,0 +1,41 @@
+{
+  "profileVersion": 1,
+  "profileId": "leyopharm-yaoqianshu",
+  "biBase": "https://bi.leyopharm.com",
+  "folderId": "q4e929703ce5247db98af47a",
+  "folderName": "摇钱树业务线",
+  "pages": [
+    {"name": "摇钱树销售进度", "pageId": "s3d33753607c3430a8b2e146"},
+    {"name": "摇钱树库存报表", "pageId": "oc0649dcfa4654d72ac1307d"},
+    {"name": "摇钱树商务考核数据", "pageId": "u084ec3e72324428b9182ad0"},
+    {"name": "摇钱树货主利润表-商务", "pageId": "d79881bb917ff48ae97ff328"},
+    {"name": "摇钱树补货建议表", "pageId": "c9d87bf403006451585d7647"},
+    {"name": "摇钱树经营分析看板", "pageId": "vfab00567d6564534a037484"}
+  ],
+  "mainDatasetId": "f0a3a48ad2cb34a6a976ce0b",
+  "dateFilterAnchor": {
+    "name": "出库日期",
+    "fdId": "j837cb1313e434000bb42295",
+    "dsId": "ufef96cebcac14ff38494bb2",
+    "scopePage": "摇钱树销售进度",
+    "macroName": "本月到昨天",
+    "note": "摇钱树销售进度页全卡共享的页面级出库日期过滤；查询必带（不带→金额炸成千亿级），导出必不带（带→任务1012 FAILED）"
+  },
+  "headers": {
+    "x-dom-id": "Z3VhbmJp",
+    "raw-backend-response": "TRUE",
+    "cache-control": "no-cache",
+    "Accept": "application/json"
+  },
+  "defaultDateRange": ["2026-09-01", "2026-09-22"],
+  "timeouts": {
+    "connectSeconds": 10,
+    "readSeconds": 130
+  },
+  "limits": {
+    "maxPage": 10000,
+    "pageSize": 100,
+    "filterValues": 1000,
+    "outputRows": 1000
+  }
+}
