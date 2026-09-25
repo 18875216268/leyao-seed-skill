@@ -2,7 +2,7 @@
 
 > 客户端：`scripts/sources/leyou/leyou_cloud.py`（业务：搜索/详情/采集；原生集成）+
 > 独立登录器 `scripts/sources/leyou/login_leyou_cloud.py`（登录：单文件自包含，详见同目录 `login_leyou_cloud.md`）；
-> **登录态只落用户数据区** `leyou_token.json`（默认与数据区对齐：资产内运行时 = `common.LEYOU_TOKEN_F`；独立拷贝时 `~/.leyao-kb/leyou_token.json`；
+> **登录态落用户级固定路径** `%LOCALAPPDATA%\leyou-cloud\leyou_token.json`（与 BI / PMS 凭证同构；工具包独立运行与框架内共享同一份登录态；
 > 客户端/登录器均可用 `--token-file` 指定；包内零写入）。
 > **本 skill 只查不弹窗**：`status` 预检（scan=False 语义）→ 失效即返回 `LOGIN_REQUIRED` + 手动指引；
 > 桥接调用统一带 `--no-auto-login`（机制保证：**绝不会触发扫码弹窗**）。
@@ -35,7 +35,7 @@ python scripts/sources/leyou/login_leyou_cloud.py --status               # 只�
 
 **凭证失效 → 用 `--reuse`（独立登录器弹窗）**。
 兼容入口（转发同一登录器，输出/凭证文件不变）：`leyou_cloud.py login` / `leyou_cloud.py status`。
-成功后凭证写入用户数据区 `leyou_token.json`，之后本 skill 常态复用、无感。
+成功后凭证写入用户级固定路径 `%LOCALAPPDATA%\leyou-cloud\leyou_token.json`，之后本 skill 常态复用、无感。
 > 本 skill 不实现登录、不代扫、不保存额外凭证。
 > ⚠️ `leyou_token.json` 与数据区 `config.local.json` 都是**真实运行凭证**：切勿入包/入仓；发布或提交前确认包内不存在。
 

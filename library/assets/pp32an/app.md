@@ -92,7 +92,7 @@ python scripts/hub.py contribute --all-candidates [--dry-run]   # 沉淀上传�
 
 ## 5. 边界与红线（如实）
 
-- **不弹窗、不扫码**：云智库未登录 → 明确返回 `LOGIN_REQUIRED` + 手动登录指引（绝不代扫）——**登录一律直接调用独立登录器（唯一入口、黑盒使用；禁止自写 / 自组装登录流程 ✗；用户已指定 / 提供凭证 → 按其走 ✓）**——**独立登录器位置**：`library/assets/pp32an/scripts/sources/leyou/login_leyou_cloud.py`（相对包根；手册 `login_leyou_cloud.md`）——**由 agent 或人工在资产根 `library/assets/pp32an/` 执行** `python scripts/sources/leyou/login_leyou_cloud.py --reuse`（登录窗口直达用户桌面；agent 只管等用户完成扫码；异 cwd 脚本路径写全即可，**参数与 cwd 无关** ✓）；登录态只落用户数据区 ✓；
+- **不弹窗、不扫码**：云智库未登录 → 明确返回 `LOGIN_REQUIRED` + 手动登录指引（绝不代扫）——**登录一律直接调用独立登录器（唯一入口、黑盒使用；禁止自写 / 自组装登录流程 ✗；用户已指定 / 提供凭证 → 按其走 ✓）**——**独立登录器位置**：`library/assets/pp32an/scripts/sources/leyou/login_leyou_cloud.py`（相对包根；手册 `login_leyou_cloud.md`）——**由 agent 或人工在资产根 `library/assets/pp32an/` 执行** `python scripts/sources/leyou/login_leyou_cloud.py --reuse`（登录窗口直达用户桌面；agent 只管等用户完成扫码；异 cwd 脚本路径写全即可，**参数与 cwd 无关** ✓）；登录态落**用户级固定路径** `%LOCALAPPDATA%\leyou-cloud\leyou_token.json`（与 BI / PMS 凭证同构；工具包独立运行与框架内共享同一份）✓；
 - **无命中/不足不轻易放弃（硬）**：按 §2〈查询规范〉继续深入（拆开的词 / 换说法 / `--deep` / `--expand` / 换 need-type / `--only` 指定库再查）→ 仍无 → 如实拒答（**不编造**：`ok:false` + 建议，含"请维护者补池"）+ **向用户确认**，不得静默收工 ✗；
 - **单一权威源**：口径只认 `authority`；多源冲突**显式并列**（`conflict` 字段），不静默择一；
 - **运行数据一律落用户数据区（不写包内、不写 skill 同级）**：优先 `LEYAO_KB_HOME`；被框架挂载时自动归口 `<包父级>/.leyao-data/data/assets/<卡片id>/`（`LEYAO_SEED_HOME` 可覆盖）；独立部署/任意机器统一落 `~/.leyao-kb/`；缓存可随时清理（派生层）；
@@ -103,7 +103,7 @@ python scripts/hub.py contribute --all-candidates [--dry-run]   # 沉淀上传�
 
 - **换源/调超时/调 TTL**：只改 `registry.json`（地址、优先级、timeout_s、ttl_seconds、semantic_threshold、budget_seconds）；
 - **补别名/同义词**：`scripts/query_norm.py` 的 `ALIASES`（按真实未命中案例扩充，`reflect` 会给建议）；
-- **云智库客户端**：`scripts/sources/leyou/`（原生集成，原样复用；**登录态只落用户数据区**（客户端经 `--token-file` 指定），包内零写入）；
+- **云智库客户端**：`scripts/sources/leyou/`（原生集成，原样复用；登录态落**用户级固定路径** `%LOCALAPPDATA%\leyou-cloud\`（客户端经 `--token-file` 指定），包内零写入）；
 - **沉淀上传**：`contribute --memory-id <id>`（单条）/ `--all-candidates`（批量）/ `--inject --title … --content …`（权威注入，仅用户显式要求）；写令牌在**本地配置**（数据区 `config.local.json` → `pool.write_token`，不入包）；采纳上报开关 `registry.report_adopt`；
 - **自检**：`python tests/run_tests.py`（离线）→ `hub.py doctor`（连通）→ `hub.py ask --problem 缺货率`（真实样例）→ `contribute --all-candidates --dry-run`（沉淀预检，不写线上）。
 

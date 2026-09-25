@@ -70,7 +70,7 @@ def status(timeout: float = 10.0, cli: str | None = None) -> dict:
                     "`python scripts/sources/leyou/login_leyou_cloud.py --reuse`（弹窗登录）；"
                     "环境问题先 `--check` 并按提示修复依赖后重试；"
                     "（脚本与登录器同目录；相对包根，异 cwd 写全路径即可 ✓）；"
-                    "登录态只落用户数据区（%s）" % LEYOU_TOKEN_F}
+                    "登录态落用户级固定路径（%s）" % LEYOU_TOKEN_F}
 
 
 def search(problem: str, *, timeout: float = 12.0, limit: int = 5, cli: str | None = None) -> dict:

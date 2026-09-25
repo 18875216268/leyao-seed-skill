@@ -60,7 +60,19 @@ MEMORY_F = HOME / "memory.jsonl"
 FEEDBACK_F = HOME / "feedback.jsonl"
 REFLECT_F = HOME / "reflect.jsonl"
 CONFIG_F = HOME / "config.local.json"      # 本地配置（敏感/环境参数只存本地；包内零秘钥）
-LEYOU_TOKEN_F = HOME / "leyou_token.json"  # 云智库登录态（客户端 --token-file 目标；只落用户区）
+# 云智库登录态：用户级固定路径（与登录器 `login_leyou_cloud._default_token_file` 为同一常量的
+# 两处定义，互指、含同样的 `LEYOU_CLOUD_HOME` 覆盖；`tests/test_data_area.py` 锁定两处一致）——
+# 三登录器凭证同构（BI/PMS 同为 %LOCALAPPDATA% 用户级目录 + 各自 env 覆盖），工具包独立运行与
+# 框架内共享同一份登录态。
+_leyou_override = os.environ.get("LEYOU_CLOUD_HOME", "").strip()
+if _leyou_override:
+    _LEYOU_BASE = Path(_leyou_override).expanduser()
+elif os.name == "nt":
+    _LEYOU_BASE = Path(os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")) / "leyou-cloud"
+else:
+    _xdg = os.environ.get("XDG_DATA_HOME", "").strip()
+    _LEYOU_BASE = (Path(_xdg).expanduser() if _xdg else Path.home() / ".local" / "share") / "leyou-cloud"
+LEYOU_TOKEN_F = _LEYOU_BASE / "leyou_token.json"
 
 
 def ensure_home() -> Path:

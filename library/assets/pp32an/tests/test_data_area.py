@@ -1,7 +1,8 @@
-"""数据区约束（回归护栏）：配置与登录态只落用户区；桥接必须显式指定 token-file。
+"""数据区约束（回归护栏）：配置落用户数据区；云智库登录态落用户级固定目录（leyou-cloud，
+与 BI / PMS 凭证同构）；桥接必须显式指定 token-file。
 
 背景：客户端默认把登录态写在**包内**同目录 ✗ → 本 skill 统一改由全局参数 `--token-file`
-指向用户数据区；本测试锁住"包内零凭据落点"这条不变量（任何路径调整若破坏它，立刻红）。
+指向用户区；本测试锁住"包内零凭据落点"这条不变量（任何路径调整若破坏它，立刻红）。
 """
 import os
 import sys
@@ -20,9 +21,13 @@ import leyou_bridge  # noqa: E402
 
 class TestDataArea(unittest.TestCase):
     def test_paths_outside_package(self):
-        for f in (common.CONFIG_F, common.LEYOU_TOKEN_F):
-            self.assertNotIn(SKILL, f.parents, "%s 不得落在包内" % f)
-            self.assertEqual(f.parent, common.HOME)
+        """CONFIG_F 落数据区（LEYAO_KB_HOME 体系）；LEYOU_TOKEN_F 落用户级固定目录
+        （%LOCALAPPDATA%\\leyou-cloud\\，与 BI / PMS 凭证同构，工具包独立运行与框架共享
+        同一份登录态）——两者都不得落在包内。"""
+        self.assertNotIn(SKILL, common.CONFIG_F.parents, "%s 不得落在包内" % common.CONFIG_F)
+        self.assertEqual(common.CONFIG_F.parent, common.HOME)
+        self.assertNotIn(SKILL, common.LEYOU_TOKEN_F.parents, "%s 不得落在包内" % common.LEYOU_TOKEN_F)
+        self.assertEqual(common.LEYOU_TOKEN_F.parent.name, "leyou-cloud")
 
     def test_client_token_target(self):
         sys.path.insert(0, str(SKILL / "scripts" / "sources" / "leyou"))
@@ -30,12 +35,12 @@ class TestDataArea(unittest.TestCase):
         self.assertEqual(str(lg.DEFAULT_TOKEN_FILE), str(common.LEYOU_TOKEN_F))
 
     def test_login_default_token_file_aligned(self):
-        """独立登录器与业务客户端的默认凭证路径必须与数据区权威一致（防落点分离）。"""
+        """独立登录器与业务客户端的默认凭证路径必须与 common.LEYOU_TOKEN_F 一致（防落点分离）。"""
         sys.path.insert(0, str(SKILL / "scripts" / "sources" / "leyou"))
         import login_leyou_cloud as lg
         import leyou_cloud
         self.assertEqual(lg.DEFAULT_TOKEN_FILE, str(common.LEYOU_TOKEN_F),
-                         "登录器默认路径须对齐数据区（common.LEYOU_TOKEN_F）")
+                         "登录器默认路径须与 common.LEYOU_TOKEN_F 对齐")
         self.assertEqual(leyou_cloud.DEFAULT_TOKEN_FILE, str(common.LEYOU_TOKEN_F),
                          "业务客户端默认路径须同步对齐")
 

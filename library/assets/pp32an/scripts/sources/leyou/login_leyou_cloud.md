@@ -211,8 +211,8 @@ resp.raise_for_status()
 
 - **存储位置**（按优先级）：
   1. `--token-file` 显式指定；
-  2. 资产在包内运行（存在 `scripts/common.py`）→ 数据区权威解析 `common.LEYOU_TOKEN_F`（与桥接**同一落点**，含框架挂载与 `LEYAO_KB_HOME` 判定）；
-  3. 独立单文件运行 → `$LEYAO_KB_HOME/leyou_token.json` → `~/.leyao-kb/leyou_token.json`（用户数据区，**绝不写包内**）。
+  2. 默认：**用户级固定路径**（与 BI / PMS 凭证同构）——Windows `%LOCALAPPDATA%\leyou-cloud\leyou_token.json`；其他系统 `$XDG_DATA_HOME/leyou-cloud/` → `~/.local/share/leyou-cloud/`（**绝不写包内**）；
+  3. 工具包独立运行与技能包内**共享同一份登录态**（同一路径）。
 - **存什么**：`{token, uuid, watermark, login_at, expires_at}`——与业务客户端 `leyou_cloud.py` 完全兼容（同一文件、同一字段；桥接无需改动）。
 - **怎么存**：明文 JSON + **原子写**（临时文件 + `os.replace`），尽力 `chmod 600`；
 - **`expires_at` 说明**：为登录时写入的 **30 天参考值**（服务端不下发过期时间）——实际有效性以远端校验 `get-list` 为准。
@@ -239,7 +239,7 @@ resp.raise_for_status()
     },
     "endpoints": {"get": "https://api-get.helplook.net",
                   "site": "https://leyohrai.helplook.net"},
-    "credentialPath": "C:\\Users\\…\\leyou_token.json"   # 资产内 = 数据区路径；独立拷贝 = ~/.leyao-kb
+    "credentialPath": "C:\\Users\\…\\AppData\\Local\\leyou-cloud\\leyou_token.json"   # 用户级固定路径
 }
 ```
 
@@ -323,14 +323,14 @@ except LeyouLoginError as exc:
 | 项目 | 位置 |
 |---|---|
 | **连接配置** | 硬编码为 `login_leyou_cloud.py` 顶部的模块常量（`TENANT_ID` / `SITE` / `BASE_GET` / `CALLBACK` / `POLL_URL` / `QR_IMG_URL` / `UA`）；**不读取任何外部文件、不含任何账号信息**，换环境改常量即可 |
-| **凭证** | 默认与数据区对齐（资产内运行时 = `common.LEYOU_TOKEN_F`；独立拷贝时 `~/.leyao-kb/leyou_token.json`）；`--token-file` 覆盖 |
+| **凭证** | 用户级固定路径 `%LOCALAPPDATA%\leyou-cloud\leyou_token.json`（与 BI / PMS 凭证同构）；`--token-file` 覆盖 |
 | **存储方式** | 明文 JSON + 原子写；不做加解密（拿到文件即可用该凭证，**请勿外传**） |
 
 环境变量：
 
 | 变量 | 作用 |
 |---|---|
-| `LEYAO_KB_HOME` | 覆盖凭证存储目录（默认 `~/.leyao-kb`） |
+| `LEYOU_CLOUD_HOME` | 覆盖凭证存储**目录**（默认 Windows `%LOCALAPPDATA%\leyou-cloud\`；其他系统 XDG）——与 `BI_OPERATIONS_HOME` / `PMS_OPERATIONS_HOME` 同构；`--token-file` 可精确到文件 |
 
 ---
 

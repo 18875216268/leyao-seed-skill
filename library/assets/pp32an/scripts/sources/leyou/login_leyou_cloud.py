@@ -50,13 +50,14 @@
 
 凭证（唯一落盘形态）：JSON 单文件
   `{token, uuid, watermark, login_at, expires_at}`
-  默认路径：资产数据区（存在 `scripts/common.py` 时随其权威解析，与桥接同一落点）→
-  `$LEYAO_KB_HOME/leyou_token.json` → `~/.leyao-kb/leyou_token.json`（可用 --token-file 覆盖）。
+  默认路径（用户级固定，与 BI / PMS 登录器同构）：Windows
+  `%LOCALAPPDATA%/leyou-cloud/leyou_token.json`；其他系统 `$XDG_DATA_HOME/leyou-cloud/` →
+  `~/.local/share/leyou-cloud/leyou_token.json`（可用 --token-file 覆盖）。
   字段与业务客户端 leyou_cloud.py 完全兼容（同一文件、同一字段）。
 
 安全边界：
 - 登录全程只访问固定官方主机（helplook.net 系 + login.work.weixin.qq.com），无本地服务、无代理；
-- 凭证为明文 JSON（不做加解密），仅可写入用户数据区（包内零写入）；
+- 凭证为明文 JSON（不做加解密），仅写入用户级固定路径（包内零写入）；
 - 只有「凭证本身不可用」（missing / expired / invalid）才允许弹窗；
   网络 / 限流类失败一律直接报错，**不会莫名其妙弹登录窗**。
 """
@@ -93,28 +94,28 @@ CONFIRM_WAIT_SECONDS = 90     # 已扫码后的等待确认上限（秒）：超
 # 登录弹窗窗口图标（笔记本+对勾）；首次渲染后缓存 PNG bytes
 
 
-# ---------------- 默认 token 文件（与资产数据区对齐；包内零写入） ----------------
+# ---------------- 默认 token 文件（用户级固定路径；与 BI / PMS 登录器同构） ----------------
 def _default_token_file() -> str:
-    """默认凭证路径：资产内运行时与数据区对齐；独立拷贝时回落用户区。
+    """默认凭证路径：用户级固定位置，三登录器同构（env 覆盖 → 平台默认，同 BI/PMS 模式）。
 
-    优先级：
-      1) 资产在包内运行：复用 `scripts/common.py` 的 `LEYOU_TOKEN_F`（数据区规则的唯一权威，
-         含框架挂载 / LEYAO_KB_HOME 判定）——与桥接、人工登录落点完全一致；
-      2) 独立单文件运行：`$LEYAO_KB_HOME/leyou_token.json` → `~/.leyao-kb/leyou_token.json`。
+    - 覆盖：`LEYOU_CLOUD_HOME`（指向**目录**，凭证文件固定名 `leyou_token.json`）
+    - Windows：`%LOCALAPPDATA%/leyou-cloud/leyou_token.json`
+    - 其他系统：`$XDG_DATA_HOME/leyou-cloud/` → `~/.local/share/leyou-cloud/`
+    - 显式覆盖：`--token-file` 参数（精确到文件）
+
+    注：`scripts/common.py` 的 `LEYOU_TOKEN_F` 是同一常量的两处定义（互指，含同样的
+    `LEYOU_CLOUD_HOME` 覆盖），由 `tests/test_data_area.py` 锁定两处一致——
+    本文件单文件自包含，不 import 包内模块。
     """
-    try:  # 1) 资产体系（…/scripts/common.py 存在则用其权威解析）
-        _scripts = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        if os.path.isfile(os.path.join(_scripts, "common.py")):
-            if _scripts not in sys.path:
-                sys.path.insert(0, _scripts)
-            from common import LEYOU_TOKEN_F   # noqa: PLC0415 —— 延迟导入：独立拷贝时无此模块
-            return str(LEYOU_TOKEN_F)
-    except Exception:
-        pass
-    # 2) 独立拷贝：用户区
-    env = (os.environ.get("LEYAO_KB_HOME") or "").strip()
-    base = os.path.expanduser(env) if env else os.path.join(os.path.expanduser("~"), ".leyao-kb")
-    return os.path.join(base, "leyou_token.json")
+    override = os.environ.get("LEYOU_CLOUD_HOME", "").strip()
+    if override:
+        return os.path.join(os.path.expanduser(override), "leyou_token.json")
+    if os.name == "nt":
+        base = os.environ.get("LOCALAPPDATA") or os.path.join(os.path.expanduser("~"), "AppData", "Local")
+        return os.path.join(base, "leyou-cloud", "leyou_token.json")
+    xdg = os.environ.get("XDG_DATA_HOME", "").strip()
+    base = os.path.expanduser(xdg) if xdg else os.path.join(os.path.expanduser("~"), ".local", "share")
+    return os.path.join(base, "leyou-cloud", "leyou_token.json")
 
 
 DEFAULT_TOKEN_FILE = _default_token_file()
