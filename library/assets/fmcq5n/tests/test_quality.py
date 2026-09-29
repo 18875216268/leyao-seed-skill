@@ -4,7 +4,7 @@
 Q1 无待办/占位标记残留      Q2 无乱码/替换字符
 Q3 全部文本可解码、JSON 可解析（含重复键检测）  Q4 无开发残留物（.bak 除外：hosts 回滚备份）
 Q5 无调试残留（print 仅允许 report.py 的 JSON/摘要输出）
-Q6 无未使用 import          Q7 app.md 场景路由表 == routes.json（文档↔事实源）
+Q6 无未使用 import          Q7 SKILL.md 场景路由表 == routes.json（文档↔事实源）
 Q8 分层描述与实现同步（架构字符串含 probe/账本）  Q9 死配置：lines 配置键必须被引用
 """
 from __future__ import annotations
@@ -141,7 +141,7 @@ def main() -> int:
 
     # Q9 死配置：lines 配置字典的每个键都必须被代码引用
     bad = []
-    for dict_name in ("CACHE_TTL", "PROBE", "DEFAULT_BUDGET"):
+    for dict_name in ("PROBE", "DEFAULT_BUDGET"):
         m = re.search(r"%s = \{(.*?)\}" % dict_name, LINES_SRC, re.S)
         if not m:
             bad.append("找不到 %s" % dict_name)
@@ -154,25 +154,34 @@ def main() -> int:
     check("Q9 无死配置（lines 配置键全部被引用）", not bad, bad)
 
     # Q10 自包含：随包分发的文本不得引用包外文件/目录（发布包必须能独立使用）
+    # 资产态豁免：`library/` 前缀 = 指向主框架的路径（框架生态提示的合法引用）；
+    # `SKILL.md` = 框架根入口 / 恢复规范形态的说明引用——均非本包随包文件，但语义合法。
     bad = []
     for rel, t in T.items():
         for m in re.finditer(r"`?([\w\u4e00-\u9fff./\-]+\.(?:md|json|jsonl|py))`?", t):
             p = m.group(1)
             if "YYYY" in p or p.endswith(".jsonl"):     # 运行时模板（日志名等），非随包文件
                 continue
+            if p.startswith("library/"):
+                continue
             if p.startswith(("./", "../")) or "/../" in p:
-                bad.append("%s: 相对越界引用 %s" % (rel, p))
+                # 相对引用：解析后仍在包内 = 合法（如 sources/ip/doh/ → ../domains.json）
+                try:
+                    inside = (rel.parent / p).resolve().is_relative_to(PKG.resolve())
+                except Exception:
+                    inside = False
+                if not inside:
+                    bad.append("%s: 相对越界引用 %s" % (rel, p))
                 continue
             if rel.suffix == ".py" and (rel.parts[0] == "tests" or len(rel.parts) > 1):
                 continue                       # 源码/测试内部引用按文件名解析，跳过
-            if p in ("app.md", "SKILL.md", "manifest.json", "README.md", "LICENSE",
-                     "library/engine.py", "library/ROUTES.md"):   # 后两项：框架生态提示的有意引用（独立使用时忽略）
+            if p in ("app.md", "SKILL.md", "manifest.json", "README.md", "LICENSE"):
                 continue
             def _in_pkg(name: str) -> bool:
                 if (PKG / name).exists():
                     return True
                 base = name.replace("\\", "/").rsplit("/", 1)[-1]   # rglob 仅支持相对段：按文件名匹配
-                return any(any((PKG / d).rglob(base)) for d in ("scripts", "routes", "tests", "channels"))
+                return any(any((PKG / d).rglob(base)) for d in ("scripts", "routes", "tests", "channels", "sources", "update"))
             if not _in_pkg(p):
                 bad.append("%s: 引用了包外或不存在的文件 %s" % (rel, p))
         if "设计评审.md" in t or "参考/" in t:

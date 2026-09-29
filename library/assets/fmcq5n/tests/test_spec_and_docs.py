@@ -2,7 +2,7 @@
 """规范合规 + 三向一致性审计（离线，可复跑）。
 
 覆盖四组：
-  A 规范合规：app.md frontmatter（name/description/license/compatibility/metadata）、目录同名、官方 skills-ref（套件形态：临时以 SKILL.md 校验）
+  A 规范合规：SKILL.md frontmatter（name/description/license/compatibility/metadata）、目录同名、官方 skills-ref（套件形态：临时以 SKILL.md 校验）
   B 文档↔代码：通道文件与入口函数、子命令、环境变量、退出码、清单层级/域名、场景↔CLI 映射、ROUTES 无漂移
   C 代码↔代码：全部可编译、预算透传、运行期零写包
   D 健壮性：缓存损坏、hosts 缺失、未知通道、非 https、routes 校验
@@ -37,7 +37,17 @@ import channel_pin                        # noqa: E402
 import gh                                 # noqa: E402
 import probe                              # noqa: E402
 import lines                              # noqa: E402
-import ipscan                             # noqa: E402
+
+
+def _load_src(name: str, rel: str):
+    """按包相对路径加载资源层模块（sources/ 无包结构，路径加载）。"""
+    import importlib.util
+    p = PKG / rel
+    spec = importlib.util.spec_from_file_location("tsrc_" + name, p)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 SKILL = (PKG / "app.md").read_text(encoding="utf-8")
 FM = SKILL.split("---")[1] if SKILL.startswith("---") else ""
@@ -153,16 +163,26 @@ def main() -> int:
           man["version"] == meta.get("version", "").strip('"'), "%s / %s" % (man["version"], meta.get("version")))
 
     doms = set()
+    ip_domains = json.loads((PKG / "sources" / "ip" / "domains.json").read_text(encoding="utf-8"))["domains"]
     for c in channel_cdn.SOURCES:
-        doms.add(re.sub(r"^https://", "", c["url"]).split("/")[0])
+        doms.add(re.sub(r"^https?://", "", c["url"]).split("/")[0])
     for m in channel_mirror.SOURCES:
-        doms.add(re.sub(r"^https://", "", m["url"]).split("/")[0])
-    for u in [*lines.DOH_SERVERS]:
-        doms.add(re.sub(r"^https://", "", u).split("/")[0])
-    doms |= set(channel_pin.PIN_DOMAINS)
-    doms |= {re.sub(r"^https://", "", s["url"]).split("/")[0] for s in ipscan.EXTERNAL_SOURCES}
+        doms.add(re.sub(r"^https?://", "", m["url"]).split("/")[0])
+    # 资源层（sources/）：全部源 json 的 url 域 + 全量域清单（hub --endpoints 同口径）
+    for jf in (PKG / "sources").rglob("*.json"):
+        try:
+            data = json.loads(jf.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        items = data.get("sources") if isinstance(data, dict) and "sources" in data else (
+            [data] if isinstance(data, dict) and data.get("url") else [])
+        for it in items or []:
+            u = str(it.get("url") or "")
+            if u:
+                doms.add(re.sub(r"^https?://", "", u).split("/")[0])
+    doms |= set(ip_domains)
     allow = set(man["network"]["allow_domains"])
-    check("B7 manifest 网络声明覆盖全部出网域（方式源池+DoH+pin 域+外部 hosts 源）",
+    check("B7 manifest 网络声明覆盖全部出网域（资源层三节+全量域清单）",
           doms <= allow, sorted(doms - allow))
     check("B7b manifest 声明了 --url 任意 https 能力", "--url" in man["network"].get("note", ""),
           man["network"].get("note", "")[:60])
@@ -234,19 +254,13 @@ def main() -> int:
           hasattr(channel_pin, "verify_for_hosts") and "verify_for_hosts" in GH_SRC
           and "raw.githubusercontent.com" in getattr(lines, "STRICT_PROBE_URLS", {}), None)
 
-    # D7 本地探测源（ipscan，替代原云函数）：外部源失败静默跳过；合并去重/延迟序/不可达过滤
-    ext = ipscan.probe_external(sources=[{"name": "t", "url": "https://127.0.0.1:1/none"}])
-    parsed = ipscan.process_entries([
-        {"ip": "140.82.112.26", "domain": "github.com", "latency": 30},
-        {"ip": "20.205.243.166", "domain": "github.com", "latency": 50},
-        {"ip": "140.82.112.26", "domain": "github.com", "latency": 30},   # 重复候选
-        {"ip": "192.0.2.1", "domain": "github.com"},                      # 无延迟 → 补测速不过滤除
-    ], deadline=0.5)
-    check("D7 ipscan：外部源失败不抛出；候选去重、按延迟排序、不可达被过滤",
-          ext == [] and parsed.get("github.com") == ["140.82.112.26", "20.205.243.166"], parsed)
+    # D7 外部清单源（资源层 hosts_file）：失败不抛出、返回空（多源容错纪律）
+    hfm = _load_src("hf", "sources/ip/hosts_file/fetch.py")
+    name, got, detail = hfm._pull({"name": "t", "url": "https://127.0.0.1:1/hosts"})
+    check("D7 外部清单源：失败不抛出、返回空", got == {} and "失败" in detail, detail)
     check("D7b hosts 行解析：标准行命中、坏行忽略",
-          ipscan.HOSTS_LINE.match("1.2.3.4 github.com") is not None
-          and ipscan.HOSTS_LINE.match("坏行 应当被忽略") is None, None)
+          hfm.HOSTS_LINE.match("1.2.3.4 github.com") is not None
+          and hfm.HOSTS_LINE.match("坏行 应当被忽略") is None, None)
 
     # 2026-09-28：__pycache__/.pyc 是本机运行时产物（跑 gh.py/tests 必生成）→ 移出开发自检；
     # 「随包零字节码」改在导出发布包时检查（export_release 流程）。

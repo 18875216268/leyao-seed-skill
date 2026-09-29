@@ -3,11 +3,12 @@
 
 用法：
   python scripts/gh.py diag [--full]                     # 只读诊断（各通道可用性事实）
-  python scripts/gh.py get <owner>/<repo>:<path> [--ref R] [--dest F]   # 取单个文件（按路由降级）
+  python scripts/gh.py get <owner>/<repo>:<path> [--ref R] [--dest F] [--force CH] [--exclude CH,CH]   # 取单个文件（按路由降级）
   python scripts/gh.py get --url <https 链接> [--dest F]                # raw / Release 资产 / codeload 等
-  python scripts/gh.py git <git 参数...> [--cwd D] [--deadline S] [--force CH]   # 包裹 git（环境守卫 + 预算 + 降级）
+  python scripts/gh.py git <git 参数...> [--cwd D] [--deadline S] [--force CH] [--exclude CH,CH]   # 包裹 git（环境守卫 + 预算 + 降级）
   python scripts/gh.py hosts --status | --apply --yes | --rollback
   python scripts/gh.py routes --check | --render
+  python scripts/gh.py update --check | --apply --yes | --rollback    # 更新层（仅显式调用，从不自检）
 
 约定：stdout = 单个 JSON（Agent 解析）；stderr = 一行人类摘要；
      日志 = 用户区 ~/.github-access/logs/gh-YYYYMM.jsonl（GH_ACCESS_HOME 可覆盖）。
@@ -20,6 +21,7 @@ import importlib.util
 import json
 import os
 import re
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -41,11 +43,15 @@ for _d in sorted((Path(__file__).resolve().parents[1] / "channels").glob("*")):
     if _d.is_dir():
         sys.path.insert(0, str(_d))
 
+# 更新层引导：update/（纯逻辑模块；出网动作在本文件 cmd_update 经自有通道完成）
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "update"))
+
 import budget as budget_mod  # noqa: E402
 import env_guard  # noqa: E402
 import lines  # noqa: E402
 import probe  # noqa: E402
 import report  # noqa: E402
+import update as update_mod  # noqa: E402
 
 PKG = Path(__file__).resolve().parents[1]
 ROUTES_F = PKG / "routes" / "routes.json"
@@ -53,8 +59,9 @@ ROUTES_MD = PKG / "routes" / "ROUTES.md"
 RAW_RE = re.compile(r"https://raw\.githubusercontent\.com/([^/]+)/([^/]+)/([^/]+)/(.+)")
 TARGET_RE = re.compile(r"^([\w.-]+)/([\w.-]+):(.+)$")
 WRITE_TOKENS = {"push", "tag", "commit", "cherry-pick", "revert", "merge", "rebase", "reset"}
-
-_UNIFIED = ("http_get", "git_run")   # 通道统一接口名（参与 get/git 链的通道应导出；分发时可选）
+# 非 raw https 直取（Release/codeload 等）与更新层共用的降级链——有意不含 cdn：
+# CDN 只按仓库路径取（不认任意 URL），且更新检测要求新鲜度（不走有缓存的第三方 CDN）。
+HTTP_FALLBACK = ["direct", "pin", "mirror"]
 
 
 def load_routes() -> dict:
@@ -99,18 +106,6 @@ def load_channels() -> dict:
 
 
 _CH = load_channels()                    # 通道模块表（单一实例，全命令共享）
-
-
-def load_routes() -> dict:
-    return json.loads(ROUTES_F.read_text(encoding="utf-8"))
-
-
-def chain_for(scenario: str, routes: dict | None = None) -> list:
-    routes = routes or load_routes()
-    for s in routes["scenarios"]:
-        if s["id"] == scenario:
-            return list(s["chain"])
-    raise KeyError("未知场景：%s" % scenario)
 
 
 def finish(result: dict, quiet: bool = False, code: int | None = None) -> int:
@@ -171,6 +166,28 @@ def _archive_hint(git_args: list) -> str:
             "--dest %s.zip" % (owner, repo, repo))
 
 
+def _http_via_chain(url: str, dest: Path, chain: list, bud, routes: dict, tried: list):
+    """沿通道链取文件（get 与 update 共用）：完成即用、失败降级；返回首个成功结果或 None。"""
+    for ch in chain:
+        if not bud.can_attempt():
+            tried.append({"channel": ch, "ok": False, "detail": "预算不足，停止降级"})
+            break
+        mod = _CH.get(ch)
+        fn = getattr(mod, "http_get", None) if mod else None
+        if fn is None:
+            tried.append({"channel": ch, "ok": False,
+                          "detail": "约定态通道或该通道不提供 HTTP 取文件能力，跳过"})
+            continue
+        r = fn(url, dest, bud.timeout_for(20.0), budget=bud)
+        r.setdefault("channel", ch)
+        r.setdefault("third_party", routes["channels"].get(ch, {}).get("third_party") or False)
+        tried.append({"channel": ch, "ok": bool(r.get("ok")), "detail": str(r.get("detail", ""))[:120]})
+        if r.get("ok"):
+            bud.register_ok()
+            return r
+    return None
+
+
 # ---------------------------------------------------------------- get
 def cmd_get(args) -> int:
     t0 = time.perf_counter()
@@ -212,34 +229,19 @@ def cmd_get(args) -> int:
                             circuit_threshold=lines.DEFAULT_BUDGET["circuit_threshold"])
     tried = []
     # raw 链接走 file_read 全链（含 CDN）；其他 https（Release 资产 / codeload / 任意官方端点）走 direct → pin → mirror
-    base = [args.force] if args.force else (chain_for("file_read") if owner else ["direct", "pin", "mirror"])
+    base = [args.force] if args.force else (chain_for("file_read") if owner else HTTP_FALLBACK)
     chain = [c for c in base if c not in excl]
     if not chain:
         return finish({"action": "get", "ok": False,
                        "detail": "场景链被 --exclude 全部排除（base=%s, exclude=%s）" % (base, sorted(excl))},
                       args.quiet, 1)
-    for ch in chain:
-        if not bud.can_attempt():
-            tried.append({"channel": ch, "ok": False, "detail": "预算不足，停止降级"})
-            break
-        mod = _CH.get(ch)
-        fn = getattr(mod, "http_get", None) if mod else None
-        if fn is None:
-            tried.append({"channel": ch, "ok": False,
-                          "detail": "约定态通道或该通道不提供 HTTP 取文件能力，跳过"})
-            continue
-        timeout = bud.timeout_for(20.0)
-        r = fn(raw_url, dest, timeout, budget=bud)
-        r.setdefault("channel", ch)
-        r.setdefault("third_party", routes["channels"].get(ch, {}).get("third_party") or False)
-        tried.append({"channel": ch, "ok": bool(r.get("ok")), "detail": str(r.get("detail", ""))[:120]})
-        if r.get("ok"):
-            bud.register_ok()
-            return finish({"action": "get", "ok": True, "channel": ch, "via": r.get("via"),
-                           "third_party": r.get("third_party"), "file": str(dest),
-                           "bytes": dest.stat().st_size if dest.exists() else 0,
-                           "elapsed": round(time.perf_counter() - t0, 2),
-                           "detail": r.get("detail", ""), "tried": tried}, args.quiet)
+    r = _http_via_chain(raw_url, dest, chain, bud, routes, tried)
+    if r:
+        return finish({"action": "get", "ok": True, "channel": r["channel"], "via": r.get("via"),
+                       "third_party": r.get("third_party"), "file": str(dest),
+                       "bytes": dest.stat().st_size if dest.exists() else 0,
+                       "elapsed": round(time.perf_counter() - t0, 2),
+                       "detail": r.get("detail", ""), "tried": tried}, args.quiet)
     return finish({"action": "get", "ok": False, "detail": "全部通道失败",
                    "elapsed": round(time.perf_counter() - t0, 2), "tried": tried,
                    "next": "gh.py diag 看环境事实；或改用 pin / hosts 通道"}, args.quiet)
@@ -348,11 +350,10 @@ def cmd_diag(args) -> int:
     c = _CH["cdn"].fetch(DIAG_PROBE["repo"].split("/")[0], DIAG_PROBE["repo"].split("/")[1],
                          DIAG_PROBE["ref"], DIAG_PROBE["path"], tmp, 8)
     checks["cdn"] = {"ok": c["ok"], "via": c.get("via"), "detail": c.get("detail")}
-    hosts = _CH["pin"].cached_hosts()
-    if not hosts or args.full:
-        hosts = _CH["pin"].fetch_hosts()
+    hosts = _CH["pin"].fetch_hosts()
     checks["pin"] = {"ok": bool(hosts), "domains": len(hosts),
-                     "candidates": {k: len(v) for k, v in hosts.items()}, "source": "本地探测(ipscan)+DoH+内置池"}
+                     "candidates": {k: len(v) for k, v in hosts.items()},
+                     "source": "资源层多源聚合 + 统一测速（hub）"}
     if args.full:
         checks["pin_ip_alive"] = _CH["pin"].verify_ips(hosts)
     checks["hosts"] = _CH["hosts"].status()
@@ -388,7 +389,7 @@ def cmd_hosts(args) -> int:
             return finish({"action": "hosts.apply", "ok": False, "need_confirm": True,
                            "detail": "改系统解析需显式授权：加 --yes 后才执行",
                            "next": "gh.py hosts --apply --yes（或由用户批准后重跑）"}, args.quiet, 2)
-        hosts = _CH["pin"].cached_hosts() or _CH["pin"].fetch_hosts()
+        hosts = _CH["pin"].fetch_hosts()
         # 严格校验：写系统解析前必须"能真正取到内容"（根路径响应会假阳性，见 lines.STRICT_PROBE_URLS）
         alive = _CH["pin"].verify_for_hosts(hosts, limit=2, timeout=6.0)
         pool = {d: ips for d, ips in alive.items() if ips}
@@ -456,6 +457,100 @@ def cmd_routes(args) -> int:
                   args.quiet)
 
 
+# ---------------------------------------------------------------- update
+def cmd_update(args) -> int:
+    """更新层（仅显式调用——本技能从不自检更新，其他命令一律不碰这个层）。"""
+    t0 = time.perf_counter()
+    if args.rollback:
+        r = update_mod.restore_from_backup(PKG, report.ensure_home())
+        return finish({"action": "update.rollback", **r}, args.quiet)
+    ref = args.ref or update_mod.DEFAULT_REF
+    routes = load_routes()
+    home = report.ensure_home()
+    bud = budget_mod.Budget(overall=args.deadline or lines.DEFAULT_BUDGET["get"],
+                            per_call=lines.DEFAULT_BUDGET["per_call"],
+                            min_effective=lines.DEFAULT_BUDGET["min_effective"],
+                            circuit_threshold=lines.DEFAULT_BUDGET["circuit_threshold"])
+    chain = HTTP_FALLBACK                  # 检测/下载均不含 cdn：更新要求新鲜度，不走有缓存的第三方 CDN
+    if args.check:
+        url = update_mod.raw_manifest_url(ref)
+        dest = home / "cache" / "_remote_manifest.json"
+        try:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            pass
+        tried = []
+        r = _http_via_chain(url, dest, chain, bud, routes, tried)
+        if not r:
+            return finish({"action": "update.check", "ok": False, "url": url, "ref": ref,
+                           "detail": "无法获取远端版本信息", "tried": tried,
+                           "next": "gh.py diag 看环境事实；稍后重试 gh.py update --check"}, args.quiet)
+        try:
+            remote = update_mod.manifest_bytes_version(dest.read_bytes())
+        except Exception as e:
+            return finish({"action": "update.check", "ok": False, "url": url, "ref": ref,
+                           "detail": "远端 manifest 解析失败：%s" % e,
+                           "next": "确认仓库内 main 分支存在合法 manifest.json"}, args.quiet)
+        local = update_mod.local_version(PKG)
+        c = update_mod.compare(local, remote)
+        if c > 0:
+            detail, nxt = "有新版本 %s → %s" % (local, remote), "gh.py update --apply --yes"
+        elif c == 0:
+            detail, nxt = "已是最新（%s）" % local, None
+        else:
+            detail, nxt = "本地（%s）比远端（%s）新——可能是开发副本" % (local, remote), None
+        return finish({"action": "update.check", "ok": True, "update_available": c > 0,
+                       "local": local, "remote": remote, "ref": ref,
+                       "url": update_mod.REPO_URL, "channel": r.get("channel"),
+                       "third_party": r.get("third_party"),
+                       "elapsed": round(time.perf_counter() - t0, 2),
+                       "detail": detail, "next": nxt, "tried": tried}, args.quiet)
+    if args.apply:
+        if not args.yes:
+            # 先过授权门，再谈干活：替换包文件属重活，未授权一概不做
+            return finish({"action": "update.apply", "ok": False, "need_confirm": True,
+                           "detail": "更新会替换本技能包文件：加 --yes 后才执行（写前自动备份、可回滚）",
+                           "next": "gh.py update --apply --yes（或由用户批准后重跑）"}, args.quiet, 2)
+        url = update_mod.zip_url(ref)
+        ts = time.strftime("%Y%m%d-%H%M%S")
+        dest = home / "update" / ("dl-%s.zip" % ts)
+        work = home / "update" / ("tmp-" + ts)
+        try:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            pass
+        tried = []
+        r = _http_via_chain(url, dest, chain, bud, routes, tried)
+        if not r:
+            return finish({"action": "update.apply", "ok": False, "url": url, "ref": ref,
+                           "detail": "归档下载失败", "tried": tried,
+                           "next": "gh.py diag 看环境事实；或手动从 %s 下载替换" % update_mod.REPO_URL},
+                          args.quiet)
+        try:
+            local = update_mod.local_version(PKG)
+            staged = update_mod.stage_zip(dest, work)
+            newv = update_mod.local_version(staged)
+            backup_dir = update_mod.backup(PKG, home)
+            changes = update_mod.apply_staged(staged, PKG)
+            update_mod.record(home, {"time": ts, "ref": ref, "from": local, "to": newv,
+                                     "backup": str(backup_dir), "channel": r.get("channel")})
+        except Exception as e:
+            return finish({"action": "update.apply", "ok": False, "ref": ref,
+                           "detail": "应用失败（现有包未被改动前已尽力备份）：%s" % e,
+                           "next": "gh.py update --rollback 可恢复到最近备份"}, args.quiet)
+        finally:
+            shutil.rmtree(work, ignore_errors=True)
+        return finish({"action": "update.apply", "ok": True, "from": local, "to": newv,
+                       "ref": ref, "backup": str(backup_dir), "changes": changes,
+                       "channel": r.get("channel"), "third_party": r.get("third_party"),
+                       "elapsed": round(time.perf_counter() - t0, 2),
+                       "detail": "已更新并备份；验证：gh.py routes --check；后悔药：gh.py update --rollback",
+                       "tried": tried}, args.quiet)
+    return finish({"action": "update", "ok": False,
+                   "detail": "用 --check / --apply --yes / --rollback（本技能从不自检更新：仅此命令出网）"},
+                  args.quiet, 3)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(prog="gh.py", description="github-web-skill · GitHub 访问层 CLI")
     ap.add_argument("--quiet", action="store_true", help="关闭 stderr 人类摘要")
@@ -499,6 +594,15 @@ def main() -> int:
     p.add_argument("--check", action="store_true")
     p.add_argument("--render", action="store_true")
     p.set_defaults(func=cmd_routes)
+
+    p = sub.add_parser("update", help="更新层：检测/应用/回滚（仅显式调用，从不自检）", parents=[common])
+    p.add_argument("--check", action="store_true", help="只读检测：拉远端 manifest 比版本")
+    p.add_argument("--apply", action="store_true", help="下载并应用更新（需 --yes；自动备份可回滚）")
+    p.add_argument("--rollback", action="store_true", help="回滚到最近一次更新前备份")
+    p.add_argument("--yes", action="store_true", help="显式授权（--apply 必填）")
+    p.add_argument("--ref", default=update_mod.DEFAULT_REF, help="更新的分支/标签（默认 main）")
+    p.add_argument("--deadline", type=float)
+    p.set_defaults(func=cmd_update)
 
     args = ap.parse_args()
     return args.func(args)

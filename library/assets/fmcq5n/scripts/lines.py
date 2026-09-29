@@ -1,14 +1,11 @@
 """治理层常量（唯一事实源）。
 
-方式各自的**数据清单**已归位到方式目录（channels/pin/pools.json、
-channels/{cdn,mirror}/sources.json）——本文件只保留跨方式共用的治理常量：
-DoH、hosts 严格校验目标、并发探测参数、缓存 TTL、预算与连接超时。
+方式各自的**数据清单**已归位到资源层（sources/mirror/static/mirror.json、
+sources/cdn/static/cdn.json、IP 供给走 sources/hub.py）——本文件只保留跨方式共用的治理常量：
+hosts 严格校验目标、并发探测参数、预算与连接超时。
 数值依据：2026-09-11 真机实测（6 域 IP 逐条拨测 / CDN·镜像池逐源验证）。
 """
 from __future__ import annotations
-
-DOH_SERVERS = ["https://223.5.5.5/resolve", "https://1.12.12.12/resolve"]
-DOH_TIMEOUT = 6
 
 # ---------- hosts 写入前的严格校验目标（域 → 已知小文件） ----------
 # 为什么需要：根路径响应是弱判据——2026-09-11 实测 raw 的 185.199.111.133 根路径 200、
@@ -26,9 +23,6 @@ PROBE = {
     "cooldown_max": 3600.0,  # 冷却封顶（到期自动半开重试；永不删除）
 }
 
-# ---------- 缓存与预算默认值 ----------
-CACHE_TTL = {"ip": 600}          # 仅 IP 候选缓存；镜像/CDN 的择路已由 probe 健康账本接管
 DEFAULT_BUDGET = {"get": 60.0, "git_read": 180.0, "per_call": 120.0,
                   "min_effective": 10.0, "circuit_threshold": 3}   # diag 不设整体预算：各步自带超时
-PIN_CANDIDATES_PER_DOMAIN = 4         # 每域最多试几个候选（探测源已按延迟排序）
 PIN_CONNECT_TIMEOUT = 4.0             # 代理内单 IP 连接超时（实测 12s 太慢会吃掉预算）

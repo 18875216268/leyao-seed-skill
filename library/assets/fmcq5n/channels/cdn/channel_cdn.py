@@ -12,10 +12,11 @@ import re
 from pathlib import Path
 
 import probe
-from channel_direct import http_get
+from channel_direct import http_get as _curl_get
 
-# 源池：本方式目录 sources.json（一方式一份数据；失败≠失效，只增不删）
-SOURCES = json.loads((Path(__file__).resolve().parent / "sources.json").read_text(encoding="utf-8"))
+# 源池：统一资源层（sources/cdn/static/cdn.json——源与消费分离，D16/D22）
+SOURCES = json.loads((Path(__file__).resolve().parents[2] / "sources" / "cdn" / "static" / "cdn.json")
+                     .read_text(encoding="utf-8"))["sources"]
 SRCS = {s["name"]: s for s in SOURCES}
 
 
@@ -30,7 +31,7 @@ def fetch(owner: str, repo: str, ref: str, path: str, dest: Path, timeout: float
     u = dict(urls)
     tried = []
     for name in probe.candidates(names, probe_pairs=list(urls)):
-        r = http_get(u[name], dest, timeout)
+        r = _curl_get(u[name], dest, timeout)
         probe.record(name, bool(r["ok"]), float(r.get("elapsed", 0.0)) * 1000, r.get("detail", ""))
         tried.append({"cdn": name, "ok": r["ok"], "detail": r.get("detail")})
         if r["ok"]:

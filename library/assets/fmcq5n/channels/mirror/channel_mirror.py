@@ -11,10 +11,12 @@ import json
 import re
 from pathlib import Path
 
+import lines
 import probe
 
-# 源池：本方式目录 sources.json（一方式一份数据；失败≠失效，只增不删）
-SOURCES = json.loads((Path(__file__).resolve().parent / "sources.json").read_text(encoding="utf-8"))
+# 源池：统一资源层（sources/mirror/static/mirror.json——源与消费分离，D16/D22）
+SOURCES = json.loads((Path(__file__).resolve().parents[2] / "sources" / "mirror" / "static" / "mirror.json")
+                     .read_text(encoding="utf-8"))["sources"]
 SRCS = {s["name"]: s for s in SOURCES}
 
 
