@@ -39,7 +39,7 @@
       "type": "Skill包",
       "title": "github-web-skill",
       "mount": "library/assets/fmcq5n/",
-      "description": "【何时用】本机网络正常但访问 GitHub 不可达时（clone/pull/push 失败、raw 或 Release 下载不动、github.com 打不开、DNS 污染、代理变量干扰）｜【不适用】非 GitHub 站点；内网系统访问问题；需要业务数据（→ p3nes3 / i7c4z1）｜【别名】GitHub 连通、github 加速、gh 访问层｜【输入前置】目标仓库/文件 URL；系统 git 与 curl；hosts 动作需管理员权限｜【时效性】镜像/线路实时漂移，工具自带并发探活与冷却重试；IP 供给走资源层多源聚合+统一测速（v2.1.0，每次全新拉取，无需自建服务）｜【回退】clone 全链失败且只要代码 → 按报告 next 建议改取 codeload 归档；全部通道失败 → 如实告知 + 离线指引；技能自身更新 → update --check / --apply --yes（仅显式，从不自检）",
+      "description": "【何时用】本机网络正常但访问 GitHub 不可达时（clone/pull/push 失败、raw 或 Release 下载不动、github.com 打不开、DNS 污染、代理变量干扰）｜【不适用】非 GitHub 站点；内网系统访问问题；需要业务数据（→ p3nes3 / i7c4z1）｜【别名】GitHub 连通、github 加速、gh 访问层｜【输入前置】目标仓库/文件 URL；系统 git 与 curl；hosts 动作需管理员权限｜【时效性】镜像/线路实时漂移，工具自带并发探活与冷却重试；IP 供给走资源层多源聚合+统一测速（v2.2.0，sources.json 唯一数据文件，每次全新拉取，无需自建服务）｜【回退】clone 全链失败且只要代码 → 按报告 next 建议改取 codeload 归档；全部通道失败 → 如实告知 + 离线指引；技能自身更新 → update --check / --apply --yes（仅显式，从不自检）",
       "source": "<工作区>\\github技能开发\\github-web-skill"
     },
     {
