@@ -3,31 +3,31 @@
   "updated": "2026-09-11",
   "channels": {
     "direct": {
-      "file": "channel_direct.py",
+      "file": "channels/direct/channel_direct.py",
       "third_party": false,
       "needs_confirm": false,
       "role": "默认首选：走官方端点与官方协议（git 元数据/整仓/推送、raw/api/codeload）。不改源、不改系统。"
     },
     "cdn": {
-      "file": "channel_cdn.py",
+      "file": "channels/cdn/channel_cdn.py",
       "third_party": "media-cdn",
       "needs_confirm": false,
       "role": "只读单个文件：从媒体 CDN 边缘缓存取（并发探活择优；源池只增不删、失败只冷却）。"
     },
     "pin": {
-      "file": "channel_pin.py",
+      "file": "channels/pin/channel_pin.py",
       "third_party": false,
       "needs_confirm": false,
-      "role": "治解析污染与线路劣化：云函数/DoH 取可达 IP，单次调用内本地代理钉住；不改系统、进程结束即失效。"
+      "role": "治解析污染与线路劣化：取可达 IP（本地探测内置 → DoH → 内置池），单次调用内本地代理钉住；不改系统、进程结束即失效。"
     },
     "hosts": {
-      "file": "channel_hosts.py",
+      "file": "channels/hosts/channel_hosts.py",
       "third_party": false,
       "needs_confirm": true,
       "role": "兜底修系统解析（含浏览器）：标记块写入 hosts，需显式授权且必须可回滚。"
     },
     "mirror": {
-      "file": "channel_mirror.py",
+      "file": "channels/mirror/channel_mirror.py",
       "third_party": "mirror-pool",
       "needs_confirm": false,
       "role": "只读兜底：直连与钉 IP 都失败时经第三方转发代理读取（写操作永不经过；并发探活择优、源池只增不删）。"

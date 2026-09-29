@@ -1,21 +1,24 @@
 # 通道与场景路由（自动生成：改 routes/routes.json 后跑 gh.py routes --render）
 
 > 说明：只讲每条通道「适合什么 / 作用是什么 / 前提与副作用」；不做性能评比。
+> 每条通道的**内部降级链**（源池/择路/超时）见其方式目录 README：`channels/<通道名>/README.md`。
 
 ## 通道
 
-| 通道 | 经第三方 | 需授权 | 作用 |
-| --- | --- | --- | --- |
-| `direct` | 否 | 否 | 默认首选：走官方端点与官方协议（git 元数据/整仓/推送、raw/api/codeload）。不改源、不改系统。 |
-| `cdn` | media-cdn | 否 | 只读单个文件：从媒体 CDN 边缘缓存取（并发探活择优；源池只增不删、失败只冷却）。 |
-| `pin` | 否 | 否 | 治解析污染与线路劣化：云函数/DoH 取可达 IP，单次调用内本地代理钉住；不改系统、进程结束即失效。 |
-| `hosts` | 否 | 是 | 兜底修系统解析（含浏览器）：标记块写入 hosts，需显式授权且必须可回滚。 |
-| `mirror` | mirror-pool | 否 | 只读兜底：直连与钉 IP 都失败时经第三方转发代理读取（写操作永不经过；并发探活择优、源池只增不删）。 |
-| `offline` | 否 | 否 | 不联网：给出离线预置与人工指引。 |
+| 通道 | 经第三方 | 需授权 | 作用 | 实现与说明 |
+| --- | --- | --- | --- | --- |
+| `direct` | 否 | 否 | 默认首选：走官方端点与官方协议（git 元数据/整仓/推送、raw/api/codeload）。不改源、不改系统。 | `channels/direct/channel_direct.py`（README 含内部降级链） |
+| `cdn` | media-cdn | 否 | 只读单个文件：从媒体 CDN 边缘缓存取（并发探活择优；源池只增不删、失败只冷却）。 | `channels/cdn/channel_cdn.py`（README 含内部降级链） |
+| `pin` | 否 | 否 | 治解析污染与线路劣化：取可达 IP（本地探测内置 → DoH → 内置池），单次调用内本地代理钉住；不改系统、进程结束即失效。 | `channels/pin/channel_pin.py`（README 含内部降级链） |
+| `hosts` | 否 | 是 | 兜底修系统解析（含浏览器）：标记块写入 hosts，需显式授权且必须可回滚。 | `channels/hosts/channel_hosts.py`（README 含内部降级链） |
+| `mirror` | mirror-pool | 否 | 只读兜底：直连与钉 IP 都失败时经第三方转发代理读取（写操作永不经过；并发探活择优、源池只增不删）。 | `channels/mirror/channel_mirror.py`（README 含内部降级链） |
+| `offline` | 否 | 否 | 不联网：给出离线预置与人工指引。 | 约定态（无实现文件） |
 
-## 场景路由
+## 场景路由（情况 × 方式矩阵）
 
-| 场景 | 说明 | 降级链 | 入口命令 |
+> 情况决定方式序列；方式内部还有各自的源级降级链（见各方式目录 README）。
+
+| 情况（场景） | 说明 | 方式降级链 | 入口命令 |
 | --- | --- | --- | --- |
 | `file_read` | 取单个文件内容（manifest / README / 小文件） | `cdn` → `direct` → `pin` → `mirror` | gh.py get <owner>/<repo>:<path> 或 --url |
 | `git_read` | git 只读（ls-remote / fetch / pull / clone） | `direct` → `pin` → `mirror` | gh.py git <只读子命令> |

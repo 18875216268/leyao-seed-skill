@@ -1,0 +1,47 @@
+[
+  {
+    "name": "jsdelivr",
+    "url": "https://cdn.jsdelivr.net/gh/{owner}/{repo}@{ref}/{path}",
+    "note": "jsDelivr 官方主域"
+  },
+  {
+    "name": "jsdelivr-fastly",
+    "url": "https://fastly.jsdelivr.net/gh/{owner}/{repo}@{ref}/{path}",
+    "note": "jsDelivr Fastly 边缘"
+  },
+  {
+    "name": "jsdelivr-gcore",
+    "url": "https://gcore.jsdelivr.net/gh/{owner}/{repo}@{ref}/{path}",
+    "note": "jsDelivr Gcore 边缘"
+  },
+  {
+    "name": "jsdelivr-testingcf",
+    "url": "https://testingcf.jsdelivr.net/gh/{owner}/{repo}@{ref}/{path}",
+    "note": "jsDelivr Cloudflare 测试域"
+  },
+  {
+    "name": "jsdelivr-bcdn",
+    "url": "https://jsdelivr.b-cdn.net/gh/{owner}/{repo}@{ref}/{path}",
+    "note": "jsDelivr bunny 镜像"
+  },
+  {
+    "name": "statically",
+    "url": "https://cdn.statically.io/gh/{owner}/{repo}/{ref}/{path}",
+    "note": "社区公认 jsDelivr 等价源（Statically）"
+  },
+  {
+    "name": "githack",
+    "url": "https://raw.githack.com/{owner}/{repo}/{ref}/{path}",
+    "note": "raw.githack（raw 直出）"
+  },
+  {
+    "name": "gitmirror-raw",
+    "url": "https://raw.gitmirror.com/{owner}/{repo}/{ref}/{path}",
+    "note": "gitmirror 的 raw 镜像"
+  },
+  {
+    "name": "gitcdn",
+    "url": "https://gitcdn.link/repo/{owner}/{repo}/{ref}/{path}",
+    "note": "gitcdn（历史知名，保留候选）"
+  }
+]

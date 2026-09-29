@@ -1,11 +1,12 @@
 {
   "name": "github-web-skill",
-  "version": "1.1.2",
-  "updated": "2026-09-11",
+  "version": "2.0.0",
+  "updated": "2026-09-28",
   "layers": [
     { "id": "main", "path": "app.md", "role": "主入口（原则 / 通道一览 / 场景路由 / CLI）" },
     { "id": "routes", "path": "routes/", "role": "总路由（routes.json 事实源 → ROUTES.md 渲染）" },
-    { "id": "scripts", "path": "scripts/", "role": "CLI 与原子通道（direct/pin/hosts/mirror/cdn）+ 治理层" },
+    { "id": "channels", "path": "channels/", "role": "方式目录（一方式一文件夹：实现 + README 内部降级链说明；direct/pin/cdn/mirror/hosts/offline）" },
+    { "id": "scripts", "path": "scripts/", "role": "CLI 与治理层（gh.py 唯一 CLI + budget/env_guard/report/probe/lines）" },
     { "id": "tests", "path": "tests/", "role": "单测与真机只读冒烟" }
   ],
   "network": {
@@ -20,9 +21,9 @@
       "gh-proxy.net", "xget.xi-xu.me", "ghps.cc", "ghproxy.cc", "hub.fastgit.org",
       "github.com.cnpmjs.org", "gitclone.com", "kkgithub.com", "bgithub.xyz",
       "223.5.5.5", "1.12.12.12",
-      "1317825751-jonkwhxmyb.ap-guangzhou.tencentscf.com"
+      "hosts.gitcdn.top", "gitee.com"
     ],
-    "note": "如实声明：本 Skill 会出网（官方端点 / CDN / 镜像池 / 用户自建云函数 / DoH）。镜像池与 CDN 为第三方，报告会标注 third_party。`get --url` 接受调用方给出的任意 https 地址（Release 资产 / codeload 等），此时访问域由调用方决定。"
+    "note": "如实声明：本 Skill 会出网（官方端点 / CDN / 镜像池 / DoH / 本地 IP 探测的目标端点与两个公共 hosts 源）。镜像池与 CDN 为第三方，报告会标注 third_party。`get --url` 接受调用方给出的任意 https 地址（Release 资产 / codeload 等），此时访问域由调用方决定。"
   },
   "shell": { "used": true, "commands": ["git", "curl"], "note": "拉起 git 与 curl 子进程；均清空代理环境变量后执行。" },
   "writes": {

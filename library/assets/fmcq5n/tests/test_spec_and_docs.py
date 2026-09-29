@@ -37,6 +37,7 @@ import channel_pin                        # noqa: E402
 import gh                                 # noqa: E402
 import probe                              # noqa: E402
 import lines                              # noqa: E402
+import ipscan                             # noqa: E402
 
 SKILL = (PKG / "app.md").read_text(encoding="utf-8")
 FM = SKILL.split("---")[1] if SKILL.startswith("---") else ""
@@ -123,7 +124,7 @@ def main() -> int:
         if not spec or not spec.get("file"):
             miss.append("%s: 无文件声明" % ch)
             continue
-        if not (SCRIPTS / spec["file"]).exists():
+        if not (PKG / spec["file"]).exists():      # file 为包相对路径（如 channels/pin/channel_pin.py）
             miss.append(spec["file"])
         miss += ["%s.%s" % (ch, fn) for fn in fns if not hasattr(mods[ch], fn)]
     check("B1/B2 通道文件存在且导出约定入口", not miss, miss)
@@ -138,12 +139,12 @@ def main() -> int:
     for f in SCRIPTS.glob("*.py"):
         used_vars |= set(re.findall(r"environ\.get\(\"(GH_[A-Z_]+)\"", f.read_text(encoding="utf-8")))
     check("B4 代码使用的 GH_* 变量全部在 app.md 有文档",
-          used_vars <= {"GH_ACCESS_HOME", "GH_HOSTS_FILE", "GH_CLOUD_FN"}
+          used_vars <= {"GH_ACCESS_HOME", "GH_HOSTS_FILE"}
           and all(v in SKILL for v in used_vars), sorted(used_vars))
 
     codes = set(re.findall(r"args\.quiet,\s*(\d)\)", GH_SRC))
-    check("B5 退出码：实现只用到 2/3 显式码且文档列出 0/1/2/3",
-          codes <= {"2", "3"} and all(x in SKILL for x in ("`0`", "`1`", "`2`", "`3`")), sorted(codes))
+    check("B5 退出码：实现显式码 ∈ {1,2,3} 且文档列出 0/1/2/3",
+          codes <= {"1", "2", "3"} and all(x in SKILL for x in ("`0`", "`1`", "`2`", "`3`")), sorted(codes))
 
     check("B6 manifest.layers 路径全部存在",
           all((PKG / l["path"]).exists() for l in man["layers"]),
@@ -152,15 +153,17 @@ def main() -> int:
           man["version"] == meta.get("version", "").strip('"'), "%s / %s" % (man["version"], meta.get("version")))
 
     doms = set()
-    for c in lines.CDN_TEMPLATES:
+    for c in channel_cdn.SOURCES:
         doms.add(re.sub(r"^https://", "", c["url"]).split("/")[0])
-    for m in lines.MIRROR_HTTP + lines.MIRROR_GIT:
-        doms.add(re.sub(r"^https://", "", m).split("/")[0])
-    for u in [lines.CLOUD_FN_DEFAULT, *lines.DOH_SERVERS]:
+    for m in channel_mirror.SOURCES:
+        doms.add(re.sub(r"^https://", "", m["url"]).split("/")[0])
+    for u in [*lines.DOH_SERVERS]:
         doms.add(re.sub(r"^https://", "", u).split("/")[0])
-    doms |= set(lines.PIN_DOMAINS)
+    doms |= set(channel_pin.PIN_DOMAINS)
+    doms |= {re.sub(r"^https://", "", s["url"]).split("/")[0] for s in ipscan.EXTERNAL_SOURCES}
     allow = set(man["network"]["allow_domains"])
-    check("B7 manifest 网络声明覆盖 lines.py 全部域名", doms <= allow, sorted(doms - allow))
+    check("B7 manifest 网络声明覆盖全部出网域（方式源池+DoH+pin 域+外部 hosts 源）",
+          doms <= allow, sorted(doms - allow))
     check("B7b manifest 声明了 --url 任意 https 能力", "--url" in man["network"].get("note", ""),
           man["network"].get("note", "")[:60])
 
@@ -174,13 +177,15 @@ def main() -> int:
 
     # ---------------- C 代码↔代码 ----------------
     bad = []
-    for f in list(SCRIPTS.glob("*.py")) + list(TESTS.glob("*.py")):
+    for f in (list(SCRIPTS.glob("*.py")) + list(TESTS.glob("*.py"))
+              + list((PKG / "channels").glob("*/*.py")) + list((PKG / "channels").glob("*/*/*.py"))):
         try:
             compile(f.read_text(encoding="utf-8"), str(f), "exec")   # 纯内存语法编译：不落字节码
         except SyntaxError as exc:
             bad.append("%s: %s" % (f.name, exc))
     check("C1 全部 .py 语法可编译（零字节码写入）", not bad, bad)
-    check("C2 预算透传到 pin / mirror 内部（>=4 处）", GH_SRC.count("budget=bud") >= 4, GH_SRC.count("budget=bud"))
+    check("C2 预算透传到统一分发处（get/git 各一处 budget=bud）",
+          GH_SRC.count("budget=bud") >= 2, GH_SRC.count("budget=bud"))
 
     before = tree()
     subprocess.run([sys.executable, str(SCRIPTS / "gh.py"), "routes", "--check"],
@@ -229,20 +234,26 @@ def main() -> int:
           hasattr(channel_pin, "verify_for_hosts") and "verify_for_hosts" in GH_SRC
           and "raw.githubusercontent.com" in getattr(lines, "STRICT_PROBE_URLS", {}), None)
 
-    sample = ("140.82.112.26  alive.github.com\n"
-              "20.205.243.166 github.com\n"
-              "140.82.112.26 github.com\n"
-              "坏行 应当被忽略\n")
-    parsed = channel_pin._parse_cloud_fn(sample)
-    check("D7 云函数解析：alive.<域> 归一化到该域且存活 IP 排最前、无伪域名",
-          parsed.get("github.com", [])[:2] == ["140.82.112.26", "20.205.243.166"]
-          and not any(k.startswith("alive.") for k in parsed)
-          and "坏行" not in parsed, parsed)
+    # D7 本地探测源（ipscan，替代原云函数）：外部源失败静默跳过；合并去重/延迟序/不可达过滤
+    ext = ipscan.probe_external(sources=[{"name": "t", "url": "https://127.0.0.1:1/none"}])
+    parsed = ipscan.process_entries([
+        {"ip": "140.82.112.26", "domain": "github.com", "latency": 30},
+        {"ip": "20.205.243.166", "domain": "github.com", "latency": 50},
+        {"ip": "140.82.112.26", "domain": "github.com", "latency": 30},   # 重复候选
+        {"ip": "192.0.2.1", "domain": "github.com"},                      # 无延迟 → 补测速不过滤除
+    ], deadline=0.5)
+    check("D7 ipscan：外部源失败不抛出；候选去重、按延迟排序、不可达被过滤",
+          ext == [] and parsed.get("github.com") == ["140.82.112.26", "20.205.243.166"], parsed)
+    check("D7b hosts 行解析：标准行命中、坏行忽略",
+          ipscan.HOSTS_LINE.match("1.2.3.4 github.com") is not None
+          and ipscan.HOSTS_LINE.match("坏行 应当被忽略") is None, None)
 
-    check("C4 随包代码零字节码残留（scripts/ 与包根；tests/ 的缓存属开发侧不计）",
-          not list(SCRIPTS.rglob("__pycache__")) and not list(SCRIPTS.rglob("*.pyc"))
-          and not list(PKG.glob("*.pyc")),
-          [str(p.relative_to(PKG)) for p in SCRIPTS.rglob("__pycache__")][:3])
+    # 2026-09-28：__pycache__/.pyc 是本机运行时产物（跑 gh.py/tests 必生成）→ 移出开发自检；
+    # 「随包零字节码」改在导出发布包时检查（export_release 流程）。
+    check("C4 随包代码无静态残留（.orig/.log/.tmp/_tmp；tests/ 的缓存属开发侧不计）",
+          not list(SCRIPTS.rglob("*.orig")) and not list(SCRIPTS.rglob("*.log"))
+          and not list(SCRIPTS.rglob("*.tmp")) and not list(SCRIPTS.rglob("_tmp*")),
+          [str(p.relative_to(PKG)) for p in list(SCRIPTS.rglob("*.orig")) + list(SCRIPTS.rglob("*.tmp"))][:3])
 
     shutil.rmtree(HOME, ignore_errors=True)
     return finish("test_spec_and_docs")

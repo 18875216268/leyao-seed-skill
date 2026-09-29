@@ -11,10 +11,13 @@
 
 ## 特性
 
-- **分场景通道路由**：`routes/routes.json` 是唯一事实源，`ROUTES.md` 为渲染产物；`gh.py routes --check` 校验、`--render` 重绘。
+- **方式目录化（v2.0.0）**：`channels/<通道名>/` 一方式一文件夹（实现 + 源清单 + README 内部降级链说明）——新增/删除方式只需「放文件 + `routes.json` 注册一行」，`gh.py` 按注册表动态加载，零代码改动。
+- **分场景通道路由**：`routes/routes.json` 是唯一事实源，`ROUTES.md` 为渲染产物（含情况×方式矩阵）；`gh.py routes --check` 校验（含注册表双向完整性）、`--render` 重绘。
+- **本地 IP 探测内置**（v2.0.0）：`channels/pin/sources/ipscan.py` 在用户本机做 DNS 解析 + TCP 443 测活（median ≈4.8s / 封顶 8s），IP 候选天然适配本机线路；两个公共 hosts 源只读补充。
 - **并发择优**：镜像 / CDN / 候选 IP 全部并发探活（完成即用），单条 4s 快速判不通、立即换源；热源命中时零探测开销。
 - **失败 ≠ 失效**：源池只增不删——不可达只按指数退避冷却（封顶 1h、到期自动半开重试），由用户区健康账本排序择路。
-- **Agent 友好**：stdout = 单个 JSON；stderr = 一行人类摘要；用户区 JSONL 留痕；退出码 `0/1/2/3` 语义化。
+- **通道可选/可排除**：`--force <通道>` 只走单道；`--exclude ch1,ch2` 裁剪降级链（如"不要经第三方"）；两者互斥。
+- **Agent 友好**：stdout = 单个 JSON（含 `channel/via/third_party/tried/next`）；stderr = 一行人类摘要；用户区 JSONL 留痕；退出码 `0/1/2/3` 语义化。
 - **零系统改动优先**：`hosts` 只能显式授权（`--yes`）、写前备份、必可回滚；写操作**永不经过第三方镜像**。
 - **零第三方依赖**：Python 标准库 + 系统 `git` / `curl`。
 
@@ -24,8 +27,9 @@
 python scripts/gh.py diag                                  # 1) 先看环境能走哪条通道（--full 出全量并发实测）
 python scripts/gh.py get owner/repo:path/to/file.txt       # 2) 取单个文件（自动降级）
 python scripts/gh.py get --url https://github.com/…/releases/download/…   # Release 资产 / 任意 https
-python scripts/gh.py git clone https://github.com/owner/repo.git          # 3) 包裹 git（自动守卫+预算+降级）
-python scripts/gh.py hosts --status                        # 4) 人打不开 GitHub 时的兜底（需授权）
+python scripts/gh.py get owner/repo:file.txt --exclude cdn # 3) 策略约束：不经 CDN（与 --force 互斥）
+python scripts/gh.py git clone https://github.com/owner/repo.git          # 4) 包裹 git（自动守卫+预算+降级）
+python scripts/gh.py hosts --status                        # 5) 人打不开 GitHub 时的兜底（需授权）
 ```
 
 自检（离线可跑）：
@@ -38,6 +42,9 @@ python tests/run_tests.py --offline    # 跳过出网冒烟
 作为 Skill 安装：把本目录放进宿主的技能目录（如 CodeBuddy 的 `~/.codebuddy/skills/github-web-skill/`）即可被自动加载；
 也可只当命令行工具用（`python scripts/gh.py --help`）。
 
+> **与 leyao-seed-skill 框架的关系**：若已安装该框架，本技能已作为其资产（`fmcq5n`）挂载——框架内使用**无需独立安装**；
+> 本 SKILL.md 形态供平台独立上架 / 独立安装使用（两态功能相同，勿在同一环境重复安装）。
+
 ## 目录结构
 
 ```
@@ -47,17 +54,18 @@ github-web-skill/
 ├── README.md           # 本文件（人读）
 ├── LICENSE             # MIT
 ├── routes/             # routes.json（事实源）+ ROUTES.md（渲染产物）
-├── scripts/            # gh.py（唯一 CLI）+ 通道实现 + 治理件（budget/env_guard/report/probe）
-└── tests/              # 7 个测试文件（118 项断言）+ 总入口
+├── channels/           # 方式目录：一方式一文件夹（channel_*.py 实现 + README 内部降级链说明）
+├── scripts/            # gh.py（唯一 CLI）+ 治理件（budget/env_guard/report/probe/lines）
+└── tests/              # 7 个测试文件（124 项断言）+ 总入口
 ```
 
 ## 环境要求
 
 - Python 3.10+（仅标准库）；系统 `git` 与 `curl`
-- 出网：GitHub 官方端点 / 媒体 CDN / 第三方镜像池 / 用户自建云函数（`GH_CLOUD_FN` 可换）/ DoH
+- 出网：GitHub 官方端点 / 媒体 CDN / 第三方镜像池 / 公共 DoH / 本地 IP 探测（内置，目标为 GitHub 官方 IP 与两个公共 hosts 源）
 - `hosts` 通道需要管理员权限（Windows：以管理员运行；Linux/macOS：`sudo`）
 
-环境变量：`GH_ACCESS_HOME`（用户区，默认 `~/.github-access`）· `GH_HOSTS_FILE`（假 hosts，演练用）· `GH_CLOUD_FN`（取可达 IP 的云函数）。
+环境变量：`GH_ACCESS_HOME`（用户区，默认 `~/.github-access`）· `GH_HOSTS_FILE`（假 hosts，演练用）。
 
 ## 边界（明示）
 

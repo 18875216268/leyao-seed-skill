@@ -168,6 +168,12 @@ class PmsError(Exception):
 
 
 # --------------------------------------------------------------------------- #
+# 启动文件名（副本重命名后，运行时提示自动跟随实际文件名）
+# --------------------------------------------------------------------------- #
+_SELF = Path(sys.argv[0]).name if sys.argv and sys.argv[0] else "pms_login.py"
+
+
+# --------------------------------------------------------------------------- #
 # 命令行输出工具
 # --------------------------------------------------------------------------- #
 def configure_stdio() -> None:
@@ -1227,7 +1233,7 @@ def get_credential(
         raise PmsError(
             "AUTH_REQUIRED",
             "本地没有可用凭证（非交互模式，绝不弹窗）。"
-            "需要新登录时请运行：python pms_login.py --reuse（原生扫码窗）。",
+            f"需要新登录时请运行：python {_SELF} --reuse（原生扫码窗）。",
         )
     # 重新扫码必须走 login_and_store：取扫码人身份并落 credential.json（与 BI 同源 ✓）。
     # 直接调用 run_login_dialog 只会拿到内存凭证，不会落盘（--status 会一直失败）。
@@ -1344,7 +1350,7 @@ def run_login_dialog(
     root.attributes("-topmost", True)              # 置顶：二维码直达用户桌面
     root.resizable(False, False)
 
-    QR = 260                                        # 二维码显示尺寸（px）
+    QR = 300                                        # 二维码显示上限（px）：≤300 原样显示，>300 ceil 缩放必 ≤300
     canvas = tk.Canvas(root, width=QR, height=QR, highlightthickness=0, bg="#FFFFFF")
     canvas.pack(padx=12, pady=(12, 6))
     img_item = canvas.create_image(QR // 2, QR // 2)
@@ -1364,7 +1370,7 @@ def run_login_dialog(
                                  width=lw, fill="#FFFFFF", capstyle=tk.ROUND, state="hidden")
 
     tip = tk.Label(root, text="正在获取二维码……", font=(_FONT_FAMILY, 10),
-                   wraplength=300, justify="center")
+                   wraplength=240, justify="center")
     tip.pack(padx=12, pady=(0, 12))
 
     evt_q: _queue.Queue = _queue.Queue()
@@ -1377,12 +1383,30 @@ def run_login_dialog(
         for it in (mask, tick_circle, tick_l1, tick_l2):
             canvas.itemconfig(it, state="hidden")
 
+    def _layout(d: int) -> None:
+        """画布与图心/蒙版/绿√ 全部贴合当前显示尺寸 d——二维码紧贴画布，不留大边。"""
+        canvas.config(width=d, height=d)
+        canvas.coords(img_item, d // 2, d // 2)
+        canvas.coords(mask, 0, 0, d, d)
+        r = int(d * 0.25)
+        cx = cy = d // 2
+        canvas.coords(tick_circle, cx - r, cy - r, cx + r, cy + r)
+        lw = max(6, int(r * 0.3))
+        canvas.coords(tick_l1, cx - r * 0.46, cy + r * 0.02, cx - r * 0.12, cy + r * 0.36)
+        canvas.coords(tick_l2, cx - r * 0.12, cy + r * 0.36, cx + r * 0.48, cy - r * 0.34)
+        canvas.itemconfig(tick_l1, width=lw)
+        canvas.itemconfig(tick_l2, width=lw)
+
     def set_qr(png: bytes) -> None:
         """（重新）载入二维码——失效重载时复用同一窗口。"""
         try:
             photo = tk.PhotoImage(data=png)
-            if photo.width() > QR:
-                photo = photo.subsample(max(1, photo.width() // QR))
+            w = max(photo.width(), photo.height())
+            if w > QR:
+                # 缩放因子必须「向上取整」：floor 在 QR < w < 2*QR 时因子=1，
+                # 图保持原尺寸溢出画布被裁（二维码显示不完全、四角定位点缺失）。
+                photo = photo.subsample(max(1, -(-w // QR)))   # ceil(w/QR) → 缩后必 ≤ QR
+            _layout(max(photo.width(), photo.height()))   # 画布贴合图片（两维都进框）：四周仅剩静区白边
             canvas.itemconfig(img_item, image=photo)
             canvas._qr_img = photo                  # 保持引用防 GC
             _hide_tick()
@@ -1469,7 +1493,7 @@ def check_env() -> dict[str, Any]:
         "gui": None,
         "credentialDir": str(_data_home()),
         "fix": None,
-        "next": "python pms_login.py --reuse（弹窗登录）｜--status（只验证）",
+        "next": f"python {_SELF} --reuse（弹窗登录）｜--status（只验证）",
     }
     try:
         import tkinter  # noqa: F401  —— 标准库：二维码窗口唯一依赖
