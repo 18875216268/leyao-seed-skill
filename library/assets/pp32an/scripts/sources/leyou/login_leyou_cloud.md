@@ -95,9 +95,9 @@ python login_leyou_cloud.py --status --compact   # 只验证 + 单行 JSON（机
 | 退出码 | 含义 |
 |---|---|
 | `0` | 成功（拿到可用凭证，或 `--status` 判定有效） |
-| `1` | 业务错误（网络失败、二维码失效等） |
+| `1` | 业务错误（网络失败、二维码失效等；`--status` 之外的路径） |
 | `2` | 参数错误 / 未分类错误 |
-| `3` | 需要登录（`AUTH_REQUIRED` / `LOGIN_CANCELLED`） |
+| `3` | 需要登录 / 校验未通过（`AUTH_REQUIRED` / `LOGIN_CANCELLED`；**`--status` 校验不通过也归 3**——含 `AUTH_EXPIRED` / `CREDENTIALS_INVALID` / `NOT_VALIDATED`，2026-10-05 与代码对齐） |
 
 ---
 
@@ -125,6 +125,7 @@ verify_credential(
     validate_remote=True,    # 是否额外发一次远端校验请求
     raise_on_invalid=False,  # True → 无效时抛 LeyouLoginError
     session=None,            # 可复用已有 requests.Session（业务预检场景）
+    timeout=20,              # 单次远端校验请求超时秒数（DEFAULT_TIMEOUT）
 ) -> dict
 ```
 

@@ -65,13 +65,10 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 import os
 import re
 import sys
-import tempfile
 import time
-import io as _io
 from datetime import datetime
 
 import requests
@@ -257,6 +254,19 @@ def _remote_probe(session: requests.Session, token: str, uuid: str,
     return "invalid", {}
 
 
+def build_oauth_state(*, tenant_id: str = TENANT_ID, site: str = SITE) -> str:
+    """构造 OAuth `state` 参数（紧凑 JSON 文本），供回调端解析后取 redirect_uri。
+
+    历史（2026-10-05 修复）：旧实现用 f-string 手工拼转义，把 `/` 写成 `\\/` 还叠了一层，
+    导致 JSON 解析出的 redirect_uri 带反斜杠、不等于站点地址——服务端宽容才没炸，
+    且该逻辑零测试覆盖。现改用 json.dumps 规范生成：解析后必然还原为真实 URL，
+    并由 tests/test_login_contract.py 锁定「state 往返还原 == 登记地址」这一契约。
+    """
+    return json.dumps({"tannant_id": tenant_id, "source": "work_wechat",
+                       "redirect_uri": site + "/"},
+                      separators=(",", ":"), ensure_ascii=True)
+
+
 # ---------------- 凭证打包 ----------------
 def build_credential(store: dict, *, source: str, reused: bool,
                      token_file: str | None = None) -> dict:
@@ -374,8 +384,7 @@ class LoginFlow:
         key, sig = m_key.group(1), m_sig.group(1)
         qr_png = _http_get(self.session, f"{QR_IMG_URL}?key={key}",
                            headers=hdr, timeout=self.timeout).content
-        state = (f'{{"tannant_id":"{TENANT_ID}","source":"work_wechat",'
-                 f'"redirect_uri":"{SITE.replace("https://", "https:\\\\/\\\\/")}\\\\/"}}')
+        state = build_oauth_state()
         return key, sig, state, login_url, hdr, qr_png
 
     # -- 步骤 2：轮询扫码状态 → auth_code → 回调换 token --
@@ -706,6 +715,10 @@ def verify_credential(*, token: str | None = None, uuid: str | None = None,
     store = load_credential(path)
     tok = token or store.get("token")
     uid = uuid or store.get("uuid") or DEFAULT_UUID
+    info = {}   # 远端业务预检结果（categories/first_category）；validate_remote=False 时保持为空。
+                # 历史（2026-10-05 修复）：原先只在本函数 validate_remote 分支内赋值，
+                # 函数末尾的 `if validate_remote and info` 靠 and 短路才没抛 UnboundLocalError——
+                # 一旦有人把条件改成 `if info` 就当场崩。预置空 dict 后不再依赖短路求值。
 
     def _fail(reason: str, code: str, message: str, retryable: bool = False) -> dict:
         err = LeyouLoginError(code, message, retryable=retryable)
@@ -778,11 +791,6 @@ def get_credential(*, force_relogin: bool = True, validate_remote: bool = True,
             raise LeyouLoginError(AUTH_REQUIRED,
                                   f"凭证不可用（{reason}），非交互模式下不弹窗登录")
     return relogin(token_file=token_file, max_wait=max_wait, quiet=quiet)
-
-
-# 兼容别名（旧名指向同一实现）
-load_token_store = load_credential
-save_token_store = save_credential
 
 
 # ---------------- CLI ----------------

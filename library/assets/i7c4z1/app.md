@@ -21,11 +21,12 @@ metadata:
 
 **变量 1 · 验证动作（只读 · 绝不弹窗）**
 python scripts/login_bi.py --status      # 有效 → 复用 ✓；无效 → 变量 3
-（默认只出元信息、**不含令牌明文**；需取全凭证加 `--show-token` ✓）
+（默认输出完整凭证，与 PMS / 云智库登录器同构 ✓）
 
 **变量 2 · 凭证落点（唯一仓库）+ 取用窗口**
 %LOCALAPPDATA%\bi-operations-query\credential.json
-· 取用：**有登录器时一律经其工具**（CLI：`--status --show-token`；或 Python 四门面：`relogin / verify_credential / get_credential / is_authenticated`）✓；子包窗口注入 `BI_UID_TOKEN` + `BI_UID_TOKEN_SIG`（可选 `BI_UID_EXP`）/ `BI_CREDENTIAL_FILE` ✓；**禁止 AI 自行获取**（自读 / 自解 / 自拼凭证 ✗）；**令牌明文不得回显** ✗
+· 目录可用环境变量 `BI_OPERATIONS_HOME` 覆盖（与 PMS 的 `PMS_OPERATIONS_HOME`、云智库的 `LEYOU_CLOUD_HOME` 同构）
+· 取用：**有登录器时一律经其工具**（CLI：`--status`；或 Python 四门面：`relogin / verify_credential / get_credential / is_authenticated`）✓；子包窗口注入 `BI_UID_TOKEN` + `BI_UID_TOKEN_SIG`（可选 `BI_UID_EXP`）/ `BI_CREDENTIAL_FILE` ✓；**禁止 AI 自行获取**（自读 / 自解 / 自拼凭证 ✗）；**令牌明文不得回显** ✗
 · 产出（一处齐备 ✓）：uIdToken + uIdToken.sig（+ cookies / headers）+ 身份（uId·loginId·姓名·邮箱·角色）
 
 **变量 3 · 登录器（存在独立登录器 → 必须调用；登录＝一条命令，黑盒使用）**
@@ -34,7 +35,7 @@ python scripts/login_bi.py --check                 # 环境自检：依赖 tkint
 · **位置（本节全部命令）**：`library/assets/i7c4z1/scripts/login_bi.py`（相对包根）——**在资产根 `library/assets/i7c4z1/` 执行**；异 cwd 脚本路径写全即可（**参数与 cwd 无关** ✓）
 · **登录动作全部由登录器本体完成**（弹窗 / 二维码 / 换证 / 落库）✓；agent **只管等待用户完成登录** → 成功后**经其工具直接取用凭证** ✓
 · **唯一路径（硬默认）**：登录＝**调起原生扫码窗**（`--reuse`）——有桌面即可用，弹窗直达用户桌面；**不得**因"自己是 agent / 走命令执行"改用无界面 ✗；**本登录器不提供无界面 / 出码模式**；弹窗失败 → `--check` 修复环境（缺 tkinter 按提示修复 Python 安装）→ 重试 `--reuse` → 仍失败 → 询问用户
-· **禁止自写 / 自组装**：不得读登录器说明 / 源码后另写登录流程、自取二维码、自拼鉴权、**组装内部类（`LoginFlow` 等——非对外门面）** ✗；**禁止 AI 自行获取凭证**（自读 / 自解 ✗）；对外取凭证只经门面：CLI（`--status --show-token`）或 Python 四函数（`relogin / verify_credential / get_credential / is_authenticated`）✓
+· **禁止自写 / 自组装**：不得读登录器说明 / 源码后另写登录流程、自取二维码、自拼鉴权、**组装内部类（`LoginFlow` 等——非对外门面）** ✗；**禁止 AI 自行获取凭证**（自读 / 自解 ✗）；对外取凭证只经门面：CLI（`--status`）或 Python 四函数（`relogin / verify_credential / get_credential / is_authenticated`）✓
 · **用户已指定或提供凭证 / 登录方式 → 按其走**（不受上列限制 ✓）
 · **主取数壳 `bi_call.py` 在凭证缺失 / 过期时自动强制调起本登录器**（弹出的即其扫码窗；环境异常先 `--check` 并按提示修复依赖 ✓）——agent 无需介入；**辅助工具（`bi_index` / `bi_export` / 优化板）＝本地只读检查、绝不弹窗**（报错指路「请先登录」）→ **发现失效 → agent 主动调起本登录器重登**；**登录器不可用（判定：`--check` 修复环境后仍无法弹窗 / 无登录器可用）→ 换其它的合法登录方式（备用通道 / 子资产方式）→ 仍失败 → 询问用户**（用户提供 / 指定后按其走 ✓）
 
@@ -81,13 +82,13 @@ Bi skill = 纯登录框架 + 裁决 + 路由引导；vendor/ 结构（通道 / �
 ## 1. 功能器官
 
 ### 1.1 登录器（login_bi.py —— 自有登录组件，**主**）
-- **自有登录组件优先**：企微扫码获取凭证，为本 skill 的主登录路径（见 §0 裁决原则 2）。`scripts/login_bi.py` 是**登录本体**（单文件自包含、自带 CLI：`--check/--status/--show-token/--reuse/--no-remote`——**两接口 + 自检；无出码 / 无界面模式**）（单文件自包含、配置内置，主机与端点白名单、禁止重定向、不走系统代理）。
+- **自有登录组件优先**：企微扫码获取凭证，为本 skill 的主登录路径（见 §0 裁决原则 2）。`scripts/login_bi.py` 是**登录本体**（单文件自包含、自带 CLI：`--check/--status/--reuse/--no-remote`——**两接口 + 自检；无出码 / 无界面模式**）（单文件自包含、配置内置，主机与端点白名单、禁止重定向、不走系统代理）。
 - **备用路径（集团方式 · 备用通道）**：自有组件不可用（`--check` 修复环境后仍无法弹窗 / 无登录器可用）或主通道能力不足时的替代路径——**启用条件与降级规则一律以 `vendor/SUBSKILL_ROUTING.md` §1/§3 为准**（用户明确要求 / 提供该通道凭证；或主通道能力不足且备用通道可用 → 自动降级、必说明原因 ✓）。**当前备用通道＝`bi-pat`（PAT SQL）**，操作细节完全遵照其文档（`vendor/bi-pat/app.md`）——**集团方式可能变化 → 以集团实时落盘文档为准 ✓**。与主通道**二选一、不并用** ✓（鉴权不混装 ✗）；**已有有效凭证时不得再发起任何登录** ✗；备用不等于转述，本框架不做任何假设。
 - 用法：
-  - CLI：`python scripts/login_bi.py`（默认=**总是重扫** ✗；请优先 `--status` 只验证 / `--reuse` 有效即复用 ✓）/ `--status`（只验证，绝不弹窗；默认只输出元信息，**不含令牌明文**，`--show-token` 才输出完整凭证）/ `--reuse`（**默认首选：完整功能→原生窗**）/ `--check`（环境自检：依赖 tkinter；缺失给出修复指引）/ `--no-remote`（跳过远端校验）；退出码 0 成功 / 1 业务错误 / 2 未分类错误
+  - CLI：`python scripts/login_bi.py`（默认=**总是重扫** ✗；请优先 `--status` 只验证 / `--reuse` 有效即复用 ✓）/ `--status`（只验证，绝不弹窗；默认输出完整凭证，与 PMS / 云智库同构）/ `--reuse`（**默认首选：完整功能→原生窗**）/ `--check`（环境自检：依赖 tkinter；缺失给出修复指引）/ `--no-remote`（跳过远端校验）；退出码 0 成功 / 1 业务错误 / 2 未分类错误
   - Python API：`relogin` / `verify_credential` / `get_credential` / `is_authenticated`
 - **凭证文件**：单账户单文件 `credential.json`（明文 JSON、原子写）。再次扫码 → 覆盖更新（**不再保留多账号**；旧 `accounts/` 凭证首次运行自动迁移）。
-- 登录产出完整凭证（`token` / 可直接使用的 `headers` / `user`），登录成功即按扫码人身份入库；**有登录器时取用一律经其工具**（CLI `--status --show-token`；或 Python 四门面 `relogin / verify_credential / get_credential / is_authenticated`）✓——**禁止 AI 自行获取**（自读 / 自解凭证 ✗）；**禁止组装内部类（`LoginFlow` 等）自拼登录流程** ✗。
+- 登录产出完整凭证（`token` / 可直接使用的 `headers` / `user`），登录成功即按扫码人身份入库；**有登录器时取用一律经其工具**（CLI `--status`；或 Python 四门面 `relogin / verify_credential / get_credential / is_authenticated`）✓——**禁止 AI 自行获取**（自读 / 自解凭证 ✗）；**禁止组装内部类（`LoginFlow` 等）自拼登录流程** ✗。
 - **调用链 token 来源**：① 凭证文件（本地检查、**绝不弹窗**）；② 子包窗口直接注入 `BI_UID_TOKEN`+`BI_UID_TOKEN_SIG`（可选 `BI_UID_EXP`）或 `BI_CREDENTIAL_FILE`。**本资产没有 `--token` 参数、也不读 `BI_TOKEN`** ✗（旧文误述，已纠正）。
 - **二维码窗口零额外依赖**：用 tkinter（Python 标准库），**无需安装任何东西**；**主取数壳 `bi_call.py` 在凭证缺失 / 过期时自动强制调起登录器本体**（弹出的即其二维码窗口 ✓；环境异常先 `--check` 并按提示修复）✓。
 

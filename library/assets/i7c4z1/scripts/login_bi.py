@@ -18,8 +18,10 @@
 ③ 需要登录（唯一点：原生扫码窗）——即直接调起登录器原生弹窗：
      python login_bi.py --reuse                      # 独立登录器完整功能.真正全自动.用户体验优先首选！
                                                      # 依赖（tkinter 标准库）异常先 --check 并按提示修复；
-④ 取凭证：--status --show-token（或门面 API：relogin / verify_credential /
-     get_credential / is_authenticated）；正常输出默认不含令牌明文。
+④ 取凭证：--status（默认输出完整凭证）（或门面 API：
+     relogin / verify_credential / get_credential / is_authenticated）。
+     2026-10-05 起与 PMS / 云智库登录器同构：默认即输出令牌明文；
+     原 --show-token 参数经实证零调用者，已连同兼容壳移除。
 用户已指定或提供凭证 / 登录方式 → 按其走（不受上列限制）。
 
 禁止：自写登录流程 · 自取二维码 · 自拼鉴权请求 · 组装内部类（LoginFlow 等）·
@@ -41,7 +43,7 @@
     python login_bi.py --no-remote     # 跳过远端 validate-token 校验
 
     成功时把「完整凭证 JSON」打印到 stdout，可直接被上游程序解析；
-    `--status` 默认只输出元信息（不含令牌明文），加 `--show-token` 才输出完整凭证。
+    `--status` 默认输出完整凭证（含令牌明文；与 PMS / 云智库登录器同构）。
     退出码：0 成功 / 1 业务错误 / 2 未分类错误。
 
 =========================== 二、被其它应用调用 ===========================
@@ -1362,32 +1364,14 @@ def check_env() -> dict[str, Any]:
     return out
 
 
-def _emit_credential_result(result: dict[str, Any], show_token: bool) -> None:
-    """统一输出：show_token → 完整凭证；否则仅元信息（令牌明文隐藏）。"""
-    if show_token:
-        emit(result)
-        return
-    user = result.get("user") if isinstance(result.get("user"), dict) else {}
-    out = {
-        "ok": result.get("ok"),
-        "authenticated": result.get("authenticated"),
-        "source": result.get("source"),
-        "exp": result.get("exp"),
-        "expireAt": result.get("expireAt"),
-        "validatedAt": result.get("validatedAt"),
-        "biBase": result.get("biBase"),
-        "credentialPath": result.get("credentialPath"),
-        "user": {
-            k: user.get(k)
-            for k in ("uId", "loginId", "name", "email", "domId", "role")
-            if user.get(k) is not None
-        },
-        "error": result.get("error"),
-        "nextAction": result.get("nextAction"),
-    }
-    out = {k: v for k, v in out.items() if v is not None}
-    emit(out)
-    print("[bi-login] 令牌明文已隐藏；需要完整凭证时加 --show-token", file=sys.stderr)
+def _emit_credential_result(result: dict[str, Any]) -> None:
+    """统一输出完整凭证（含令牌明文）——与 PMS / 云智库登录器同构。
+
+    历史（2026-10-05 调整）：曾默认只输出元信息、令牌明文隐藏（需 --show-token
+    才输出完整凭证）；经实证全库无任何 --show-token 调用者，该参数已连同
+    兼容壳一并移除——现与 PMS / 云智库完全一致：--status 默认输出完整凭证。
+    """
+    emit(result)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1398,7 +1382,7 @@ def main(argv: list[str] | None = None) -> int:
             "  1) 自检：--check（依赖 tkinter；缺失给出修复指引）\n"
             "  2) 验证：--status（退出码 0 = 已有可用凭证，直接用）\n"
             "  3) 登录：--reuse（唯一点：直接调起原生扫码窗；有效复用、失效才弹窗；依赖缺失自动修复环境）\n"
-            "  4) 取凭证：--status --show-token（或门面 API：relogin / verify_credential /\n"
+            "  4) 取凭证：--status（默认输出完整凭证）（或门面 API：relogin / verify_credential /\n"
             "     get_credential / is_authenticated）\n"
             "  弹窗失败 → --check 修复环境后重试；仍失败 → 询问用户（禁止出码绕路）。\n"
             "  用户已指定或提供凭证 / 登录方式 → 按其走（不受上列限制）。\n"
@@ -1414,12 +1398,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--status",
         action="store_true",
-        help="功能二：只验证已有凭证是否有效，绝不弹窗（默认只输出元信息，不含令牌明文）",
-    )
-    parser.add_argument(
-        "--show-token",
-        action="store_true",
-        help="配合 --status：输出完整凭证（含 token / Cookie 明文），默认隐藏",
+        help="功能二：只验证已有凭证是否有效，绝不弹窗（输出完整凭证，与 PMS/云智库登录器同构）",
     )
     parser.add_argument(
         "--reuse",
@@ -1443,7 +1422,8 @@ def main(argv: list[str] | None = None) -> int:
                 + ("凭证有效" if result["authenticated"] else f"凭证无效：{result.get('reason')}"),
                 file=sys.stderr,
             )
-            _emit_credential_result(result, args.show_token)
+            # 2026-10-05 与 PMS/云智库登录器同构：--status 默认输出完整凭证。
+            _emit_credential_result(result)
             return 0 if result["authenticated"] else 1
 
         # 默认：无论本地是否已有凭证，都弹窗重新扫码获取新凭证。

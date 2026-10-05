@@ -13,7 +13,7 @@
 > 直接手调客户端无需带 `--token-file`（默认落用户数据区）；桥接（`leyou_bridge.py`）与
 
 ```text
-python scripts/sources/leyou/leyou_cloud.py status           # 登录态预检（只复用本地/库凭证）
+python scripts/sources/leyou/leyou_cloud.py status           # 登录态预检（本地检查 + 远端校验）
 python scripts/sources/leyou/leyou_cloud.py search <关键词>   # 搜索（本 skill 兜底调用）
 python scripts/sources/leyou/leyou_cloud.py summary <slug>    # 摘要
 python scripts/sources/leyou/leyou_cloud.py detail <slug>     # 详情
