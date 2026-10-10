@@ -31,8 +31,8 @@
   "limits": {
     "maxPage": 10000,
     "pageSize": 100,
-    "filterValues": 1000,
-    "filterTextCharacters": 20000,
-    "outputRows": 1000
+    "filterValues": 50000,
+    "filterTextCharacters": 2000000,
+    "outputRows": 20000
   }
 }
