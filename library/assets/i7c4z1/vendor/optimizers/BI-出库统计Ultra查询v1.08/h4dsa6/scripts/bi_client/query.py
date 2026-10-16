@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import copy
 import re
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from .catalog import display_name, resolve_unique
@@ -36,6 +38,200 @@ _PROVINCE_NAMES = frozenset(
     }
 )
 _CITY_SUFFIXES = ("市", "自治州", "地区", "盟", "行政区划")
+
+# ---- 护栏：无维度 + 大 IN 过滤 的静默截断防护（见 问题/BI查询截断说明.md） ----
+# 服务端在无维度纯汇总路径会对 IN 过滤静默截断到约前 3500 个值；低于该上限走原生路径。
+_IN_TRUNCATE_SAFETY = 3500
+# 分批子查询的 IN 上限，留出余量避免触及服务端悬崖。
+_IN_BATCH_SIZE = 3000
+# 默认注入的时间维度（出库日期族）。宽区间自动降采样到月粒度以减少分组行数。
+_DEFAULT_DATE_DIMENSION = "出库日期"
+_DEFAULT_MONTH_DIMENSION = "出库月份（月）"
+
+
+def _extract_plan_values(spec: Any) -> list[str] | None:
+    if isinstance(spec, dict):
+        if isinstance(spec.get("values"), list):
+            return [str(v) for v in spec["values"]]
+        if isinstance(spec.get("selected"), list):
+            return [str(v) for v in spec["selected"]]
+        if "manual" in spec:
+            return [v for v in _SPLIT_VALUES.split(str(spec.get("manual") or "")) if v]
+    elif isinstance(spec, list):
+        return [str(v) for v in spec]
+    return None
+
+
+def _plan_in_values(plan: dict) -> list[tuple[str, list[str]]]:
+    out: list[tuple[str, list[str]]] = []
+    filters = plan.get("filters") or {}
+    if isinstance(filters, dict):
+        for field, value in filters.items():
+            vals = _extract_plan_values(value)
+            if vals:
+                out.append((str(field), vals))
+    elif isinstance(filters, list):
+        for item in filters:
+            if isinstance(item, dict) and item.get("field"):
+                vals = _extract_plan_values(item)
+                if vals:
+                    out.append((str(item["field"]), vals))
+    return out
+
+
+def _has_oversized_in(plan: dict) -> bool:
+    return any(len(vals) > _IN_TRUNCATE_SAFETY for _, vals in _plan_in_values(plan))
+
+
+def _oversized_in_list(plan: dict) -> list[dict[str, Any]]:
+    return [
+        {"name": name, "values": vals}
+        for name, vals in _plan_in_values(plan)
+        if len(vals) > _IN_TRUNCATE_SAFETY
+    ]
+
+
+def _chunk_values(values: list[str], size: int) -> list[list[str]]:
+    return [values[i : i + size] for i in range(0, len(values), size)]
+
+
+def _resolve_default_date_dimension(metadata: dict, date_range: list[str] | None) -> str | None:
+    dims = [d for d in metadata.get("dimensions", []) if d.get("runtimeAvailable")]
+    names = {d.get("name") for d in dims}
+    month = _DEFAULT_MONTH_DIMENSION if _DEFAULT_MONTH_DIMENSION in names else None
+    day = _DEFAULT_DATE_DIMENSION if _DEFAULT_DATE_DIMENSION in names else None
+    wide = False
+    if isinstance(date_range, list) and len(date_range) == 2:
+        try:
+            start = datetime.strptime(str(date_range[0]), "%Y-%m-%d").date()
+            end = datetime.strptime(str(date_range[1]), "%Y-%m-%d").date()
+            wide = (end - start).days > 31
+        except Exception:
+            wide = False
+    if wide and month:
+        return month
+    return day or month
+
+
+def _date_range_of(plan: dict, default_range: tuple[str, str] | None) -> list[str] | None:
+    date = plan.get("date")
+    if isinstance(date, dict) and date.get("start") and date.get("end"):
+        return [str(date["start"]), str(date["end"])]
+    if default_range:
+        return list(default_range)
+    return None
+
+
+def _has_distinct_metric(metric_fields: list[dict]) -> bool:
+    for field in metric_fields or []:
+        if str(field.get("aggrType") or "") == "CNT_DISTINCT":
+            return True
+        name = str(field.get("name") or "")
+        if any(h in name for h in ("去重计数", "客户数", "客户名称")):
+            return True
+    return False
+
+
+def _clone_plan_with_filter(plan: dict, name: str, values: list[str]) -> dict:
+    sub = copy.deepcopy(plan)
+    filters = sub.get("filters")
+    if isinstance(filters, dict):
+        filters[name] = list(values)
+    elif isinstance(filters, list):
+        for item in filters:
+            if isinstance(item, dict) and item.get("field") == name:
+                item["values"] = list(values)
+                item.pop("selected", None)
+                item.pop("manual", None)
+    return sub
+
+
+def _collect_totals(parsed: dict, metric_names: list[str]) -> dict[str, Any]:
+    """从一次解析结果取出各指标合计：优先按分组行求和（有维度时），
+    否则回退到 summary（无维度纯汇总路径，rows 为空、总计在 summary）。
+    返回 {指标名: Decimal|原始值}。非数值型取首个非空值、不参与求和。
+    """
+    out: dict[str, Any] = {}
+    rows = parsed.get("rows") or []
+    source = rows if rows else [parsed.get("summary") or {}]
+    for cellmap in source:
+        if not isinstance(cellmap, dict):
+            continue
+        for mname in metric_names:
+            cell = cellmap.get(mname, {})
+            raw = cell.get("raw") if isinstance(cell, dict) else None
+            if raw is None:
+                continue
+            try:
+                dec = Decimal(str(raw))
+            except (InvalidOperation, ValueError, TypeError):
+                out.setdefault(mname, raw)
+                continue
+            out[mname] = out.get(mname, Decimal(0)) + dec
+    return out
+
+
+def _merge_guardrail(parsed_list: list[dict], metric_fields: list[dict]) -> tuple[dict, int, int]:
+    """把多批（注入维度的分组路径 / 无维度的分批兜底路径）结果合并回单总计。
+
+    返回 (summary, period_groups, batches)：
+    - period_groups：注入维度产生的分组行总数（>1 表示 distinct 指标跨周期重复计数）
+    - batches：子查询批数（>1 表示走了分批兜底，distinct 指标会重复计数）
+    可加性指标跨批/跨组求和；非数值型取首个非空值。distinct 类指标的重复计数
+    由调用方据 period_groups/batches 告警（见 _distinct_warning），本函数不做修正。
+    """
+    from .result import _format_metric
+
+    metric_names = [display_name(m) for m in metric_fields]
+    totals: dict[str, Any] = {}
+    period_groups = 0
+    for parsed in parsed_list:
+        period_groups += len(parsed.get("rows") or [])
+        contrib = _collect_totals(parsed, metric_names)
+        for mname, v in contrib.items():
+            if isinstance(v, Decimal):
+                totals[mname] = totals.get(mname, Decimal(0)) + v
+            else:
+                totals.setdefault(mname, v)
+    summary: dict[str, Any] = {}
+    for mname in metric_names:
+        v = totals.get(mname, Decimal(0))
+        if isinstance(v, Decimal):
+            summary[mname] = {"raw": float(v), "display": _format_metric(v, None), "format": {}}
+        else:
+            summary[mname] = {"raw": v, "display": str(v) if v is not None else "-", "format": {}}
+    return summary, period_groups, len(parsed_list)
+
+
+def _distinct_warning(metric_fields: list[dict], period_groups: int, batches: int) -> str:
+    """distinct 类指标在分批/跨周期时会重复计数，返回告警文案（无则返回空串）。"""
+    if not _has_distinct_metric(metric_fields):
+        return ""
+    if period_groups > 1:
+        return " 注：跨周期的 distinct 类指标（如客户数）按分组求和会重复计数，请核对或缩小日期区间。"
+    if batches > 1:
+        return " 注：distinct 类指标（如客户数）分批求和会重复计数，结果偏高，请核对。"
+    return ""
+
+
+def _naturalize(base: dict, summary: dict, guardrail_warning: str) -> dict:
+    """把护栏结果伪装成原生「无维度纯汇总」形态，调用方无感。"""
+    columns = [c for c in base.get("columns", []) if c.get("kind") != "dimension"]
+    effective = dict(base.get("effectiveQuery", {}))
+    effective["dimensions"] = []
+    warnings = [*base.get("warnings", []), guardrail_warning]
+    return {
+        "page": base.get("page", 1),
+        "pageSize": base.get("pageSize", 100),
+        "totalCount": 1,
+        "hasMoreData": False,
+        "summary": summary,
+        "rows": [],
+        "columns": columns,
+        "effectiveQuery": effective,
+        "warnings": warnings,
+        "provenance": base.get("provenance"),
+    }
 
 
 @dataclass(frozen=True)
@@ -221,6 +417,9 @@ class QueryService:
     def run_prepared(self, plan: dict[str, Any], context: QueryContext) -> dict[str, Any]:
         if not isinstance(plan, dict):
             raise BiError("QUERY_INVALID", "查询项必须是 JSON 对象。")
+        # 护栏：无维度 + 大 IN 过滤 -> 注入默认时间维度并拆分分批，避免服务端静默截断
+        if (not plan.get("dimensions")) and _has_oversized_in(plan):
+            return self._run_guardrail(plan, context)
         transport = DirectTransport(self.profile, context.credentials)
         try:
             body, effective, warnings = self._build(
@@ -261,6 +460,102 @@ class QueryService:
             "queriedAt": int(time.time()),
         }
         return parsed
+
+    def _execute_once(
+        self, plan: dict[str, Any], context: QueryContext, *, injected_dimension: str | None = None
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        build_plan = {**plan, "dimensions": [injected_dimension]} if injected_dimension else plan
+        transport = DirectTransport(self.profile, context.credentials)
+        try:
+            body, effective, warnings = self._build(
+                build_plan,
+                context.metadata,
+                default_date_range=context.default_date_range,
+            )
+            response = transport.json(
+                transport.bi_post(f"/api/card/{self.profile['cardId']}/data", json=body)
+            )
+        finally:
+            transport.close()
+        parsed = parse_chart_main(
+            response,
+            dimensions=effective["dimensionFields"],
+            metrics=effective["metricFields"],
+            page=effective["page"],
+            page_size=effective["pageSize"],
+            max_rows=_positive_int(
+                (self.profile.get("limits") or {}).get("outputRows"),
+                "配置 outputRows",
+                1000,
+            ),
+        )
+        parsed["effectiveQuery"] = {
+            "filters": effective["publicFilters"],
+            "dimensions": [display_name(field) for field in effective["dimensionFields"]],
+            "metrics": [display_name(field) for field in effective["metricFields"]],
+            "sort": effective["publicSort"],
+        }
+        parsed["warnings"] = [*context.metadata.get("warnings", []), *warnings]
+        parsed["provenance"] = {
+            "profileId": self.profile["profileId"],
+            "pageId": self.profile["pageId"],
+            "cardId": self.profile["cardId"],
+            "datasetId": self.profile["datasetId"],
+            "metadataVersion": context.metadata["metadataVersion"],
+            "queriedAt": int(time.time()),
+        }
+        return parsed, effective
+
+    def _run_guardrail(self, plan: dict[str, Any], context: QueryContext) -> dict[str, Any]:
+        oversized = _oversized_in_list(plan)
+        default_dim = _resolve_default_date_dimension(
+            context.metadata, _date_range_of(plan, context.default_date_range)
+        )
+        largest = max(oversized, key=lambda o: len(o["values"]))
+        limits = self.profile.get("limits") or {}
+        filter_values = int(limits.get("filterValues") or 1000)
+        # 分批大小受 filterValues 约束（避免护栏自身触发 QUERY_LIMIT_EXCEEDED），
+        # 同时 <= _IN_BATCH_SIZE 以远离服务端 ~3500 截断悬崖。
+        batch_size = min(_IN_BATCH_SIZE, filter_values) if filter_values else _IN_BATCH_SIZE
+
+        # 主路径：有可用时间维度且 filterValues 能容纳全量 IN -> 注入维度 + 单次全量查询。
+        # 分组路径不会静默截断 IN；distinct 指标在单周期内正确。避免同时分批（分批会令
+        # distinct 跨批重复计数）。
+        can_inject_full = bool(default_dim) and len(largest["values"]) <= filter_values
+        if can_inject_full:
+            parsed, effective = self._execute_once(plan, context, injected_dimension=default_dim)
+            metric_fields = effective["metricFields"]
+            summary, period_groups, batches = _merge_guardrail([parsed], metric_fields)
+            distinct_warn = _distinct_warning(metric_fields, period_groups, batches)
+            action = f"已自动注入「{default_dim}」维度并单次全量查询"
+            base = parsed
+        else:
+            # 兜底：无可用时间维度，或 filterValues 不足以容纳全量 IN -> 拆分分批（无维度路径）。
+            reason = (
+                "未找到可用时间维度注入"
+                if not default_dim
+                else f"filterValues({filter_values}) 不足以容纳全量 IN({len(largest['values'])})"
+            )
+            chunks = _chunk_values(largest["values"], batch_size)
+            all_parsed: list[dict[str, Any]] = []
+            metric_fields = None
+            for ch in chunks:
+                sub = _clone_plan_with_filter(plan, largest["name"], ch)
+                parsed, effective = self._execute_once(sub, context, injected_dimension=None)
+                if not metric_fields:
+                    metric_fields = effective["metricFields"]
+                all_parsed.append(parsed)
+            summary, period_groups, batches = _merge_guardrail(all_parsed, metric_fields)
+            distinct_warn = _distinct_warning(metric_fields, period_groups, batches)
+            extra = " 其余大IN过滤未拆分、可能仍被服务端截断。" if len(oversized) > 1 else ""
+            action = f"已拆分 {len(chunks)} 批查询（{reason}）{extra}"
+            base = all_parsed[0]
+
+        warn = (
+            f"检测到无维度 + 大IN过滤（最多 {len(largest['values'])} 个值），{action}"
+            f"以避免服务端静默截断；返回汇总已自动合并为单总计。{distinct_warn}"
+        )
+        return _naturalize(base, summary, warn)
 
     def run_many(self, request: dict[str, Any]) -> list[dict[str, Any]]:
         queries, concurrency = self._validate_batch(request)
