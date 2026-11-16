@@ -1,0 +1,118 @@
+{
+  "name": "ysb-yunxiaozhu",
+  "display_name": "药师帮运小助",
+  "display_name_en": "YunXiaozhu",
+  "version": "0.1.1",
+  "description": "药师帮Scm系统商家助手，可协助用户进行商品查询、订单查询、链接管理（上下架）、控销管理（控销组增删）、商品图美化（P图、换图）及销售数据分析（销售漏斗分析），帮助商家快速排查链接问题，并提升店铺运营效率。",
+  "entry": "python scm.py",
+  "filesystem_write": [
+    "%LOCALAPPDATA%\\scm-operations-query\\credential.json",
+    "%LOCALAPPDATA%\\scm-operations-query\\link-records.jsonl",
+    "%LOCALAPPDATA%\\scm-operations-query\\accounts\\",
+    "<out> 指定的导出文件路径"
+  ],
+  "filesystem_read": [
+    "core/",
+    "modules/",
+    "assets/",
+    "references/"
+  ],
+  "modules": {
+    "goods": {
+      "name": "商品",
+      "status": "ready",
+      "endpoints": 83,
+      "capabilities": [
+        "query",
+        "export",
+        "dict"
+      ],
+      "guide": "modules/goods/GUIDE.md"
+    },
+    "order": {
+      "name": "订单",
+      "status": "ready",
+      "endpoints": 85,
+      "capabilities": [
+        "query"
+      ],
+      "guide": "modules/order/GUIDE.md"
+    },
+    "aftersale": {
+      "name": "售后",
+      "status": "todo",
+      "endpoints": 2,
+      "capabilities": [],
+      "guide": "modules/aftersale/GUIDE.md"
+    },
+    "customer": {
+      "name": "客户",
+      "status": "todo",
+      "endpoints": 33,
+      "capabilities": [],
+      "guide": "modules/customer/GUIDE.md"
+    },
+    "data": {
+      "name": "数据",
+      "status": "todo",
+      "endpoints": 48,
+      "capabilities": [],
+      "guide": "modules/data/GUIDE.md"
+    },
+    "cashcow": {
+      "name": "我的摇钱树",
+      "status": "todo",
+      "endpoints": 11,
+      "capabilities": [],
+      "guide": "modules/cashcow/GUIDE.md"
+    },
+    "marketing": {
+      "name": "营销",
+      "status": "todo",
+      "endpoints": 79,
+      "capabilities": [],
+      "guide": "modules/marketing/GUIDE.md"
+    },
+    "qualification": {
+      "name": "资质",
+      "status": "todo",
+      "endpoints": 4,
+      "capabilities": [],
+      "guide": "modules/qualification/GUIDE.md"
+    },
+    "shop": {
+      "name": "店铺",
+      "status": "todo",
+      "endpoints": 52,
+      "capabilities": [],
+      "guide": "modules/shop/GUIDE.md"
+    },
+    "finance": {
+      "name": "资金",
+      "status": "todo",
+      "endpoints": 33,
+      "capabilities": [],
+      "guide": "modules/finance/GUIDE.md"
+    },
+    "home": {
+      "name": "首页",
+      "status": "todo",
+      "endpoints": 57,
+      "capabilities": [],
+      "guide": "modules/home/GUIDE.md"
+    }
+  },
+  "assets": {
+    "tpcl": {
+      "name": "图片处理",
+      "status": "ready",
+      "guide": "assets/tpcl/GUIDE.md"
+    },
+    "ljgl": {
+      "name": "高频场景",
+      "status": "ready",
+      "guide": "assets/ljgl/GUIDE.md"
+    }
+  },
+  "requirements": "requests>=2.28（仅此必需；qrcode[pil] 为链接二维码可选增强）"
+}

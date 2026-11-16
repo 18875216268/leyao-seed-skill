@@ -1,0 +1,70 @@
+"""首页板块（待开发）。
+
+状态：todo —— 仅采集到端点清单，参数未实现。
+实现方式见 modules/goods/__init__.py 的结构。
+"""
+
+NAME = "首页"
+STATUS = "todo"
+GUIDE = "modules/home/GUIDE.md"
+
+ENDPOINTS = [
+    "/provider.php/Admin",
+    "/provider.php/Admin/Help/providerAssessDetail",
+    "/provider.php/Admin/Help/providerOrderAssess/menuid/754",
+    "/provider.php/Admin/Index/addFavorMenu",
+    "/provider.php/Admin/Index/delFavorMenu",
+    "/provider.php/Admin/Index/getProviderDBStatus",
+    "/provider.php/Admin/Index/indexJava",
+    "/provider.php/Admin/Index/showProviderAssessDetail",
+    "/provider.php/Admin/Public/logout",
+    "/provider.php/Admin/Sensor/sendSensor",
+    "/provider.php/Admin/Sensor/sendSensorEvent",
+    "/provider.php/Admin/Sensor/sendSensorWithData",
+    "/provider.php/Admin/smApply/applyList",
+    "/scm-base/broadcast/newFeaRemind",
+    "/scm-base/broadcast/notice",
+    "/scm-base/broadcast/noticeBigTabList",
+    "/scm-base/broadcast/noticeCount",
+    "/scm-base/common/newMenuFavorList",
+    "/scm-base/common/newMenuFavorListSave",
+    "/scm-base/common/upload2Local",
+    "/scm-base/index/baseInfo",
+    "/scm-base/index/editModuleList",
+    "/scm-base/index/getAfterSaleAlert",
+    "/scm-base/index/getAlertAll",
+    "/scm-base/index/getIndexFlowInfo",
+    "/scm-base/index/getInvoiceAgreementInfo",
+    "/scm-base/index/getModuleList",
+    "/scm-base/index/getNoReplyMsgNum",
+    "/scm-base/index/getOverdueBillsReminder",
+    "/scm-base/index/getSalesmenUserInfo",
+    "/scm-base/index/getScmFootLink",
+    "/scm-base/index/getSignFlag",
+    "/scm-base/index/getSubsidyData",
+    "/scm-base/index/getSyNoteNum",
+    "/scm-base/index/getWholesaleTaskList",
+    "/scm-base/index/getZSMAgreementInfo",
+    "/scm-base/index/getZzToken",
+    "/scm-base/index/goodsManageInfo",
+    "/scm-base/index/guide",
+    "/scm-base/index/news",
+    "/scm-base/index/opGuideList",
+    "/scm-base/index/operationWindowInfo",
+    "/scm-base/index/provExperience",
+    "/scm-base/index/providerAssess",
+    "/scm-base/index/realTimeOrderInfo",
+    "/scm-base/index/saleTotalSheet",
+    "/scm-base/index/serviceQuality",
+    "/scm-base/index/setSignFlag",
+    "/scm-base/index/showCATips",
+    "/scm-base/index/showTips",
+    "/scm-base/index/startStore",
+    "/scm-base/index/todoTaskInfo",
+    "/scm-base/index/updateAfterSaleAlertStatus",
+    "/scm-base/index/userTotalSheet",
+    "/scm-goods/Api/checkDrug",
+    "/scm-goods/drug/syncLowestStockAct",
+    "/scm-order/wholesaleOrder/exportWholesaleDetail",
+
+]

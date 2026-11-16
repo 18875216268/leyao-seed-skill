@@ -1,7 +1,14 @@
 {
   "version": 2,
-  "updated": "2026-09-29",
+  "updated": "2026-11-16",
   "nodes": [
+    {
+      "id": "scm7k3q",
+      "type": "Skill包",
+      "title": "药师帮运小助SCM商家助手",
+      "mount": "library/assets/scm7k3q/",
+      "description": "【何时用】药师帮SCM商家后台(运小助)：商品活动查询/导出、商家后台店铺订单查询、客户/控销组/黑名单管理、数据看板(品种分析/销售报表/店铺流量)、我的品种、订单链接、商品图美化、我的摇钱树销售流水与区域划分(商家后台口径)｜【不适用】PMS促销毛利与促销订单明细→psol5x、BI出库统计与摇钱树业务线看板→h4dsa6/yqst01、业务术语口径→pp32an｜【别名】药师帮运小助、SCM、SCM商家后台、运小助、控销组、订单链接、商品活动、一口价商品｜【输入前置】SCM凭证(scripts/scm_login.py --status；或--token/SCM_TOKEN/--credential-file发送key)；转PMS/订单链接另需PMS凭证(主技能p3nes3的pms_login.py产出，本资产core/pms_client只读消费)；写操作需授权｜【时效性】SCM凭证24h过期，业务T+0~T+1｜【回退】未开放板块如实报端点数，开放板块按references/api_*.md经scm.py call直连"
+    },
     {
       "id": "pp32an",
       "type": "Skill包",

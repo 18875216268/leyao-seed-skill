@@ -1,0 +1,5 @@
+# 运行依赖（仅 requests 必需，其余为可选增强）
+requests>=2.28
+
+# 可选：链接管理场景生成二维码 PNG
+# qrcode[pil]>=7.4

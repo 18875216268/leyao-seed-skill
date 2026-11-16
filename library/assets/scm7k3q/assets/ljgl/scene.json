@@ -1,0 +1,41 @@
+{
+  "name": "ljgl",
+  "version": "2.0.0",
+  "summary": "链接管理：查询 / 创建(一气呵成) / SCM单项改 / PMS单项改 / 生命周期 / 辅助（仅自营）",
+  "actions": [
+    "store",
+    "find",
+    "group-list",
+    "group-nostore",
+    "pms-find",
+    "list",
+    "create",
+    "ws-desc",
+    "ws-stock",
+    "ws-ladder",
+    "reprice",
+    "group-create",
+    "group-update",
+    "group-del",
+    "group-add",
+    "group-remove",
+    "group-add-nostore",
+    "pms-limit",
+    "pms-area",
+    "pms-time",
+    "off",
+    "restart",
+    "end",
+    "schedule",
+    "qr"
+  ],
+  "write": true,
+  "scope": "self",
+  "entry": "entry.py",
+  "requires": [
+    "scm",
+    "pms-optional"
+  ],
+  "guide": "GUIDE.md",
+  "notes": "写动作需 --confirm；create/reprice 默认 dry-run 或只出候选"
+}
