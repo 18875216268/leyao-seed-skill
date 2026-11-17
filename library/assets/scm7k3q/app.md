@@ -19,7 +19,7 @@ license: "MIT"
 compatibility: "Python 3.10+；依赖 requests；凭证默认复用 %LOCALAPPDATA%\\scm-operations-query"
 metadata:
   author: "SCM Skill"
-  architecture: "分层：SKILL.md(路由) → modules/<板块>/GUIDE.md(能力) → references/*.md(参数)；core 为登录/HTTP/导出任务；assets 为可选工具与场景"
+  architecture: "分层：app.md(路由) → modules/<板块>/GUIDE.md(能力) → references/*.md(参数)；core 为登录/HTTP/导出任务；assets 为可选工具与场景"
 ---
 
 # SCM 商家后台助手
@@ -59,7 +59,7 @@ python scm.py pms-login                       # PMS 登录：**子进程委托�
 
 · 两套凭证**不得交叉使用** ✗；参数 / 权限 / 限流 / 网络类报错**不触发登录** ✗。
 
-**变量 5 · 重试上限**：登录 / 重登 ≤3 次（用尽后按〈问题未解决流程〉：询问用户 → 按决定继续 ✓）。
+**变量 5 · 重试上限**：登录 / 重登**连续 2 次**失败后询问用户（与 §2.1 L111 及 `AGENT_GUIDE.md` 一致 ✓；按〈问题未解决流程〉：询问用户 → 按决定继续 ✓）。
 
 > 命令路径：均为**资产根相对路径**（cwd＝本 `app.md` 所在目录）✓。
 
@@ -98,7 +98,7 @@ python scm.py pms-login                       # PMS 登录：**子进程委托�
 - **两套凭证、互不影响**：
   - SCM：`%LOCALAPPDATA%\scm-operations-query\credential.json`（24h 过期；`--cred-dir`/`SCM_OPERATIONS_HOME` 可覆盖）
   - PMS：`%LOCALAPPDATA%\pms-operations-query\credential.json`（无固定过期，远端实时校验；自营「转PMS」必需）
-- 登录需要**人工输入验证码 / 企微扫码**，无法由 Agent 代输。登录器同在 `scripts/`：`scm.py`（SCM）、`pms.py`（PMS）。
+- 登录需要**人工输入验证码 / 企微扫码**，无法由 Agent 代输。SCM 登录器：`scripts/scm_login.py`（独立可跑）；PMS 凭证由 `scm.py pms-login` 子进程委托主技能登录器产出、本资产 `core/pms_client.py` 只读消费。
 
 ## 2.1 任务规则（任何任务）
 
@@ -137,8 +137,8 @@ python scm.py pms-login                       # PMS 登录：**子进程委托�
 | 3 | `python scm.py modules` | 确认目标板块状态（ready / todo） |
 | 4 | `python scm.py query --module <板块> ...` | 查询（见目标板块 GUIDE）；`--module` 默认 `goods`，订单必须显式写 `--module order` |
 | 5 | `python scm.py export --module goods ...` | **仅商品**导出并下载（返回 path/rows）；订单/客户/数据导出按各自 `api_*.md` 直连 |
-| 6 | `python scm.py dict --type <类型> [--module goods]` | 数据字典：枚举/下拉候选；参数取值不确定时先查字典，勿猜 |
-| 6 | 汇报 | 如实说明：文件路径、行数、筛选条件；失败给原始错误码 |
+| 6 | `python scm.py dict --name <字典名> \| --list` | 数据字典：枚举/下拉候选（`--list` 列全部字典）；参数取值不确定时先查字典，勿猜 |
+| 7 | 汇报 | 如实说明：文件路径、行数、筛选条件；失败给原始错误码 |
 
 > **文档已交付但 CLI 未封装**的接口（订单导出/详情、客户、数据、我的摇钱树、PMS 活动管理）：统一用 `python scm.py call --path <端点> --body '<JSON>'`，参数抄对应 `api_*.md`，**无需手写 HTTP**；完整参数与 `ex` 速查见 `AGENT_GUIDE.md §4.1`。
 
@@ -154,7 +154,7 @@ python scm.py pms-login                       # PMS 登录：**子进程委托�
 | 客户 | `customer` | 🟡 开放部分（文档已交付） | `modules/customer/GUIDE.md` → `references/客户/sy.md` | 客户列表/控销组/黑名单/**供货对象管理**已实测；CLI 未开放；26 个 IM 端点仅登记 |
 | 数据 | `data` | 🟡 开放部分（文档已交付） | `modules/data/GUIDE.md` → `references/数据/sy.md` | 品种分析 16 + 销售报表 18 〔**通用**〕；店铺流量 2 〔**自营专属**〕；其余 12 个端点仅登记（共 48 个端点） |
 | 我的摇钱树 | `cashcow` | 🟡 开放部分（文档已交付） | `modules/cashcow/GUIDE.md` → `references/我的摇钱树/sy.md` | 〔**摇钱树专属**〕销售流水 / 我的品种 / 区域划分查看；11 个端点已交付（含 2 导出 + 2 写，经实时抓包验证），按 `api_*.md` 直连；CLI 未开放；`ex` 取专属值（流水 `MyCashcowSaleLog` / 品种 `MyVariety` / 区域 `RegionDivision`） |
-| 营销 | `marketing` | ⚪ 暂未开放 | `modules/marketing/GUIDE.md` | 79 个端点 |
+| 营销 | `marketing` | 🟡 开放部分（仅优惠券） | `modules/marketing/GUIDE.md` → `references/营销/api_优惠券管理.md` | 79 个端点中仅**优惠券系统**已交付文档（效期/作废/赠送/活动/创建，两种获取方式）；其余营销端点仅登记，CLI 返回 `MODULE_TODO` |
 | 资质 | `qualification` | ⚪ 暂未开放 | `modules/qualification/GUIDE.md` | 4 个端点 |
 | 店铺 | `shop` | ⚪ 暂未开放 | `modules/shop/GUIDE.md` | 52 个端点 |
 | 资金 | `finance` | ⚪ 暂未开放 | `modules/finance/GUIDE.md` | 33 个端点 |
@@ -177,7 +177,7 @@ python scm.py pms-login                       # PMS 登录：**子进程委托�
 ## 6. 渐进式披露（按需读，别一次读完）
 
 ```
-SKILL.md（本文件，路由）
+app.md（本文件，路由）
    ├─ references/sy.md §0（第 0 步：账号→可访问板块/文档归属）
    └─ modules/<板块>/GUIDE.md（能力与命令）
         └─ references/*.md（完整参数、枚举、导出列）
@@ -189,7 +189,9 @@ SKILL.md（本文件，路由）
 
 **客户板块（按需读）**：先读 `references/客户/sy.md`（子板块地图 + 已实现功能）→ 客户列表/控销组/黑名单分别进 `references/客户/api_客户列表.md` / `references/客户/api_控销组.md` / `references/客户/api_黑名单.md` → 字段与值域查 `references/客户/zddz.md`。
 
-**我的摇钱树板块（按需读，仅摇钱树账号）**：先读 `references/我的摇钱树/sy.md`（子板块地图 + 归属标记 + 使用约定）→ 摇钱树销售流水 / 我的品种 / 区域划分查看分别进 `references/我的摇钱树/api_摇钱树销售流水.md` / `api_我的品种.md` / `api_区域划分查看.md` → 页面口径与字段对照查 `references/我的摇钱树/zddz.md`；`ex` 一律空串（`--ex ""`），自营账号无此板块、越界不调用。
+**我的摇钱树板块（按需读，仅摇钱树账号）**：先读 `references/我的摇钱树/sy.md`（子板块地图 + 归属标记 + 使用约定）→ 摇钱树销售流水 / 我的品种 / 区域划分查看分别进 `references/我的摇钱树/api_摇钱树销售流水.md` / `api_我的品种.md` / `api_区域划分查看.md` → 页面口径与字段对照查 `references/我的摇钱树/zddz.md`；`ex` 取**专属值**（流水 `MyCashcowSaleLog` / 品种 `MyVariety` / 区域 `RegionDivision`，与 L156 及 `AGENT_GUIDE.md` 一致），自营账号无此板块、越界不调用。
+
+**营销板块·优惠券（按需读）**：`references/营销/api_优惠券管理.md`（效期/作废/赠送/活动/创建；两种获取方式=登录查询含二维码 / 共享库免权限；赠送作废的名称反查走 `客户/api_客户列表.md`；折扣 98/9.8/0.98=付98%降2点）→ 过滤规则查 `references/营销/过滤规则.md`。优惠券接口是**独立云函数体系**（非 SCM `/scm-*`），凭证由本资产登录器提供、共享券走数据库层。
 
 - **通用调用器** `scm.py call`（文档已交付但 CLI 未封装时）→ `AGENT_GUIDE.md §4.1`；
 - 需要公共参数/认证 → `references/通用/api_认证与公共约定.md`；字典值域 → `references/通用/api_动态字典.md`；导出任务轮询/下载 → `references/通用/api_导出任务.md`

@@ -27,14 +27,16 @@
 GET /provider.php/Admin/ApiRouter/batchExportOrder
   ?page=1&pagesize=100
   &cert_status=&orderId=&drugStore=&phone=
-  &order_time[0]=2026-05-11T00:00:00+08:00&order_time[1]=2026-11-11T23:59:59+08:00
+  &order_time[0]=<起时刻>&order_time[1]=<止时刻>
   &logisticsNo=&drugname=&drugstore_id=&wholesale_id=
-  &tabProcessStatus=2&order_str=&is_logist=&invoiceCount=&receive_status=
-  &warehouseCode=11501            # 分仓筛选
-  &endday=20260511-20261111       # 日期(YYYYMMDD-YYYYMMDD)
+  &tabProcessStatus=<页签码>&order_str=&is_logist=&invoiceCount=&receive_status=
+  &warehouseCode=<分仓码或留空>    # 分仓筛选；全量留空
+  &endday=<起YMD>-<止YMD>         # 日期(YYYYMMDD-YYYYMMDD)，与 order_time 一致
   &starttime=00:00:00&endtime=23:59:59
   &usedForWeb=1
 ```
+
+> ⚠️ 上方为**参数形态示例**（时间/页签/分仓均为占位符）：`order_time`/`endday` 按当前查询区间换算，`tabProcessStatus` 与列表页签一致，**全量导出去掉 `warehouseCode` 筛选**；照抄抓包里的历史日期+特定仓会导出空或错范围。
 
 - 与列表共用全部筛选参数，额外：`warehouseCode`、`endday`、`starttime`/`endtime`、`usedForWeb=1`。
 - 响应即 CSV（浏览器直接下载），非异步任务。
@@ -60,7 +62,7 @@ GET /provider.php/Admin/ApiRouter/batchExportOrder
 {
   "timeType": 0,                 // 0=下单时间 / 1=支付时间
   "templateType": 2,             // 模板类型（订单明细/处理流水/快递信息/自定义）
-  "templateId": 455168,          // 模板ID（来自 getAllCustomizeTemplate）
+  "templateId": <从 getAllCustomizeTemplate 运行时取得>,          // 模板ID（来自 getAllCustomizeTemplate）
   "startTime": "2026-04-30T16:00:00.000Z",
   "endTime": "2026-05-14T16:00:00.000Z",
   "isDH": 0,

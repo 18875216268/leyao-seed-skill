@@ -127,7 +127,7 @@ def check_references() -> None:
                  "附录/接口总表.md"]:
         ok("存在 references/%s" % name, (ROOT / "references" / name).is_file())
 
-    # 防「端点数漂移」：附录合计声明必须等于编号行数，且 SKILL.md 板块表数字须与注册表一致
+    # 防「端点数漂移」：附录合计声明必须等于编号行数，且 app.md 板块表数字须与注册表一致
     import re as _re
     from modules import MODULES as _MODULES
     ap = (ROOT / "references/附录/接口总表.md").read_text(encoding="utf-8")
@@ -150,11 +150,12 @@ def check_references() -> None:
             drift.append("%s: 文档%s / 注册%d" % (mm.group(1), nn, real))
     ok("SKILL 端点数与注册表一致", not drift, str(drift))
 
-    # 状态口径守门：客户/数据/摇钱树＝开放部分（有 api 文档）；其余 6 个＝完全暂未开放（无 references 文档）
-    for mid, cn in (("customer", "客户"), ("data", "数据"), ("cashcow", "我的摇钱树")):
+    # 状态口径守门：客户/数据/摇钱树/营销＝开放部分（有 api 文档）；其余 5 个＝完全暂未开放（无 references 文档）
+    for mid, cn in (("customer", "客户"), ("data", "数据"), ("cashcow", "我的摇钱树"),
+                    ("marketing", "营销")):
         apis = list((ROOT / "references" / cn).glob("api_*.md"))
         ok("%s 开放部分须有 api 文档" % mid, len(apis) >= 1, str(len(apis)))
-    for mid, cn in (("aftersale", "售后"), ("marketing", "营销"),
+    for mid, cn in (("aftersale", "售后"),
                     ("qualification", "资质"), ("shop", "店铺"),
                     ("finance", "资金"), ("home", "首页")):
         ok("%s 暂未开放不建 references 文档" % mid,
@@ -166,9 +167,9 @@ def check_references() -> None:
         if not mm or mm.group(2) not in _MODULES:
             continue
         state = mm.group(3).strip()
-        if mm.group(2) in ("customer", "data", "cashcow") and "开放部分" not in state:
+        if mm.group(2) in ("customer", "data", "cashcow", "marketing") and "开放部分" not in state:
             status_drift.append("%s 应为开放部分" % mm.group(2))
-        if mm.group(2) in ("aftersale", "marketing", "qualification", "shop",
+        if mm.group(2) in ("aftersale", "qualification", "shop",
                           "finance", "home") and "暂未开放" not in state:
             status_drift.append("%s 应为暂未开放" % mm.group(2))
     ok("SKILL 四档状态口径一致", not status_drift, str(status_drift))

@@ -6,7 +6,7 @@
 
 | 能力 | 命令 | 说明 |
 |---|---|---|
-| 查列表 | `python scm.py query --status 进行中 --type 一口价 --keyword 来曲唑 --limit 20` | 分页查询活动 |
+| 查列表 | `python scm.py query --limit 20`（全量）｜`python scm.py query --status 进行中 --type 一口价 --keyword 来曲唑 --limit 20`（带筛选示例） | 分页查询活动；**筛选按需增删，勿照抄带筛选示例查全量** |
 | 查计数 | `python scm.py query --count --status 进行中` | 9 个状态的计数 |
 | 查统计 | `python scm.py query --stats --status 进行中` | 第二排 15 个统计字段 |
 | 导出 | `python scm.py export --status 进行中 --type 一口价 --out out.csv` | 三段式导出并下载 |

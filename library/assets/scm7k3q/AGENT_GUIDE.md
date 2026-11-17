@@ -97,7 +97,8 @@
 | 客户 | `customer` | 🟡 开放部分 | 按 `references/客户/api_*.md` 直接取数（客户列表/控销组/黑名单已实测）；CLI 返回 `MODULE_TODO` |
 | 数据 | `data` | 🟡 开放部分 | 按 `references/数据/api_*.md` 直接取数（品种分析/销售报表/店铺流量）；CLI 返回 `MODULE_TODO` |
 | 我的摇钱树 | `cashcow` | 🟡 开放部分 | **摇钱树专属**（自营账号无此板块）；按 `references/我的摇钱树/api_*.md` 直接取数（销售流水/我的品种/区域划分查看，含 2 导出 + 2 写，已实时抓包验证）；CLI 返回 `MODULE_TODO`；**`ex` 取专属值**（流水 `MyCashcowSaleLog` / 品种 `MyVariety` / 区域 `RegionDivision`） |
-| 售后/营销/资质/店铺/资金/首页 | — | ⚪ 暂未开放 | 仅有端点清单；返回 `MODULE_TODO` + GUIDE + 端点数量 |
+| 营销 | `marketing` | 🟡 开放部分（仅优惠券） | 按 `references/营销/api_优惠券管理.md` 取数（优惠券效期/作废/赠送/活动/创建）；CLI 返回 `MODULE_TODO`；其余 79 端点中非优惠券部分仅登记 |
+| 售后/资质/店铺/资金/首页 | — | ⚪ 暂未开放 | 仅有端点清单；返回 `MODULE_TODO` + GUIDE + 端点数量 |
 
 
 ### 4.1 通用调用器 `scm.py call`（「按文档直连」的统一出口）
@@ -149,9 +150,9 @@ python scm.py call --path <端点> [--body '<JSON>' | --body @payload.json] [--p
 # 订单列表（参数见 api_订单查询.md §2）
 python scm.py call --path /scm-order/wholesaleOrder/list --ex AllOrdersList --body @order_list.json
 
-# 数据·品种分析（ex 必须换）
+# 数据·品种分析（ex 必须换；dateRange 按用户需求替换，勿照抄抓包历史日期）
 python scm.py call --path /scm-goods/drugsStat/saleReportDrugsStatList --ex ProductAnalysis \
-  --body '{"tab":0,"dateRange":["2026-11-06 00:00:00","2026-11-12 23:59:59"]}'
+  --body '{"tab":0,"dateRange":["<起 YYYY-MM-DD HH:mm:ss>","<止 YYYY-MM-DD HH:mm:ss>"]}'  # 日期按用户需求替换
 
 # 同步导出落盘（数据板块 3 个 xlsx 接口同理）
 python scm.py call --path /scm-goods/drugsStat/exportSaleReportDrugsStat \

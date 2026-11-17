@@ -7,7 +7,7 @@
 **用户说法**：「库存改成 3000」「别同步库存，给 3000」
 
 ```bash
-python scm.py scene ljgl ws-stock --id 1458150813 --sync off --qty 3000 --confirm
+python scm.py scene ljgl ws-stock --id <活动ID> --sync off --qty 3000 --confirm
 ```
 
 ## 改备注

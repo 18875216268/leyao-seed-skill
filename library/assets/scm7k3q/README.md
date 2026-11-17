@@ -28,7 +28,7 @@ python scm.py scene            # 列出已封装的高频场景
 
 | 路径 | 说明 |
 |---|---|
-| `SKILL.md` | 技能入口：元数据 + 决策树 |
+| `app.md` | 技能入口：元数据 + 决策树（框架规范：资产入口为 app.md） |
 | `AGENT_GUIDE.md` | 授权、红线、调用规范 |
 | `USER_GUIDE.md` | 面向使用者的命令手册 |
 | `scm.py` | 主 CLI（12 个子命令） |

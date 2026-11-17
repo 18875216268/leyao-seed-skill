@@ -3,7 +3,7 @@
 > **板块归属（板块内单独说明 · 摇钱树专属）**：对应摇钱树账号「我的摇钱树」板块（3 个子板块）；**自营账号无此板块**，越界不调用、不试探（`references/sy.md §0`）。
 > 状态：**接口文档已交付（经摇钱树账号实时导航 + 导出/写动作抓包验证 2026-11-16，零业务影响），CLI 暂未开放**（`python scm.py query --module cashcow` 返回 `MODULE_TODO`）。取数用 `python scm.py call`（`AGENT_GUIDE.md §4.1`）按本文档构造请求。
 > 本文是我的摇钱树板块入口：子板块地图、端点清单、账号与请求约定、阅读顺序、边界。
-> 路径基准：`references/…` 相对技能包根（`交付区/scm/`）。
+> 路径基准：`references/…` 相对技能包根（本资产根）。
 
 ## 1. 子板块地图
 
@@ -47,7 +47,7 @@
    | 区域划分查看 | `RegionDivision` |
 
    `call` 时用 `--ex <值>` 显式覆盖默认 `goodsOnShelves`。
-4. **鉴权**：会话 cookie（`ysbang_adminToken`）+ body `token`；复用 `core.login.scm` 凭证，见 `references/通用/api_认证与公共约定.md`。**必须登录摇钱树账号**（自营凭证调用会因账号体系隔离失败或越界）。
+4. **鉴权**：会话 cookie（`ysbang_adminToken`）+ body `token`；复用 `core.credential` 凭证，见 `references/通用/api_认证与公共约定.md`。**必须登录摇钱树账号**（自营凭证调用会因账号体系隔离失败或越界）。
 5. **成功码**：`40001`；HTTP 恒 200。
 6. **分页**：流水/品种列表 `data.results[]` + `totalRecord`/`totalPage`（`pageNo` 从 1 开始）；区域划分两个接口无分页。
 7. **数组参数**：`deliveryProvider`/`province`/`city`/`district` 均为数组；区域传数字 `areaCode`（级联接口 #4 取值）。

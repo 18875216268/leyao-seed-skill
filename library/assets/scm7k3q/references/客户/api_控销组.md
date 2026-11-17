@@ -91,7 +91,7 @@ POST /scm-setting/saleControl/storeGroup
 
 **① 单个（按药店 ID）** — `POST /scm-setting/saleControl/addStoreSingle`
 ```json
-{ "batchType": 0, "branchId": 2311210, "storeGroupId": 92369, ...公共参数 }
+{ "batchType": 0, "branchId": <药店ID>, "storeGroupId": <运行时取得的组ID>, ...公共参数 }
 ```
 → `添加成功`；ID 非法 → `40003 请输入正确的药店ID`。
 
@@ -99,12 +99,12 @@ POST /scm-setting/saleControl/storeGroup
 
 | 维度 | `batchType` | 值字段 | 示例 | 失败明细表头 |
 |---|---|---|---|---|
-| 按药店 ID | `0` | `branchIdList` | `[2311210]` | `["药店ID","失败原因"]` |
+| 按药店 ID | `0` | `branchIdList` | `[<药店ID>]` | `["药店ID","失败原因"]` |
 | 按药店编码 | `1` | `provCodeList` | `["K0560956"]` | `["药店编码","失败原因"]` |
 | 按药店全称 | `2` | `storetitleList` | `["天津宝坻天宝福苑诊所"]` | `["药店名称","失败原因"]` |
 
 ```json
-{ "batchType": 0, "storeGroupId": 92369, "branchIdList": [2311210], ...公共参数 }
+{ "batchType": 0, "storeGroupId": <运行时取得的组ID>, "branchIdList": [<药店ID>], ...公共参数 }
 ```
 → `data:{rightCount, errorCount, data:[[值,原因]], header, filename}`。
 
@@ -113,7 +113,7 @@ POST /scm-setting/saleControl/storeGroup
 
 **③ 单个添加未下单药店** — 先 `getNoOrderStore` 搜名称，再 `POST /scm-setting/saleControl/addNoOrderStore`
 ```json
-{ "storeGroupId": 92369, "fullName": "河南省", "drugstoreBranchId": 3503288, ...公共参数 }
+{ "storeGroupId": <运行时取得的组ID>, "fullName": <药店全称>, "drugstoreBranchId": <药店ID>, ...公共参数 }
 ```
 > 注意键名是 `drugstoreBranchId`（不是 `branchId`）。
 
@@ -133,7 +133,7 @@ POST /scm-setting/saleControl/storeGroup
 ```text
 # 1) 提交导出（token 必须用 credential.json 的 token，不能用 cms_token）
 POST /export-file/file/exportStoreGroupList/v100
-{ "templateType": 26, "storeGroupId": 92369, ...公共参数 }
+{ "templateType": 26, "storeGroupId": <运行时取得的组ID>, ...公共参数 }  # 勿照抄具体组ID
 → {"code":"40001","message":"提交导出任务成功…","data":{"recordId":<任务ID>,"providerId":<当前providerId>}}
 
 # 2) 轮询任务

@@ -47,11 +47,13 @@
   "dateRange": ["2026-11-06 00:00:00", "2026-11-12 23:59:59"],
   "tab": 0, "pageNo": 1, "pageSize": 10,
   "wareHouse": 11501,
-  "drugId": 3678871, "drugName": "", "drugIdName": "",
+  "drugId": "", "drugName": "", "drugIdName": "",
   "factoryName": "", "provDrugCode": "",
-  "province": [12, 13], "city": [2308], "district": [230833]
+  "province": [], "city": [], "district": []
 }
 ```
+
+> ⚠️ 上方为**常规全量示例**（drugId/地区留空）。`drugId`/`province`/`city`/`district` 仅在用户明确按品种或地区筛选时填具体值；实测抓包样本（drugId=3678871、province=[12,13] 等）只返回单一药品/地区，勿当模板照抄。
 
 | 界面筛选项 | 参数 | 类型 | 说明 |
 |---|---|---|---|
@@ -229,13 +231,15 @@
 | E2 | `drugsStat/exportDrugsStatList` | 售后详情 | `dateRange` + `reasonId[]` + `exportType` |
 | E3 | `drugsStat/exportBuyCarStat` | 委托配送加购 | `tab:2` + `dateRange` |
 
-E1 实测请求体（注意地区是**数字数组**）：
+E1 常规导出请求体（厂家/地区留空=全量；注意地区是**数字数组**）：
+
+> ⚠️ 实测抓包样本带 `factoryName:"北京诺华制药有限公司"`、`province:[12,13,...]` 等，仅导出该厂家该区域数据，勿当模板照抄；下方示例为中性默认值。
 
 ```json
 {
   "dateRange": ["2026-11-01 00:00:00", "2026-11-12 23:59:59"],
-  "factoryName": "北京诺华制药有限公司",
-  "province": [12, 13, 15, 21, 22, 23], "city": [2308], "district": [230833],
+  "factoryName": "",
+  "province": [], "city": [], "district": [],
   "tab": 0, "exportType": 0
 }
 ```

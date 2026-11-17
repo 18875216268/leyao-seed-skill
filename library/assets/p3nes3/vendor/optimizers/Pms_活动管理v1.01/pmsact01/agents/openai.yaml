@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pms_活动管理v1.01"
+  short_description: "查询、导出并引导操作 PMS 商品活动（一口价/特价/批购包邮/整件购/随心购）"
+  default_prompt: "使用 $pms-hdgl-v101 先确定是查询、导出还是写操作，再按活动类型 tab 选接口（R1/R2/R3 与 E1/E2/E3）；写操作必须先取用户授权；凭证由调用方传入，本包不登录。"

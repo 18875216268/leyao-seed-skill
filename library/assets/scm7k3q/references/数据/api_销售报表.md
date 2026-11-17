@@ -124,11 +124,13 @@
 ```json
 {
   "groupEnum": "PHARMACY",
-  "startTime": 1793462400, "endTime": 1794499199,
-  "areaCode": [13, 14, 15], "subType": [8, 0], "wholesaleTypes": [5, 1, 4],
+  "startTime": <按统计周期换算的Unix秒>, "endTime": <按统计周期换算的Unix秒>,
+  "areaCode": [], "subType": [], "wholesaleTypes": [],
   "storeName": "", "pageNo": 1, "pageSize": 10
 }
 ```
+
+> ⚠️ 上方为**常规全量示例**：`areaCode`/`subType`/`wholesaleTypes` 留空。实测抓包曾带 `[13,14,15]`/`[8,0]`/`[5,1,4]`（仅统计特定区域/活动类型/药店类型），仅在用户指定对应筛选时才填。
 
 **响应**：`data.list[]`（`count` 为总行数，需翻页）+ `data.dateMonthWeekList`/`activityList`（该模式为空）。
 
@@ -211,11 +213,13 @@
 | E2 | `saleReport/suppliersDrugstoreTableExport` | 按药店统计表 | `groupEnum:"PHARMACY"` + 筛选 + 时间，无分页 |
 | E3 | `saleReport/exportVisitorData` | 访客数据 | 仅公共参数 |
 
-E1 实测请求体：
+E1 常规导出请求体（时间按统计周期换算，筛选留空=全量）：
+
+> ⚠️ 实测抓包样本带 `startTime:1793462400`（写死历史日期）、`areaCode:[13,14,15,21]`/`subType:[8,0]`/`wholesaleTypes:[1]`（特定筛选），勿当模板照抄。
 
 ```json
-{ "groupEnum": "DAY", "startTime": 1793462400, "endTime": 1794499199,
-  "areaCode": [13, 14, 15, 21], "subType": [8, 0], "wholesaleTypes": [1] }
+{ "groupEnum": "DAY", "startTime": <按统计周期换算的Unix秒>, "endTime": <按统计周期换算的Unix秒>,
+  "areaCode": [], "subType": [], "wholesaleTypes": [] }
 ```
 
 > 导出与列表必须传**同一组筛选**，否则导出的不是当前查询结果（用户要求"直接导出对应查询出来的数据"）。

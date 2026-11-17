@@ -33,7 +33,7 @@
 ## 3. 放置与运行
 
 ```bash
-cd scm技能制作/交付区/scm
+cd library/assets/scm7k3q
 python scm.py modules        # 确认能跑通，列出 11 个板块
 ```
 
@@ -84,7 +84,7 @@ python scm.py pms-login      # 失效再登录（弹企微二维码）
 
 - 扫码后凭证落 `%LOCALAPPDATA%\pms-operations-query\credential.json`，**无固定过期时间**，是否有效由远端实时校验；
 - `pms-status` 返回 `reason=not_validated` 多为网络/限流，可稍后重试，**不代表凭证失效**；
-- 登录器源码：`core/login/pms.py`（自包含，可独立运行，但直跑会打印含 token 的完整凭证，**不要外传**）。
+- PMS 登录器实体在主技能 `p3nes3/scripts/pms_login.py`；本资产通过 `python scm.py pms-login` 委托调用、只读取落盘凭证（**不要外传含 token 的凭证**）。
 
 ### 4.5 多账号
 

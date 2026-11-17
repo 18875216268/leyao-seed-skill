@@ -77,8 +77,8 @@ python scm.py query --module order --limit 20
 
 # 时间范围 + 客户 + 页签 + 快递单号
 python scm.py query --module order \
-  --param start=2026-10-01 --param end=2026-10-31 \
-  --param drugStore=D001 --param tabProcessStatus=8 --param logisticsNo=SF123
+  --param start=<起> --param end=<止> \
+  --param drugStore=<客户编码> --param tabProcessStatus=<页签码> --param logisticsNo=<快递单号>
 
 # 页签计数
 python scm.py query --module order --count
@@ -91,10 +91,10 @@ python scm.py query --module order --count
 ```json
 {
   "page": 1, "pagesize": 10,
-  "order_time": ["2026-09-11T00:00:00+08:00", "2026-11-11T23:59:59+08:00"],
+  "order_time": ["<起 YYYY-MM-DDTHH:mm:ss+08:00>", "<止 YYYY-MM-DDTHH:mm:ss+08:00>"],
   "orderId": "", "drugStore": "", "phone": "", "logisticsNo": "",
   "drugname": "", "drugstore_id": "", "wholesale_id": "",
-  "cert_status": "", "tabProcessStatus": 1, "order_str": "",
+  "cert_status": "", "tabProcessStatus": 8, "order_str": "",  // 8=配送完成(CLI默认)；抓包样本为1，按页签需求改
   "is_logist": "", "invoiceCount": "", "receive_status": "",
   "ex": "AllOrdersList", "lastBuildTime": "2026-11-09 20:28"
 }

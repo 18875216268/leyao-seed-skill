@@ -15,7 +15,7 @@
   "area": [], "deliverType": "", "drugstoreBranchId": "",
   "page": 1, "pageSize": 10, "providerCode": "",
   "storePchFlag": "", "storeTagId": "", "storeTitle": "", "subType": "",
-  "timeRange": ["2026-11-01", "2026-11-11"],
+  "timeRange": [],  // 采购时间筛选；不按采购时间筛时留空数组（抓包示例曾带具体历史日期）
   "token": "<token>", "platform": "scm-admin", "version": "1.0.0",
   "ua": "<UA>", "ex": "OldCustomerManagement"
 }

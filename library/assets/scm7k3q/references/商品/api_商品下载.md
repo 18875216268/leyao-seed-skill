@@ -99,7 +99,8 @@
 import json, time, requests
 
 # ① 把任意 wsList 查询条件原样交给 getWsListEsQuery（只读）
-q = {"pageNo":1, "pageSize":10, "status":-1, "searchInfo":"999感冒灵",
+# 全量导出：searchInfo 务必留空；仅按需填具体药品关键词（示例曾因填"999感冒灵"只导出单一药品）
+q = {"pageNo":1, "pageSize":10, "status":-1, "searchInfo":"",
      "wholesaleType":[], "notThroughStatus":0, "saleStatType":1}
 sql = post("/scm-goods/excelExport/getWsListEsQuery", q)["data"]["sqlParams"]
 

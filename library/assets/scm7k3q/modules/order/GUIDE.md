@@ -17,8 +17,8 @@ python scm.py query --module order --limit 20
 
 # 指定时间/客户/页签
 python scm.py query --module order \
-  --param start=2026-10-01 --param end=2026-10-31 \
-  --param drugStore=D001 --param tabProcessStatus=8
+  --param start=<起 YYYY-MM-DD> --param end=<止 YYYY-MM-DD> \
+  --param drugStore=<客户编码> --param tabProcessStatus=<页签码>
 
 # 按订单号 / 电话 / 物流单号 / 商品名
 python scm.py query --module order --param orderId=xxx
@@ -28,7 +28,7 @@ python scm.py query --module order --param drugname=感冒灵
 
 # 页签计数
 python scm.py query --module order --count \
-  --param start=2026-10-01 --param end=2026-10-31
+  --param start=<起 YYYY-MM-DD> --param end=<止 YYYY-MM-DD>
 ```
 
 | 参数 | 说明 |

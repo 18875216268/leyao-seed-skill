@@ -2,6 +2,8 @@
 
 > 本文件是**所有接口的前置约定**，仅此一处定义，其他文档引用不再复制。
 > 适用：全部 SCM 商家后台接口。
+>
+> ⚠️ **公共参数示例值勿照抄**：各接口文档 JSON 示例里的 `token`/`lastBuildTime`/`version`/`ua`/`ex` 是**抓包快照**，取值不一（`lastBuildTime` 有 `2026-11-09 20:28`、`2026-11-13 17:12` 等，`version` 有 `1.0.0`/`1.0.3`）。经 `scm.py call` 发请求时这些由请求层**按公共约定自动注入**（部分板块 `version=1.0.0` 且不带 `lastBuildTime` 的特例见各接口文档），Agent 只需填业务字段；手写脚本时按本文件生成，勿复制示例里的历史值。
 
 ## 1. 基础信息
 
@@ -94,7 +96,7 @@ GET  /provider.php/Admin/Index/indexJava              取 cmsToken（并入 Cook
 POST /scm-base/provider/getProviderLoginInfo          取 providerId 等
 ```
 
-> 登录工具：`core/login/scm.py`（技能包内；验证码需人工输入）。
+> 登录工具：`scripts/scm_login.py`（独立单文件；验证码需人工输入）。
 
 ## 8. 快速自检
 

@@ -3,17 +3,17 @@
 > **定位**：自营活动在 PMS 侧的**读取（查询）/ 写入 / 导出**完整出口。SCM 侧下架/重上架/运营策略被自动运营拦截、限购/控销字段"返回成功但不落库"时，走本文接口。
 > **归属**：`references/sy.md §0.4` 标**自营专属**；`商品/sy.md §3.1` 分类为 **③ 仅自营 / ④ 转PMS**。摇钱树账号不走本文（摇钱树 SCM 侧真实生效）。
 > **配套**：`api_商品读取.md`（SCM 读）、`api_商品写入.md`（SCM 写，其 `转PMS` 标记指向本文）、`zddz.md`（字段台账）。
-> **请求体系独立**：PMS 主机 `https://pms.ysbang.cn`（部分微服务在 `pms.leyopharm.com`），登录走技能内 **`core/login/pms.py`**（CLI：`python scm.py pms-login` / `pms-status`）；与 SCM 的主机、凭证、请求形态**完全独立**，勿混用。
-> **云函数中转已停用**：业务请求直连 PMS 主机，路径来自开发素材 `参考区/scm&pms修改.js` 的 `API_PATHS`（技能包外，不作操作依据）。
+> **请求体系独立**：PMS 主机 `https://pms.ysbang.cn`（部分微服务在 `pms.leyopharm.com`），登录由 `python scm.py pms-login` 子进程委托主技能 PMS 登录器完成、本资产 `core/pms_client.py` 只读消费凭证（CLI：`python scm.py pms-login` / `pms-status`）；与 SCM 的主机、凭证、请求形态**完全独立**，勿混用。
+> **请求直连**：业务请求直连 PMS 官方主机，按本文 §1.2 的请求形态构造；路径与版本以本文接口表为准。
 > **范围说明**：本文只覆盖**商品活动管理**页。**出库统计**属数据板块（`references/` 暂无该板块文档），不在本文范围。
-> **路径基准**：`references/…`、`AGENT_GUIDE.md` 相对技能包根（`交付区/scm/`）；`sy.md`、`zddz.md` 与本文同目录，直接用文件名互引。
-> **账号一律动态取得**：`providerId` 由 PMS 凭证（`core/login/pms.py`）给出（字符串型），**文档与脚本都不得硬编码具体账号/公司 ID**。
+> **路径基准**：`references/…`、`AGENT_GUIDE.md` 相对技能包根（本资产根）；`sy.md`、`zddz.md` 与本文同目录，直接用文件名互引。
+> **账号一律动态取得**：`providerId` 由 PMS 凭证（`core/pms_client.py` 只读消费）给出（字符串型），**文档与脚本都不得硬编码具体账号/公司 ID**。
 
 ---
 
 ## 1. 通用约定
 
-### 1.1 登录链路（`core/login/pms.py`，官方主机 + 端点白名单）
+### 1.1 登录链路（本资产委托主技能登录器、只读消费凭证；官方主机 + 端点白名单）
 
 | 步 | 端点 | 说明 |
 |---|---|---|
@@ -27,8 +27,8 @@
 
 - **调用入口（禁止自组装登录）**：
   - CLI（推荐，路径无关）：`python scm.py pms-status`（只校验，不弹窗）/ `python scm.py pms-login`（扫码登录）；
-  - Python 门面：`from core.login import pms` → `pms.get_credential()` / `pms.verify_credential()` / `pms.relogin()` / `pms.is_authenticated()`；脚本内用 `pms.get_credential(force_relogin=False)` 复用有效凭证；
-  - 等价直跑（**仅调试**）：`python core/login/pms.py --status|--reuse|--check`（自包含可独立运行）。⚠️ 两个坑：① `--status` 会把**含 `token` 的完整凭证**打印到 stdout，**严禁粘贴到日志/记录区/对话**；② stdout 混有 `[pms-login] 凭证有效` 之类提示行，需按行提取 JSON。**Agent 执行一律走 `python scm.py pms-status`（干净 JSON、已脱敏）**。
+  - Python 门面：`from core import pms_client` → `pms_client.get_credential()` / `pms_client.verify_credential()`（本资产只读消费凭证，**无** `relogin`/`is_authenticated`——那属 SCM 登录器 `scripts/scm_login.py`）；脚本内用 `pms_client.get_credential(force_relogin=False)` 复用有效凭证；
+  - PMS 登录器实体在主技能 `p3nes3/scripts/pms_login.py`，本资产不自带登录器；**Agent 执行一律走 `python scm.py pms-status`（干净 JSON、已脱敏）**，登录走 `python scm.py pms-login`（子进程委托主技能）。
 - **凭证**：`%LOCALAPPDATA%\pms-operations-query\credential.json`（**与 SCM 的 `scm-operations-query` 分离**）；关键字段 `token`、`headers`、`user{userId,userName,accountNo,account}`、`providers`、`provider_id`（单公司自动确定，多公司留空）、`provider_name`、`warehouses`、`createdAt`/`validatedAt`。
 - **有效期口径**：PMS 凭证**无固定过期时间**（只有 `createdAt`/`validatedAt`），是否有效由远端 `/api/Index/index/v423` 实时校验判定；返回 `reason` 为 `missing`/`invalid`/`expired`/`not_validated`（后者多为网络或限流，**不代表凭证失效**，可重试）。
 - **SCM 与 PMS 凭证互不影响**：登录其一不会覆盖或失效另一个。
@@ -95,7 +95,7 @@
 | 特价 | R2 `getSpecialProductWholeSaleList` | — | `4`（不可用券） |
 | 批购包邮 | R3 `pageWholeSaleByType` | **`2`** | 列表无此字段 |
 | 整件购 | R3 | **`3`** | 列表无此字段 |
-| 随心购 | R3 | **`4`** | 【待确认】（本账号返回空集） |
+| 随心购 | R3 | **`4`** | —（前端源码 `Se` 确证 `apiWholeSaleType=4`；本账号返回空集） |
 | ⚠️ 无效 | — | `1`/`5`/`6` | 返回 `40004` |
 
 > 界面共 5 类 tab。实测空查询量：`tabType=2` 全量 19552（状态全 5）、`tabType=3` 全量 7989（状态 3/5/6 混合）。
@@ -107,26 +107,26 @@
 | `providerId` | 平台店铺 | string | **必填**，缺失则查不到任何活动；由凭证动态取得 |
 | `wholesaleId` | 活动ID | string | 精确匹配；**带它时 `wholesaleStatus` 被忽略** |
 | `wholesaleStatus` | 活动状态 | int | 见 §5.1；页面默认 `5` 进行中 |
-| `provDrugCode` | 药师帮ID | string | 商品编码，如 `YP00085` |
-| `drugKeyword` | 商品 | string | 商品关键词/药品 ID |
+| `provDrugCode` | 药师帮ID（精确字段） | string | 商品编码，如 `YP00085`；**直接 body 指定有效**（实测 16023→27） |
+| `drugKeyword` | 商品/药师帮ID 输入框 | string | UI 上 placeholder 为"商品名称/药师帮ID"的输入框传此字段（实测填 `YP00085`→`drugKeyword`，**不是** `provDrugCode`）；两字段并存，精确筛选用 `provDrugCode` |
 | `approval` | 批准文号 | string | 如 `国药准字H20093819` |
 | `factory` | 厂家 | string | 模糊 |
 | `enterprise` | 厂牌营销方 | string | |
-| `contactor` | 品种负责人 | string | userId（R18 下拉） |
-| `operator` | 运营负责人 | string | userId |
-| `bpManager` | 厂牌项目经理 | string | userId（R19 下拉） |
+| `contactor` | 品种负责人 | int | **userId 数字**（实测"张琼宁"→`44871`）；数据源 **R20** `getChildrenValidUser(userType=contactor)` |
+| `operator` | 运营负责人 | int | **userId 数字**（实测"张丹"→`1001`）；数据源 **R20**（userType=operator） |
+| `bpManager` | 厂牌项目经理 | int | **userId 数字**；数据源 **R21** `bpManagerChooseListWithSubUser` |
 | `busiFlag` | 业务类型 | string | 见 §5.4 |
-| `checkFlag` | 考核品种 | int | `1`=是 |
-| `leyoTagIdList` | 业务标签（集团） | int[] | tagId 数组（R20） |
-| `provTagIdList` | 业务标签（子公司） | int[] | 同上 |
+| `checkFlag` | 考核品种 | int | **页面默认 `1`**（只看考核品种，源码 `st()` 确认）；要全部品种须显式置 `""`。注意：默认 `1` 会窄化范围，实测两者均置 1 时曾导空，见 §4 踩坑 |
+| `leyoTagIdList` | 标签筛选（集团自定义标签） | int[] | tagId 数组（**R22** `getDiyTagListForFilter` → `data.leyoTags`） |
+| `provTagIdList` | 标签筛选（子公司自定义标签） | int[] | tagId 数组（**R22** → `data.provTags`） |
 | `pricingStatusList` | 定价状态 | list | 数组 |
 | `abnPricingTypeList` | 定价异常类型 | int[] | `0~10`（R11） |
-| `specialFlag` | **维价类型**（非特价标记） | int | `0`无 / `3`集采维价 / `6`采购维价 |
+| `specialFlag` | **维价类型**（非特价标记） | int | `0`无 / `2`集团维价 / `3`集采维价 / `6`采购维价（UI 四项全实测，见 §5.13） |
 | `operationFlagList` | 运营策略多选 | int[] | `1`自动 / `2`手动 / `8`临时手动；空=全部 |
 | `linkFlagList` | 链接类型多选 | int[] | `1`长期 / `2`短期；空=全部 |
 | `saleStatDataType` | 销量统计口径 | int | `1`=近28天，固定 1 |
-| `beClickAbnWaitCheck` | 点击"异常待确认"卡 | int/str | 点击时置 `1` |
-| `beClickMyAbnWaitCheck` | 点击"我的异常待确认"卡 | int/str | 点击时置 `1` |
+| `beClickAbnWaitCheck` | 点击"异常待确认"卡 | int/str | 仅点击该卡时置 `1`，**常规查询/导出留空 `""`** |
+| `beClickMyAbnWaitCheck` | 点击"我的异常待确认"卡 | int/str | 仅点击该卡时置 `1`，**常规查询/导出留空 `""`**（见 §4 踩坑说明） |
 | `page`/`pageSize` | 分页 | int | R3 用 `pageNum` |
 | `negMarginProfitRate` | 负毛利（**R3 独有**） | string | |
 
@@ -153,7 +153,7 @@
 
 | # | 筛选项 | 接口 | 请求体要点 |
 |---|---|---|---|
-| R18 | 平台店铺 | `pms.leyopharm.com/datacenter_pms/web/search/providerWarehouseOption/pv9210` | `{token, buildTime}` |
+| R18 | 平台店铺（公司口径） | `pms.ysbang.cn/pms-main/merpUser/getSubProviderList/v2050`（即 §1.1 ⑥） | 公共参数 → `providers[]` / `provider_id` / `provider_name`，取 ID 填 `providerId`；**不是**发货仓接口（发货仓 `providerWarehouseOption` 见 §1.1 ⑦，非筛选区下拉） |
 | R19 | 商品 | `pms.leyopharm.com/datacenter_pms/web/search/goodsOption/pv7240` | `{size:100, providerId, goods:"<关键词>"}` → `goodsName/goodsId/goodsSpec/goodsCode/approvalNo/manufacturer/drugId/productCode` |
 | R20 | 品种负责人 / 运营负责人 | `pms-main/drugInfo/getChildrenValidUser/v7160` | `{userType:"contactor", providerId, keyword:""}` → `[{userId,username}]`；`userType` 随下拉切换（`contactor`=品种负责人） |
 | R21 | 厂牌项目经理 | `pms-main/common/bpManagerChooseListWithSubUser/v15120` | `{providerId}` → `[{userId,erpName}]` |
@@ -171,8 +171,10 @@
 | `5` | 进行中（页面默认） | 6534 |
 | `3` | 已下架 | 2098 |
 | `4` | 缺货下架 | 7387 |
+| `6` | 未销售（`UN_SALE`，2026-11-17 前端源码 `Pe.UN_SALE=6` 补录；页面状态下拉是否展示待确认） | — |
 | 不带 | 返回全部 | 16023 |
 
+> **前端源码常量（2026-11-17 Scrapling 逆向 chunk 99623）**：`Pe={DOING:5, TO_START:0, off_SALE:3, off_SALE_STOCK_OUT:4, UN_SALE:6}`；状态筛选选项 `Ee` 含"进行中/待开始/已下架/缺货下架/未销售"五项。
 > **PMS 只有上架/下架两态**：`ACTIVITY_STATUS_TEXT={5:'上架',3:'下架'}`、`ACTIVITY_STATUS_UPDATE_CODES={5:[2,0],3:[1]}`，**不存在"结束/终态"码**（`7`=已结束属 SCM 枚举）。
 > **与 SCM 勿混**：SCM `status` = `0`进行中/`4`已下架/`7`已结束（见 `api_商品读取.md §1.2`）。
 
@@ -281,12 +283,75 @@
 
 > **与 SCM/促销的异步三步链完全不同**：PMS 活动导出是 **POST JSON → 响应体即 xlsx 二进制**，**无任务 ID、无轮询、无加密 zip**。
 
-| # | 接口 | 用途 |
-|---|---|---|
-| E1 | `POST /pms-main/ykjWholesaleOperation/exportOneFixedWsList/v27280` | **一口价**导出 |
-| E2 | `POST /pms-main/ykjWholesaleOperation/downloadSpecialProductWholeSaleList/v27280` | **特价**导出 |
+| # | 接口 | 用途 | 活动类型（一级 tab） |
+|---|---|---|---|
+| E1 | `POST /pms-main/ykjWholesaleOperation/exportOneFixedWsList/v27280` | **一口价**导出 | 一口价 |
+| E2 | `POST /pms-main/ykjWholesaleOperation/downloadSpecialProductWholeSaleList/v27280` | **特价**导出 | 特价 |
+| E3 | `POST /pms-main/wholesaleOperation/exportWholeSaleByType/v24100` | **批购包邮 / 整件购 / 随心购**导出 | 由 `tabType` 区分（2/3/4） |
 
-**请求体 = 列表查询同款筛选 + 点击标记，无分页字段**：
+> E3 补自 2026-11-17 实机采集（`参考区/采集文件/Pms_采集结果.json`）。三套导出与列表接口 R1/R2/R3 **一一对应**，请求体 = 对应列表查询同款筛选（去掉分页）+ 点击标记，**无分页字段**。
+
+### 4.1 默认筛选模型（用户口径 → 参数）
+
+| 场景 | 默认参数 |
+|---|---|
+| 平台店铺 | `providerId` = 当前账号店铺（单公司自动确定，如 3364；多公司需用户指定） |
+| 活动状态 | `wholesaleStatus: 5`（进行中） |
+| 考核品种 | `checkFlag: 1`（是） |
+| 活动类型 | 默认**一口价** → 走 E1；`tabType`/二级选项均不设 = 该类型全部 |
+| 用户改活动类型 | 一口价→E1、特价→E2、批购包邮/整件购/随心购→E3（`tabType`=2/3/4）；**不主动选二级选项即代表该类型全部** |
+
+> ⚠️ **照抄警示**：下方示例已给"常规全量"中性默认值，可直接照抄。但两个窄化标记要理解：`checkFlag`（`1`=只看考核品种）、`beClickMyAbnWaitCheck`（`1`=只点"我的异常待确认"卡）。**默认模型里 `checkFlag=1` 是业务默认（考核品种=是），照抄会重现该默认**；若用户要全部品种须置 `""`。实测：`checkFlag`/`beClickMyAbnWaitCheck` 均置 1 → 曾导空；置空 → 6607 行。`token`/`buildTime` 由请求层自动注入，**body 不必手填**。
+
+### 4.2 基础筛选项 → 参数映射（三套导出通用，来源 §2.3）
+
+> ⚠️ **动态下拉选的是 ID/数字值，不是界面显示名**（2026-11-17 浏览器实测）：用户看到"张琼宁"，传给接口的是 `contactor:44871`（userId）；看到"集采维价"传 `specialFlag:3`。**必须从下拉数据源取 ID 填入，禁止把显示名当值传**。下拉数据源接口见 §2.5（R18-R24），多数在页面加载时已缓存，点击时不一定发新请求。
+
+| 用户筛选项 | 参数 | 取值（实测） | 动态下拉数据源 |
+|---|---|---|---|
+| 平台店铺 | `providerId` | 店铺 ID（单公司自动确定，如 `3364`；选当前店不改变） | R18 `getSubProviderList` |
+| 活动ID | `wholesaleId` | 精确 | 手输 |
+| 活动状态 | `wholesaleStatus` | `5`进行中/`0`待开始/`3`已下架/`4`缺货下架（UI 实测四项） | 静态 |
+| 商品 | `drugKeyword` | 关键词（placeholder"商品名称/药师帮ID"） | R19 `goodsOption`（模糊搜索） |
+| 药师帮ID | `provDrugCode` | 编码 | 手输/商品下拉 |
+| 批准文号 / 厂家 / 厂牌营销方 | `approval` / `factory` / `enterprise` | 文本 | 手输 |
+| 品种负责人 | `contactor` | **userId 数字**，实测"张琼宁"→`44871` | R20 `getChildrenValidUser(userType=contactor)` |
+| 运营负责人 | `operator` | **userId 数字**，实测"张丹"→`1001` | R20（userType=operator） |
+| 厂牌项目经理 | `bpManager` | **userId 数字**，实测"杨燕念"等 | R21 `bpManagerChooseListWithSubUser` |
+| 业务标签（界面显示集采/普品/控销） | `busiFlag` | `5`普品/`3`集采（实测"普品"→`5`）；**不是** `leyoTagIdList` | 静态枚举 §5.4 |
+| 考核品种 | `checkFlag` | 页面默认 `1`（只看考核品种）；全部品种置 `""` | 静态 |
+| 链接类型 / 定价模式 / 定价状态 / 定价异常类型 | `linkFlagList`/`pricingStatusList`/`abnPricingTypeList` 等 | 见 §5；定价异常类型候选 R11/R23 | 筛选型下拉（本地过滤） |
+| 预估负利润率 | `negMarginProfitRate` | **仅 E3**（批购包邮等 tab 才显示） | 手输 |
+| 维价类型 | `specialFlag` | `0`无/`2`集团维价/`3`集采维价/`6`采购维价（UI 四项全实测） | 静态 §5.13 |
+| 标签筛选（集团/子公司自定义标签） | `leyoTagIdList`/`provTagIdList` | **tagId 数字数组**，实测 `leyoTagIdList:[7]`（首推精品厂牌）、`provTagIdList:[178]`（A1B3重点品种）；界面两大组"集团自定义标签/子公司自定义标签"是**两个并列多选下拉**（非 cascader），分别映射到两个参数 | R22 `getDiyTagListForFilter` → `data.leyoTags[]`/`data.provTags[]`（各含 `tagId`+`tagName`） |
+
+**控件类型与取数/传参方式（2026-11-17 全项实测）**：
+
+| 控件类型 | 筛选项 | 如何取值 | 如何传参 |
+|---|---|---|---|
+| **纯输入框** | 活动ID、药师帮ID（`商品名称/药师帮ID`）、批准文号、厂家、厂牌营销方 | 用户直接输入文本 | 活动ID→`wholesaleId`；药师帮ID框→`drugKeyword`（**不是** `provDrugCode`）；其余→对应文本字段 |
+| **静态下拉**（页面加载缓存，点击不触发 XHR） | 平台店铺、活动状态、商品、品种负责人、运营负责人、厂牌项目经理、业务标签、考核品种、预估负利润、维价类型 | 点开选一项；候选值为 **ID 数字/枚举**（非显示名） | 见上表各参数；如"张琼宁"→`contactor:44871`、"普品"→`busiFlag:5`、`wholesaleStatus` 5/0/3/4、`specialFlag` 0/2/3/6 |
+| **筛选型下拉**（filterable，本地过滤候选、非真远程） | 链接类型、定价模式、定价状态、定价异常类型 | 输入关键字→**本地过滤**已缓存候选（如输"成本"→成本异常/成本偏高），无 XHR | 见 §5；`abnPricingTypeList`/`pricingStatusList` 等数组 |
+| **多级标签选择**（两大组并列多选，R22 供数） | 标签筛选 | 点"集团自定义标签"/"子公司自定义标签"→触发 R22→从 `leyoTags`/`provTags` 取 `tagId` | `leyoTagIdList:[tagId...]` / `provTagIdList:[tagId...]` |
+
+> **端到端传参铁证（2026-11-17）**：① 标签筛选用真实 `tagId`（`leyoTagIdList:[7]`、`provTagIdList:[178]`）导出得 136 行（全量 6607 行），筛选确实生效；② 组合筛选（活动状态=已下架 `wholesaleStatus:3` + 品种负责人=张琼宁 `contactor:44871` + 维价=集采 `specialFlag:3`）三项均正确进入导出 body；③ 维价 UI 四项全实测：无→`0`、集团→`2`、集采→`3`、采购→`6`。**自定义筛选与自定义导出链路全通**。
+
+### 4.3 活动类型二级选项 → 参数
+
+| 一级 | 二级选项（UI） | 参数 |
+|---|---|---|
+| 一口价 | 自动运营 / 手动运营 / 临时手动 | `operationFlagList`（`1`/`2`/`8`） |
+| 一口价 | 长期链接 / 短期链接 | `linkFlagList`（`1`/`2`） |
+| 一口价 | 异常待确认 / 我的异常待确认 | `beClickAbnWaitCheck` / `beClickMyAbnWaitCheck`（置 `1`） |
+| 特价 | UI 无二级 | E2 仍带 `operationFlagList`/`linkFlagList`（实测均 `[]`） |
+| 批购包邮 / 整件购 / 随心购 | 自动调价 / 自动跟价 | `operationFlag`（**单值** `1`自动调价 / `2`自动跟价，采集实测 `1`） |
+| 批购包邮 / 整件购 / 随心购 | 省内链接 / 省外链接 | `linkFlag`（**单值** `1`省内 / `2`省外）——**2026-11-17 浏览器实测确认**：列表 `pageWholeSaleByType` 与导出 `exportWholeSaleByType` 均用此字段；**不是** `linkFlagList`（那是 E2 特价的数组字段） |
+
+> ⚠️ **E3 与 E2 的链接字段不同**：E3 批购包邮系用单值 `linkFlag`（1/2），E2 特价用数组 `linkFlagList:[]`——勿混用。点二级选项后**列表会先发一次带该参数的请求**，导出请求带同样的参数（实测点击"省内链接"→ `linkFlag:1` 出现在两个请求 body）。
+
+### 4.4 请求体模板
+
+**E1 一口价 / E2 特价**（差异：E2 无 `pricingStatusList`/`abnPricingTypeList`，多 `operationFlagList`/`linkFlagList`）：
 
 ```json
 { "providerId": "<当前providerId>", "wholesaleId": "", "wholesaleStatus": 5,
@@ -296,11 +361,26 @@
   "leyoTagIdList": [], "provTagIdList": [],
   "pricingStatusList": [], "abnPricingTypeList": [],
   "specialFlag": "", "saleStatDataType": 1,
-  "beClickAbnWaitCheck": "", "beClickMyAbnWaitCheck": 1,
+  "beClickAbnWaitCheck": "", "beClickMyAbnWaitCheck": "",
+  "operationFlagList": [], "linkFlagList": [],
   "token": "<TOKEN>", "buildTime": "<前端构建时刻>" }
 ```
 
-- **E2 差异**：无 `pricingStatusList`/`abnPricingTypeList`，多 `operationFlagList:[]`、`linkFlagList:[]`。
+**E3 批购包邮/整件购/随心购**（`tabType` 2/3/4；多 `negMarginProfitRate`/`operationFlag`）：
+
+```json
+{ "providerId": "<当前providerId>", "wholesaleId": "", "wholesaleStatus": 5,
+  "provDrugCode": "", "drugKeyword": "", "approval": "", "factory": "",
+  "enterprise": "", "contactor": "", "operator": "", "bpManager": "",
+  "busiFlag": "", "checkFlag": 1,
+  "leyoTagIdList": [], "provTagIdList": [],
+  "specialFlag": "", "saleStatDataType": 1, "negMarginProfitRate": "",
+  "tabType": 2, "operationFlag": 1,
+  "linkFlag": "",
+  "token": "<TOKEN>", "buildTime": "<前端构建时刻>" }
+```
+> E3 二级选项按需填：`operationFlag`（1自动调价/2自动跟价）、`linkFlag`（1省内/2省外）；**不填 = 该维度全部**（UI 不主动选二级选项的语义）。实测：点"省内链接"→ `linkFlag:1`；点"省外链接"→ `linkFlag:2`。
+
 - **取文件**：`requests` 必须 `stream=True`；从响应头 `Content-Disposition` 取文件名落盘（body 即 xlsx，无需 url 下载）。
 - **耗时**：实测 4000+ 行约 2~5 秒。
 - **筛选必须带全**：缺字段服务端按默认处理，会导错范围 → **导出前先按 §2 确认筛选**。
@@ -313,15 +393,17 @@
 
 ### 5.1 活动状态 `wholesaleStatus`
 
-`0`待开始 / `5`进行中（页面默认）/ `3`已下架 / `4`缺货下架；不带=全部。**无"结束/终态"码**。
+`0`待开始 / `5`进行中（页面默认）/ `3`已下架 / `4`缺货下架 / `6`未销售（源码 `Pe.UN_SALE`，页面是否展示待确认）；不带=全部。**无"结束/终态"码**。
 
 ### 5.2 运营方式 `operationFlag`
 
 `1`自动运营（自动调价）/ `2`手动运营（自动跟价）/ `8`临时手动 / `0`非自动运营态（切手动报 `40003`）。
 
-### 5.3 链接类型 `linkFlag`
+### 5.3 链接类型 `linkFlag` / `linkFlagList`（勿混）
 
-`1`省内链接 / `2`省外链接。
+- **E3 批购包邮系**：单值 `linkFlag`，`1`省内链接 / `2`省外链接（2026-11-17 浏览器实测，列表+导出同字段）。
+- **E1/E2 一口价/特价的"长期/短期链接"二级选项**：数组 `linkFlagList`，`1`长期 / `2`短期（见 §4.3）。
+- 两者字段形态（单值 vs 数组）与语义（省内省外 vs 长期短期）**都不同**，勿混用。
 
 ### 5.4 业务类型 `busiFlag`
 
@@ -361,7 +443,7 @@
 
 ### 5.13 维价类型 `specialFlag`
 
-`0`无 / `3`集采维价 / `6`采购维价。**字段名叫 `specialFlag` 但对应 UI「维价类型」，不是「特价」标记。**
+`0`无 / `2`集团维价 / `3`集采维价 / `6`采购维价（2026-11-17 UI 四项全部实测）。**字段名叫 `specialFlag` 但对应 UI「维价类型」，不是「特价」标记。**
 
 > **四套编码系统切勿互推**：PMS 写 `wholeSaleType`(1/2) ≠ 查询 `tabType`(2/3/4) ≠ SCM `wholesaleType`(1/4/5/6/7/71/8/10/11) ≠ 各自状态枚举。字段名 `wholeSaleId`(写) ≠ `wholesaleId`(查)，`restrictId`(PMS) ≠ `restrictGroupId`(SCM)，值相同。
 
@@ -384,14 +466,14 @@
 
 1. 这些是**真实活动写接口**：写前必查现值、留回滚值与审计记录，写后按 §2 复查询核验（`result==1` + `wholesaleStatus`/`offTime` 落库）。
 2. **价格相关**走 W6 快速调价（审批流）或 SCM 整表编辑；**勿臆造价格接口**。
-3. 登录走 `python scm.py pms-login` / `core.login.pms` 门面，**禁止自组装登录**；业务请求按 §1.2 直连，禁用已失效的云函数中转。
+3. 登录走 `python scm.py pms-login`（子进程委托主技能 PMS 登录器）/ `core.pms_client` 凭证门面，**禁止自组装登录**；业务请求按 §1.2 直连 PMS 官方主机。
 4. 自动运营活动（`operationFlag=1`）下架前**必须先切手动运营**；重上架会强制改运营策略，操作前须确认影响。
 5. 导出是**同步二进制流**，禁止套异步三步链；筛选必须带全。
 6. **测试活动必下架**：为验证产生的活动收尾须复验为已下架，不留活口。
-7. **凭证明文不外传**：`credential.json` 与 `core/login/pms.py --status` 的输出均含 `token`，**不得写入日志、记录区、对话或提交仓库**；对外只报 `account`/`providerId`/`providerName` 等非敏感摘要（`python scm.py pms-status` 已按此脱敏）。
+7. **凭证明文不外传**：`credential.json` 与主技能 PMS 登录器 `--status` 的输出均含 `token`，**不得写入日志、记录区、对话或提交仓库**；对外只报 `account`/`providerId`/`providerName` 等非敏感摘要（`python scm.py pms-status` 已按此脱敏）。
 
 **待确认**
 
 > 商品板块唯一待确认台账见 `sy.md §4`（三份文档共用，避免漂移）。本文相关：
-> - 已确认：PMS 无结束终态（§2.6/§3.2）、`wholeSaleType` 仅 1/2（§5.9）、`calculatePeriod` 含 `4` 每月（§5.10）、`getYKJEnumConf.type` 仅 1/2/3（§5.12）、运营策略调用层不限类型（§3.3）、`buildTime` 格式（§1.2）、导出为同步流（§4）。
-> - 仍待实测：`tabType=4` ↔ 随心购（本账号空集）、PMS 挂网价与 SCM 设定价口径差异（`unitPrice9` 显示源价）、非一口价活动的写接口/运营策略实际行为、`fastAdjustPriceBatch` 的审批流阈值。
+> - 已确认：PMS 无结束终态（§2.6/§3.2）、`wholeSaleType` 仅 1/2（§5.9）、`calculatePeriod` 含 `4` 每月（§5.10）、`getYKJEnumConf.type` 仅 1/2/3（§5.12）、运营策略调用层不限类型（§3.3）、`buildTime` 格式（§1.2）、导出为同步流（§4）、`tabType=4`↔随心购（前端源码 `Se` 确证，2026-11-17）、状态 `6`=未销售（源码 `Pe.UN_SALE`，页面展示待确认）。
+> - 仍待实测：PMS 挂网价与 SCM 设定价口径差异（`unitPrice9` 显示源价）、非一口价活动的写接口/运营策略实际行为、`fastAdjustPriceBatch` 的审批流阈值、状态 `6` 在页面状态下拉是否可点选。

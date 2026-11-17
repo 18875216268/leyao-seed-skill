@@ -6,7 +6,7 @@
 > 归属唯一事实源见 `references/sy.md §0.4`；Agent 按子板块路由，勿按板块名一刀切。
 > 状态：**接口文档已交付，CLI 暂未开放**（`python scm.py query --module data` 返回 `MODULE_TODO`）。取数用 `python scm.py call`（`AGENT_GUIDE.md §4.1`）按本文档构造请求。
 > 本文是数据板块入口：子板块地图、端点清单、账号与请求约定、阅读顺序、边界。
-> 路径基准：`references/…` 相对技能包根（`交付区/scm/`）。
+> 路径基准：`references/…` 相对技能包根（本资产根）。
 
 ## 1. 子板块地图
 
@@ -118,7 +118,7 @@
 4. **⚠️ 时间格式两个子板块不同**：
    - 品种分析：`dateRange` 字符串数组（主表带 `HH:mm:ss`、趋势纯日期）
    - 销售报表：`startTime`/`endTime` **Unix 秒时间戳**
-5. **鉴权**：会话 cookie + body `token`；复用 `core.login.scm` 凭证，见 `references/通用/api_认证与公共约定.md`。
+5. **鉴权**：会话 cookie + body `token`；复用 `core.credential` 凭证，见 `references/通用/api_认证与公共约定.md`。
 6. **成功码**：`40001`；`40002` 业务/参数校验失败（含瞬态限流，可间隔重试）；`40004` 参数异常。
 7. **分页**：品种分析主表 `data.results[]` + `totalRecord`；销售报表主表 `data.dateMonthWeekList[]` + `count`、按药店 `data.list[]` + `count`。**两者容器名不同，勿套用**。
 
