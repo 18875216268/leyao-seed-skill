@@ -1,0 +1,6 @@
+# Python 运行产物
+__pycache__/
+*.pyc
+
+# pms_sync 可再拉的集团基础包（运行时产物，不入库）
+library/assets/p3nes3/vendor/leyo-sys/
