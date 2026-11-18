@@ -1,0 +1,5 @@
+name: Tms-流量投放
+display_name: Tms-流量投放
+short_description: PMS TMS 三板块：促销费用池 / 投流活动 / 优惠券用券统计的查询、导出与写操作指引。
+default_prompt: "使用 $tmstraffic01 处理 TMS 促销费用/促销活动/优惠券统计。凭证由调用方传入（--token/PMS_TOKEN/--state-file），本包不登录、不读父凭证仓库；buildTime 用 --build-time 可选传入。写操作须用户授权。"
+description: "当用户问 TMS 促销费用管理、促销活动管理/投流、优惠券用券统计、地区汇总、券台账时使用。与 Pms-商品活动管理(pmsact01) 不同：这里是费用池+投流补贴+TMS 页面。"

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【文档标题】</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0A3074;
+            --sidebar-bg: #F0F2F5;
+            --sidebar-border: #E5E7EB;
+            --sidebar-text: #4B5563;
+            --sidebar-text-active: #FFFFFF;
+            --sidebar-active-bg: #0A3074;
+            --bg-offwhite: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --highlight-light: #F4F7FA;
+            --text-dark: #1F2937;
+            --text-gray: #4B5563;
+            --border-light: #E5E7EB;
+            --font-sans: 'Noto Sans SC', sans-serif;
+            --font-serif: 'Noto Serif SC', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* ═══════════════════════════════════════
+           左侧导航栏（浅色背景 + 深色激活态）
+           ═══════════════════════════════════════ */
+        .sidebar-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100vh;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            padding: 36px 0;
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            padding: 0 24px 28px;
+            border-bottom: 1px solid var(--sidebar-border);
+            margin-bottom: 24px;
+        }
+
+        .sidebar-brand .brand-title {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-brand .brand-sub {
+            font-size: 0.7rem;
+            color: var(--sidebar-text);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 2px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-nav a:hover {
+            color: var(--primary-blue);
+            background: rgba(10, 48, 116, 0.06);
+        }
+
+        .sidebar-nav a.active {
+            color: var(--sidebar-text-active);
+            font-weight: 700;
+            background: var(--sidebar-active-bg);
+            box-shadow: 0 2px 8px rgba(10, 48, 116, 0.18);
+        }
+
+        .sidebar-nav a .nav-icon {
+            margin-right: 8px;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            width: 18px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar-nav a.active .nav-icon {
+            opacity: 1;
+        }
+
+        /* ═══════════════════════════════════════
+           主内容区
+           ═══════════════════════════════════════ */
+        .main-content {
+            margin-left: 220px;
+            min-height: 100vh;
+            background-color: var(--bg-offwhite);
+            background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .content-wrapper {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        /* ═══════════════════════════════════════
+           标题层级
+           ═══════════════════════════════════════ */
+        header {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px dashed var(--border-light);
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.4rem;
+            color: var(--primary-blue);
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .section-header {
+            margin-top: 60px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-family: var(--font-serif);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        h3::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 14px;
+            background: var(--primary-blue);
+            margin-right: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* ═══════════════════════════════════════
+           卡片系统
+           ═══════════════════════════════════════ */
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            margin-bottom: 20px;
+        }
+
+        .card-light {
+            background: var(--highlight-light);
+            border: 1px solid rgba(10, 48, 116, 0.08);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        /* ═══════════════════════════════════════
+           文本微排版组件
+           ═══════════════════════════════════════ */
+        .focus {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(10, 48, 116, 0.08);
+            color: var(--primary-blue);
+            font-size: 0.85rem;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        /* ═══════════════════════════════════════
+           段落容器
+           ═══════════════════════════════════════ */
+        .prose p {
+            color: var(--text-gray);
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+        .prose p:last-child { margin-bottom: 0; }
+
+        /* ═══════════════════════════════════════
+           垂直无序列表
+           ═══════════════════════════════════════ */
+        .v-list { list-style: none; }
+        .v-list > li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 12px;
+            color: var(--text-gray);
+        }
+        .v-list > li:last-child { margin-bottom: 0; }
+        .v-list > li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        /* ═══════════════════════════════════════
+           垂直步骤块（时间线）
+           ═══════════════════════════════════════ */
+        .step-block {
+            border-left: 2px solid var(--border-light);
+            padding-left: 20px;
+            margin-left: 8px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .step-block:last-child { margin-bottom: 0; }
+        .step-block::before {
+            content: "";
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: var(--card-bg);
+            border: 2px solid var(--primary-blue);
+            border-radius: 50%;
+        }
+        .step-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        /* ═══════════════════════════════════════
+           高级商务表格
+           ═══════════════════════════════════════ */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-light);
+        }
+        .data-table th, .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+        .data-table th {
+            background-color: var(--highlight-light);
+            color: var(--primary-blue);
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ═══════════════════════════════════════
+           打印样式
+           ═══════════════════════════════════════ */
+        @media print {
+            .sidebar-nav { display: none; }
+            .main-content { margin-left: 0; }
+            .card { box-shadow: none; border: 1px solid #ddd; }
+        }
+
+        /* ═══════════════════════════════════════
+           响应式（窄屏隐藏导航）
+           ═══════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .sidebar-nav { display: none; }
+            .main-content { margin-left: 0; }
+            .content-wrapper { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     左侧导航栏
+     根据实际内容模块生成目录项
+     ════════════════════════════════════════ -->
+<nav class="sidebar-nav">
+    <div class="sidebar-brand">
+        <div class="brand-title">报告标识名称</div>
+        <div class="brand-sub">类型标签文字</div>
+    </div>
+    <ul>
+        <li><a href="#section-1" class="active"><span class="nav-icon">◈</span> 目录项一</a></li>
+        <li><a href="#section-2"><span class="nav-icon">◈</span> 目录项二</a></li>
+        <li><a href="#section-3"><span class="nav-icon">◈</span> 目录项三</a></li>
+    </ul>
+</nav>
+
+<!-- ════════════════════════════════════════
+     主内容区
+     ════════════════════════════════════════ -->
+<div class="main-content">
+    <div class="content-wrapper">
+
+        <!-- 标题区 -->
+        <header>
+            <h1>文档主标题</h1>
+            <div class="subtitle">副标题或概要描述文字</div>
+        </header>
+
+        <!-- 内容模块示例（实际使用时根据内容灵活生成） -->
+
+        <div class="section-header" id="section-1">
+            <span class="section-label">SECTION 01 // 模块类型</span>
+            <h2>模块标题</h2>
+        </div>
+
+        <div class="card">
+            <div class="prose">
+                <p>这里放置内容。根据实际材料的性质，选择合适的组件来展示。</p>
+            </div>
+        </div>
+
+        <div class="section-header" id="section-2">
+            <span class="section-label">SECTION 02 // 模块类型</span>
+            <h2>模块标题</h2>
+        </div>
+
+        <div class="card">
+            <ul class="v-list">
+                <li>列表项示例</li>
+                <li>列表项示例</li>
+            </ul>
+        </div>
+
+        <div class="section-header" id="section-3">
+            <span class="section-label">SECTION 03 // 模块类型</span>
+            <h2>模块标题</h2>
+        </div>
+
+        <div class="card">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>列标题</th><th>列标题</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>内容</td><td>内容</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+(function() {
+    var links = document.querySelectorAll('.sidebar-nav a');
+    var sections = [];
+
+    links.forEach(function(link) {
+        var id = link.getAttribute('href');
+        if (id && id.startsWith('#')) {
+            var el = document.querySelector(id);
+            if (el) sections.push({ el: el, link: link });
+        }
+    });
+
+    if (!sections.length) return;
+
+    function onScroll() {
+        var scrollY = window.scrollY + 120;
+        var current = sections[0];
+
+        for (var i = 0; i < sections.length; i++) {
+            if (sections[i].el.offsetTop <= scrollY) {
+                current = sections[i];
+            }
+        }
+
+        links.forEach(function(l) { l.classList.remove('active'); });
+        current.link.classList.add('active');
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    links.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                window.scrollTo({ top: target.offsetTop - 30, behavior: 'smooth' });
+            }
+        });
+    });
+})();
+</script>
+
+</body>
+</html>
